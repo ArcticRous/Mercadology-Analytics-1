@@ -323,11 +323,16 @@ export class AuthService {
   uploadImage(file: File, id: string) {
     return this.http.post(`${this.urlStorage}/o/photosProfile%2F${id}%2F${file.name}`, file);
   }
-
-
-
-
-
+  // guardar comunicados
+  saveComun(comunicado: ComunicadoModel) {
+    return this.http.post(`${this.url}/comunicados.json` + this.auth, comunicado)
+      .pipe(
+        map((resp: any) => {
+          comunicado.ids = resp.name;
+          return comunicado;
+        })
+      );
+  }
 
 
   saveCuenta(cliente: ClienteModel) {
@@ -340,7 +345,17 @@ export class AuthService {
         })
       );
   }
-
+  saveComunicado(comunicado: ComunicadoModel) {
+    const token = sessionStorage.getItem('token');
+    return this.http.post(`${this.url}/comunicados.json` + this.auth + token, comunicado)
+      .pipe(
+        map((resp: any) => {
+          comunicado.ids = resp.titulo;
+          return comunicado;
+        })
+      );
+  }
+  
   UpdatCliente(cliente: ClienteModel) {
     const token = sessionStorage.getItem('token');
     const ClienteTemp = {
@@ -351,6 +366,16 @@ export class AuthService {
     return this.http.put(`${this.url}/cliente/${cliente.ids}.json` + this.auth + token, ClienteTemp);
   }
 
+  UpdatComunicado(comunicados: ComunicadoModel) {
+    const token = sessionStorage.getItem('token');
+    const ComunicadoTemp = {
+      ...comunicados
+    };
+    delete ComunicadoTemp.ids;
+
+    return this.http.put(`${this.url}/comunicados/${comunicados.ids}.json` + this.auth + token, ComunicadoTemp);
+  }
+
   DeleteClient(ids: string) {
     const token = sessionStorage.getItem('token');
     return this.http.delete(`${this.url}/cliente/${ids}.json` + this.auth + token);
@@ -358,6 +383,36 @@ export class AuthService {
 
   getClient(ids: string) {
     return this.http.get(`${this.url}/cliente/${ids}.json`);
+  }
+  getComunicado(ids: string) {
+    return this.http.get(`${this.url}/comunicados/${ids}.json`);
+  }
+  getComun() {
+    return this.http.get(`${this.url}/comunicados.json`)
+    .pipe(
+      map(this.CrearComun),
+      delay(1500)
+    );
+     
+  }
+  DeleteComun(ids: string) {
+    const token = sessionStorage.getItem('token');
+    return this.http.delete(`${this.url}/comunicados/${ids}.json` + this.auth + token);
+  }
+  private CrearComun(ComunicadoObj: object) {
+    const Comunicado: ComunicadoModel[] = [];
+    // console.log(ComunicadoObj);
+    if (ComunicadoObj === null) {
+      return [];
+    }
+
+    Object.keys(ComunicadoObj).forEach(key => {
+      const comunicado: ComunicadoModel = ComunicadoObj[key];
+      comunicado.ids = key;
+      Comunicado.push(comunicado);
+    });
+
+    return Comunicado;
   }
 
   getShow(ids: string) {
@@ -376,7 +431,7 @@ export class AuthService {
     const Cliente: ClienteModel[] = [];
     // console.log(ClienteObj);
     if (ClienteObj === null) {
-      return [];
+      return []; 
     }
 
     Object.keys(ClienteObj).forEach(key => {
@@ -617,40 +672,6 @@ export class AuthService {
     };
 
     return this.http.post(`${this.urlDatos}/comunicados.json` + this.auth + token, comunicadoDatos);
-  }
-
-  getComunicado(id: string) {
-    return this.http.get(`${this.urlDatos}/comunicados/${id}.json`);
-  }
-
-  getComunicados() {
-    return this.http.get(`${this.urlDatos}/comunicados.json`)
-      .pipe(
-        map(this.crearArregloComunicado)
-      );
-  }
-
-  private crearArregloComunicado(comunicadoObj: object) {
-    const comunicados: ComunicadoModel[] = [];
-    
-    if (comunicadoObj === null) { return []; }
-
-    Object.keys(comunicadoObj).forEach(key => {
-      const comunicado = comunicadoObj[key];
-      comunicado.id = key;
-      comunicados.push(comunicado);
-    });
-    return comunicados;
-  }
-
-  modificarComunicado(comunicado: ComunicadoModel, token: string) {
-    
-    const ComunicadoTemp = {
-      ...comunicado
-    };
-    delete ComunicadoTemp.id;
-
-    return this.http.put(`${this.url}/comunicados/${comunicado.id}.json` + this.auth + token, ComunicadoTemp);
   }
 
   eliminarComunicado(id: string, token: string) {

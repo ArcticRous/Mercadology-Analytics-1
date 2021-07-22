@@ -15,15 +15,23 @@ import { AccesosComponent } from './components/accesos/accesos.component';
 import { AuthGuard } from './guards/auth.guard';
 import { RolGuard } from './guards/rol.guard';
 import { ComunicadosComponent } from './components/comunicados/comunicados.component';
+import { ComunViewComponent } from './components/ComunView/ComunView.component';
 import { ComunicadoIndividualComponent } from './components/comunicado-individual/comunicado-individual.component';
+import { MiscomunicadosComponent } from './components/miscomunicados/miscomunicados.component';
+
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
   {path: 'home' , component: HomeComponent,canActivate: [AuthGuard]},
   {path: 'accesos' , component: AccesosComponent,canActivate: [AuthGuard]},
   {path: 'cuentas', component: CuentasComponent,canActivate: [AuthGuard]},
-  {path: 'comunicados' , component: ComunicadosComponent,canActivate: [AuthGuard]},
-  {path: 'comunicado-individual' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
+  {path: 'comunicados/' , component: ComunicadosComponent,canActivate: [AuthGuard ,RolGuard]},
+  {path: 'comunicados/:ids' , component: ComunicadosComponent,canActivate: [AuthGuard,RolGuard]},
+  {path: 'comunicado-individual/' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
+  {path: 'comunicado-individual/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
+  {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard]},
+
+  {path: 'ComunView' , component: ComunViewComponent,canActivate: [AuthGuard,RolGuard]},
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'mostrar/:ids' , component: MostrarComponent,canActivate: [AuthGuard]},
   {path: 'generadorReportes', component: GeneradorReportesComponent, canActivate: [AuthGuard]},

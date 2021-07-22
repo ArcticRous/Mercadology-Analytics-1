@@ -30,8 +30,12 @@ import { CuentaComponent } from './components/cuenta/cuenta.component';
 import { HomeComponent } from './components/home/home.component';
 import { MostrarComponent } from './components/mostrar/mostrar.component';
 import { AccesosComponent } from './components/accesos/accesos.component';
+import { MiscomunicadosComponent  } from './components/miscomunicados/miscomunicados.component';
 import { ComunicadosComponent } from './components/comunicados/comunicados.component';
+import { ComunViewComponent } from './components/ComunView/ComunView.component';
 import { ComunicadoIndividualComponent } from './components/comunicado-individual/comunicado-individual.component';
+
+
 
 @NgModule({
   declarations: [
@@ -50,7 +54,9 @@ import { ComunicadoIndividualComponent } from './components/comunicado-individua
     MostrarComponent,
     AccesosComponent,
     ComunicadosComponent,
-    ComunicadoIndividualComponent
+    ComunViewComponent,
+    ComunicadoIndividualComponent,
+    MiscomunicadosComponent
   ],
   imports: [
     MatTabsModule,
