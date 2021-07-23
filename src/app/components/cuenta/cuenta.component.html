@@ -1,0 +1,342 @@
+<div class="container mb-4">
+   <div class="row mt-5">
+      <h1 *ngIf="agregar" class="text-white col-10">Agregar</h1>
+      <h1 *ngIf="!agregar" class="text-white col-10">Actualizar {{cliente.nomcli}}</h1>
+      <div class="col-lg-2">
+         <button class="btn btn-danger col-lg-12" routerLink="/cuentas">
+            <i class="bi bi-arrow-left-circle-fill"></i>
+            Regresar
+         </button>
+      </div>
+   </div>
+</div>
+
+<div class="row animated fadeIn faster container contenedor">
+   <div class="col-12">
+
+      <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white">
+
+         <div class="form-group">
+            <label>ID</label>
+            <input type="text" class="form-control" placeholder="ID" [(ngModel)]="cliente.ids" name="ids"
+               disabled="disabled">
+            <small class="form-text text-muted">Este campo es autogenerado</small>
+         </div>
+
+         <div class="row mb-3">
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Cliente</h2>
+               <div class="form-group row">
+                  <!--col-4-->
+                  <label>Nombre</label>
+                  <input type="text" class="form-control" placeholder="Nombre de la empresa"
+                     [(ngModel)]="cliente.nomcli" name="nomcli" required>
+               </div>
+
+               <div class="form-group row">
+                  <!---->
+                  <label>Correo</label>
+                  <!--Cuenta: Correo-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.cuecor" name="cuecor"
+                     placeholder="Correo gmail">
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Cuenta: Contraseña-->
+                  <div *ngIf="agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarCorreo" type="text" class="form-control" [(ngModel)]="cliente.cuepas"
+                        name="cuepas" placeholder="Contraseña del correo">
+                     <input *ngIf=!mostrarCorreo type="password" class="form-control" [(ngModel)]="cliente.cuepas"
+                        name="cuepas" placeholder="Contraseña del correo">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarCorreo = !mostrarCorreo">
+                        <i *ngIf=mostrarCorreo class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarCorreo class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+
+                  <div *ngIf="!agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarCorreo" type="text" class="form-control" [(ngModel)]="cliente.cuepas"
+                        name="cuepas" placeholder="Contraseña del correo">
+                     <input *ngIf=!mostrarCorreo type="password" class="form-control" [(ngModel)]="cliente.cuepas"
+                        name="cuepas" placeholder="Contraseña del correo">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarCorreo = !mostrarCorreo">
+                        <i *ngIf=mostrarCorreo class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarCorreo class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+               </div>
+            </div>
+
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Hosting</h2>
+               <div class="form-group row">
+                  <!--col-4-->
+                  <label>Hospedaje</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.hosnom" name="hosubi"
+                     placeholder="Hospedaje.com">
+               </div>
+               <div class="form-group row">
+                  <label>Usuario</label>
+                  <!--Hospedaje: Usuario-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.hosuse" name="hosuse"
+                     placeholder="Usuario del hospedaje">
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Hospedaje: Contraseña-->
+                  <div *ngIf="agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarHosting" type="text" class="form-control" [(ngModel)]="cliente.hospas"
+                        name="hospas" placeholder="Contraseña del hospedaje">
+                     <input *ngIf=!mostrarHosting type="password" class="form-control" [(ngModel)]="cliente.hospas"
+                        name="hospas" placeholder="Contraseña del hospedaje">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarHosting = !mostrarHosting">
+                        <i *ngIf=mostrarHosting class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarHosting class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+
+                  <div *ngIf="!agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarHosting" type="text" class="form-control" [(ngModel)]="cliente.hospas"
+                        name="hospas" placeholder="Contraseña del hospedaje">
+                     <input *ngIf=!mostrarHosting type="password" class="form-control" [(ngModel)]="cliente.hospas"
+                        name="hospas" placeholder="Contraseña del hospedaje">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarHosting = !mostrarHosting">
+                        <i *ngIf=mostrarHosting class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarHosting class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+
+         <div class="row mb-3">
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Dominio</h2>
+               <div class="form-group row">
+                  <!--col-6-->
+                  <label>Dominio</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.domcli" name="domcli"
+                     placeholder="Nombre del dominio">
+               </div>
+               <!----aqui comienzan los campos-->
+               <div class="form-group row">
+                  <label>Direccion IP</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.dirip" name="dirip"
+                     placeholder="Direccion del servidor">
+               </div>
+
+
+               <!-- <div class="row mb-3"> -->
+               <div class="form-group row">
+                  <label>Ubicacion</label>
+                  <!--Dominio: Ubicacion-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.domubi" name="domubi"
+                     placeholder="Ubicacion del dominio">
+               </div>
+               <div class="form-group row">
+                  <label>Usuario</label>
+                  <!--Dominio: Usuario-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.domuse" name="domuse"
+                     placeholder="Usuario del dominio">
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Dominio: Contraseña-->
+                  <div *ngIf="agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarDominio" type="text" class="form-control" [(ngModel)]="cliente.dompas"
+                        name="dompas" placeholder="Contraseña del dominio">
+                     <input *ngIf=!mostrarDominio type="password" class="form-control" [(ngModel)]="cliente.dompas"
+                        name="dompas" placeholder="Contraseña del dominio">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarDominio = !mostrarDominio">
+                        <i *ngIf=mostrarDominio class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarDominio class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+
+                  <div *ngIf="!agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarDominio" type="text" class="form-control" [(ngModel)]="cliente.dompas"
+                        name="dompas" placeholder="Contraseña del dominio">
+                     <input *ngIf=!mostrarDominio type="password" class="form-control" [(ngModel)]="cliente.dompas"
+                        name="dompas" placeholder="Contraseña del dominio">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarDominio = !mostrarDominio">
+                        <i *ngIf=mostrarDominio class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarDominio class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+               </div>
+               <!-- </div> -->
+            </div>
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Base de datos</h2>
+               <div class="form-group row">
+                  <!--col-4-->
+                  <label>Nombre</label>
+                  <!--Base de datos: Nombre-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.dbnam" name="dbnam"
+                     placeholder="Nombre de la base de datos">
+               </div>
+               <div class="form-group row">
+                  <label>Usuario</label>
+                  <!--Base de datos: Usuario-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.dbuse" name="dbuse"
+                     placeholder="Usuario de la base de datos">
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Base de datos: Contraseña-->
+                  <div *ngIf="agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarBd" type="text" class="form-control" [(ngModel)]="cliente.dbpas" name="dbpas"
+                        placeholder="Contraseña de la base de datos">
+                     <input *ngIf=!mostrarBd type="password" class="form-control" [(ngModel)]="cliente.dbpas"
+                        name="dbpas" placeholder="Contraseña de la base de datos">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarBd = !mostrarBd">
+                        <i *ngIf=mostrarBd class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarBd class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+
+                  <div *ngIf="!agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarBd" type="text" class="form-control" [(ngModel)]="cliente.dbpas" name="dbpas"
+                        placeholder="Contraseña de la base de datos">
+                     <input *ngIf=!mostrarBd type="password" class="form-control" [(ngModel)]="cliente.dbpas"
+                        name="dbpas" placeholder="Contraseña de la base de datos">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarBd = !mostrarBd">
+                        <i *ngIf=mostrarBd class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarBd class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+
+         <div class="row mb-3">
+
+            <div class="col-6 mb-3">
+               <h2>Vencimientos</h2>
+               <div class="form-group col-12">
+                  <label style="display: block;">Dominio</label>
+                  <!-- <input type="date" class="form-control" [(ngModel)]="cliente.venssl" name="venssl"> -->
+                  <input [matDatepicker]="pickerDominio" class="form-control picker" [(ngModel)]="cliente.domven" name="domssl">
+                  <mat-datepicker-toggle matSuffix [for]="pickerDominio"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerDominio></mat-datepicker>
+               </div>
+               <div class="form-group col-12">
+                  <label style="display: block;" >Hosting</label>
+                  <!-- <input type="date" class="form-control" [(ngModel)]="cliente.hosven" name="hosven"> -->
+                  <input [matDatepicker]="pickerHosting" class="form-control picker" [(ngModel)]="cliente.hosven" name="hosven">
+                  <mat-datepicker-toggle matSuffix [for]="pickerHosting"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerHosting></mat-datepicker>
+               </div>
+               <div class="form-group col-12">
+                  <label style="display: block;">SSL</label>
+                  <!-- <input type="date" class="form-control" [(ngModel)]="cliente.venssl" name="venssl"> -->
+                  <input [matDatepicker]="pickerSSL" class="form-control picker" [(ngModel)]="cliente.venssl" name="venssl">
+                  <mat-datepicker-toggle matSuffix [for]="pickerSSL"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerSSL></mat-datepicker>
+               </div>
+            </div>
+            <!--   placeholder="vencimiento SSL"> -->
+            <!----aqui terminan -->
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <!--row mb-3-->
+               <h2>FTP</h2>
+               <div class="form-group row">
+                  <!--col-6-->
+                  <label>Usuario</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.ftpuse" name="ftpuse"
+                     placeholder="FTP Usuario">
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Contraseña FTP-->
+                  <div *ngIf="agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarFtp" type="text" class="form-control" [(ngModel)]="cliente.ftppas"
+                        name="ftppas" placeholder="FTP Contraseña">
+                     <input *ngIf=!mostrarFtp type="password" class="form-control" [(ngModel)]="cliente.ftppas"
+                        name="ftppas" placeholder="FTP Contraseña">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarFtp = !mostrarFtp">
+                        <i *ngIf=mostrarFtp class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarFtp class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+
+                  <div *ngIf="!agregar" class="input-group m-0 p-0">
+                     <input *ngIf="mostrarFtp" type="text" class="form-control" [(ngModel)]="cliente.ftppas"
+                        name="ftppas" placeholder="FTP Contraseña">
+                     <input *ngIf=!mostrarFtp type="password" class="form-control" [(ngModel)]="cliente.ftppas"
+                        name="ftppas" placeholder="FTP Contraseña">
+
+                     <button type="button" class="btn btn-outline-secondary" (click)="mostrarFtp = !mostrarFtp">
+                        <i *ngIf=mostrarFtp class="bi bi-eye-fill"></i>
+                        <i *ngIf=!mostrarFtp class="bi bi-eye-slash-fill"></i>
+                     </button>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+
+
+
+
+
+
+         <div class="row mb-3">
+            <div class="form-group">
+               <label class="fs-4">Estado</label>
+               <br>
+
+               <button *ngIf="cliente.estado" (click)="cliente.estado = false" class="btn btn-outline-success w-50"
+                  type="button">
+                  <i class="bi bi-emoji-smile-fill"></i>
+                  Activo
+               </button>
+
+               <button *ngIf="!cliente.estado" (click)="cliente.estado = true" class="btn btn-outline-danger w-50"
+                  type="button">
+                  <i class="bi bi-emoji-frown-fill"></i>
+                  Inactivo
+               </button>
+
+            </div>
+         </div>
+
+
+
+         <hr>
+         <div class="row" style="display: flex; justify-content:center;">
+            <div class="form-group text-center col-md-4">
+               <button type="submit" class="btn btn-primary btn-lg w-100">
+                  <i class="bi bi-save"></i>
+                  Guardar
+               </button>
+            </div>
+         </div>
+
+
+      </form>
+
+
+   </div>
+</div>
+
+<app-footer></app-footer>

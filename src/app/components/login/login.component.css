@@ -1,7 +1,21 @@
+.row{
+    width: min(90%, 1000px);
+    margin: 0 auto;
+    justify-content: center;
+}
+
 .col-login {
-    width: 40%;
-    margin: auto;
+    width: 100%;
     margin-top: 50px;
+    justify-content: center;
+}
+
+@media(min-width: 768px){
+    .col-login {
+        width: 60%;
+        max-width: 480px;
+        justify-content: center;
+    }
 }
 
 .form-label {
@@ -9,12 +23,15 @@
 }
 
 .cont-img {
+    width: 100%;
     display: flex;
     justify-content: center;
 }
 
 .img-login {
-    width: 300px;
+    width: 100%;
+    max-width: 380px;
+    object-fit:cover;
 }
 
 .cont-restablecer {
@@ -30,4 +47,21 @@
 
 .text-restablecer:hover {
     color: #86b7fe;
+}
+
+.form-div{
+        width: 100%;
+}
+
+.col-lg-12 input{
+    border: none;
+    outline: none;
+}
+
+button:focus, .form-control:focus {
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
 }

@@ -1,0 +1,171 @@
+<app-header></app-header>
+<main class="container">
+  <div class="row mt-4">
+    <h1 class="col-md-10">Modificar</h1>
+    <div class="col-lg-2">
+      <button [routerLink]="['/usuarios']" routerLinkActive="router-link-active" class="btn btn-danger col-lg-12">
+        <i class="bi bi-arrow-left-circle-fill"></i> Regresar
+      </button>
+    </div>
+
+  </div>
+  <form (ngSubmit)="modificarSubmit( formR )" #formR="ngForm" *ngIf='registro'>
+
+    <div class="form-group container">
+
+
+      <div class="row mt-5">
+        <div class="col-md-6 mb-3">
+          <label for="formNombre" class="mb-2"> Nombre</label>
+          <input type="text" class="form-control" name="nombre" id="formNombre" placeholder="Nombre" required
+            [(ngModel)]="registro.nombre" minlength="2">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="formApellido" class="mb-2">Apellido(s)</label>
+          <input type="text" class="form-control" name="apellido" id="formApellido" placeholder="Apellido(s)" required
+            [(ngModel)]="registro.apellido" minlength="2">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="formRol" class="mb-2"> Rol</label>
+          <select class="form-control" id="formRol" name="rol" [(ngModel)]="registro.rol">
+            <option hidden value="">Seleccione</option>
+            <option>Administrador</option>
+            <option>Editor</option>
+            <option>Lector</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="formPuesto" class="mb-2"> Puesto</label>
+          <input type="text" class="form-control" name="puesto" id="formPuesto" placeholder="Puesto" required
+            [(ngModel)]="registro.puesto">
+        </div>
+
+        <div class="col-md-4">
+          <label for="formDepto" class="mb-2"> Departamento</label>
+          <input type="text" class="form-control" name="depto" id="formDepto" placeholder="Departamento" required
+            [(ngModel)]="registro.depto">
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col mb-3">
+          <label class="mb-2">Estado</label>
+          <br>
+
+          <button *ngIf="registro.habilitado" (click)="registro.habilitado = false" class="btn btn-outline-success w-50"
+            type="button">
+            <i class="bi bi-emoji-smile-fill"></i>
+            Habilitar
+          </button>
+
+          <button *ngIf="!registro.habilitado" (click)="registro.habilitado = true" class="btn btn-outline-danger w-50"
+            type="button">
+            <i class="bi bi-emoji-frown-fill"></i>
+            Deshabilitar
+          </button>
+        </div>
+      </div>
+
+      <div class="form-group text-center">
+        <div class="row mb-3 botones">
+          <button type="submit" class="btn btn-md col-3 btn-success mb-3">
+            <i class="bi bi-save"></i>
+            Guardar
+          </button>
+          <!-- </div> -->
+
+          <!-- <div *ngIf="this.admin == '12345'" class="form-group col-md-4 mb-3"> -->
+          <button *ngIf="this.admin == '12345'" type="button" class="btn btn-md col-3 btn-primary mb-3"
+            data-bs-toggle="modal" data-bs-target="#contrasenaModal" data-bs-whatever="@contrasenaModal">
+            <!-- <i class="bi bi-save"></i> -->
+            Cambiar contraseña
+          </button>
+
+          <button *ngIf="this.admin == '12345'" type="button" class="btn btn-md col-3 btn-primary mb-3"
+            data-bs-toggle="modal" data-bs-target="#emailModal" data-bs-whatever="@emailModal">
+            <!-- <i class="bi bi-save"></i> -->
+            Cambiar email
+          </button>
+
+        </div>
+      </div>
+
+      <div class="col-md-4" style="display: none;">
+        <label for="formId" class="mb-2"> Id</label>
+        <input type="text" class="form-control" name="id" id="formId" placeholder="Id" required
+          [(ngModel)]="registro.id">
+      </div>
+
+    </div>
+
+  </form>
+
+</main>
+
+<!-- Modal Cambiar Comtraseña -->
+<div class="modal fade" id="contrasenaModal" tabindex="-1" aria-labelledby="contrasenaModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="contrasenaModalLabel">Actualizar contraseña</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="cambiarContrasenaForm" (ngSubmit)="cambiarContrasena()">
+          <div class="mb-3">
+            <div class="input-group m-0 p-0">
+              <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
+              <input *ngIf="!mostrarContrasena" type="password" class="form-control" id="contrasena-name" formControlName="nuevaContrasena"
+                placeholder="Ingrese su nueva contraseña">
+              <input *ngIf="mostrarContrasena" type="text" class="form-control" id="contrasena-name" formControlName="nuevaContrasena"
+                placeholder="Ingrese su nueva contraseña">
+
+              <button type="button" class="btn btn-light boton" (click)="mostrarContrasena = !mostrarContrasena">
+                <i *ngIf=mostrarContrasena class="bi bi-eye-fill"></i>
+                <i *ngIf=!mostrarContrasena class="bi bi-eye-slash-fill"></i>
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="cambiarContrasena()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal cambiar email -->
+<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-dark" id="emailModalLabel">Actualizar email</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="cambiarEmailForm" (ngSubmit)="cambiarEmail()">
+          <div class="mb-3">
+            <!-- <label for="recipient-name" class="col-form-label">Recipient:</label> -->
+            <input type="text" class="form-control" id="email-recipient" formControlName="nuevoEmail"
+              placeholder="Ingrese su nuevo email">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" class="btn btn-primary" (click)="cambiarEmail()">Aceptar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

@@ -19,6 +19,10 @@ body {
     background-color: #FC041C;
 }
 
+.texto-rojo {
+    color: #FC041C;
+}
+
 .gris {
     background-color: #646464;
 }
@@ -37,4 +41,18 @@ body {
 
 .naranja {
     background-color: #FC6434;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+body::-webkit-scrollbar, .container::-webkit-scrollbar, .table-responsive::-webkit-scrollbar{
+    width: 14px;
+    background-color: #242424;
+}
+
+body::-webkit-scrollbar-thumb, .container::-webkit-scrollbar-thumb, .table-responsive::-webkit-scrollbar-thumb{
+    background-color:rgba(255,255,255,.2);
+    border-radius:10px;
+    border-right: 2px solid #242424;
 }

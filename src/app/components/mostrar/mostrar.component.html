@@ -1,0 +1,340 @@
+<app-header></app-header>
+
+<div class="container">
+   <div class="row mt-4 encabezado">
+      <h1 class="col-10 text-white">{{cliente.nomcli}}</h1>
+      <div class="col-lg-2">
+         <button class="btn btn-danger col-lg-12" routerLink="/cuentas">
+            <i class="bi bi-arrow-left-circle-fill me-1"></i>
+            Regresar
+         </button>
+      </div>
+   </div>
+</div>
+
+<div class="row animated fadeIn faster container contenedor">
+   <div class="col-12">
+
+      <form class="formulario text-white">
+
+         <div class="form-group">
+            <label>ID</label>
+            <input type="text" class="form-control" placeholder="ID" [(ngModel)]="cliente.ids" name="ids"
+               disabled="disabled">
+            <small class="form-text text-muted">Este campo es autogenerado</small>
+         </div>
+
+         <div class="row">
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Cliente</h2>
+               <div class="form-group row">
+                  <label>Nombre</label>
+                  <input type="text" class="form-control" placeholder="Nombre de la empresa" [(ngModel)]="cliente.nomcli"
+                     name="nomcli" disabled required>
+               </div>
+   
+               <div class="form-group row">
+                  <label>Correo</label>
+                  <!--Cuenta: Correo-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.cuecor" name="cuecor"
+                     placeholder="Correo gmail" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Cuenta: Contraseña-->
+                  <div class="input-group m-0 p-0">
+                     <button *ngIf="this.rol === '12345' || this.rol === '234567'" type="button" class="btn btn-outline-secondary" (click)="mostrarCorreo = !mostrarCorreo"
+                        (click)="desencriptar(cliente.cuepas, cliente.cuecor, 'correo')">
+                        <i *ngIf="mostrarCorreo" class="bi bi-eye-fill"></i>
+                        <i *ngIf="!mostrarCorreo" class="bi bi-eye-slash-fill"></i>
+                     </button>
+   
+                     <input type="text" class="form-control" [(ngModel)]="cliente.cuepas" name="cuepas"
+                        placeholder="Contraseña del correo" disabled>
+   
+                     <button type="button" class="btn btn-outline" style="background-color: white;"
+                        (click)="copiar = !copiar" (click)="copyToClipboard(cliente.cuepas)" (click)="openSnackBar()">
+                        <i class="bi bi-clipboard" style="z-index: 2;"></i></button>
+                  </div>
+               </div>
+            </div>
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Hosting</h2>
+               <div class="form-group row">
+                  <label>Hospedaje</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.hosnom" name="hosubi"
+                     placeholder="Hospedaje.com" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Usuario</label>
+                  <!--Hospedaje: Usuario-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.hosuse" name="hosuse"
+                     placeholder="Usuario del hospedaje" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Hospedaje: Contraseña-->
+                  <div class="input-group m-0 p-0">
+                     <button *ngIf="this.rol === '12345' || this.rol === '234567'" type="button" class="btn btn-outline-secondary" (click)="mostrarHosting = !mostrarHosting"
+                        (click)="desencriptar(cliente.hospas, cliente.hosuse, 'hosting')">
+                        <i *ngIf="mostrarHosting" class="bi bi-eye-fill"></i>
+                        <i *ngIf="!mostrarHosting" class="bi bi-eye-slash-fill"></i>
+                     </button>
+   
+                     <input type="text" class="form-control" [(ngModel)]="cliente.hospas" name="hospas"
+                        placeholder="Contraseña del usuario" disabled>
+   
+                     <button type="button" class="btn btn-outline" style="background-color: white;"
+                        (click)="copiar = !copiar" (click)="copyToClipboard(cliente.hospas)" (click)="openSnackBar()">
+                        <i class="bi bi-clipboard" style="z-index: 2;"></i></button>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+
+         <div class="row mb-3">
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Dominio</h2>
+               <div class="form-group row">
+                  <label>Dominio</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.domcli" name="domcli"
+                     placeholder="Nombre del dominio" disabled>
+               </div>
+               <!----aqui comienzan los campos-->
+               <div class="form-group row">
+                  <label>Direccion IP</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.dirip" name="dirip"
+                     placeholder="Direccion del servidor" disabled>
+               </div>
+            <!-- </div> -->
+   
+            <!-- <div class="row mb-3"> -->
+               <div class="form-group row">
+                  <label>Ubicacion</label>
+                  <!--Dominio: Ubicacion-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.domubi" name="domubi"
+                     placeholder="Ubicacion del dominio" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Usuario</label>
+                  <!--Dominio: Usuario-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.domuse" name="domuse"
+                     placeholder="Usuario del dominio" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Dominio: Contraseña-->
+                  <div class="input-group m-0 p-0">
+                     <button *ngIf="this.rol === '12345' || this.rol === '234567'" type="button" class="btn btn-outline-secondary" (click)="mostrarDominio = !mostrarDominio"
+                        (click)="desencriptar(cliente.dompas, cliente.domuse, 'dominio')">
+                        <i *ngIf="mostrarDominio" class="bi bi-eye-fill"></i>
+                        <i *ngIf="!mostrarDominio" class="bi bi-eye-slash-fill"></i>
+                     </button>
+   
+                     <input type="text" class="form-control" [(ngModel)]="cliente.dompas" name="dompas"
+                        placeholder="Contraseña del dominio" disabled>
+   
+                     <button type="button" class="btn btn-outline" style="background-color: white;"
+                        (click)="copiar = !copiar" (click)="copyToClipboard(cliente.dompas)" (click)="openSnackBar()">
+                        <i class="bi bi-clipboard" style="z-index: 2;"></i></button>
+                  </div>
+               </div>
+            </div>
+
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Base de datos</h2>
+               <div class="form-group row">
+                  <label>Nombre</label>
+                  <!--Base de datos: Nombre-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.dbnam" name="dbnam"
+                     placeholder="Nombre de la base de datos" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Usuario</label>
+                  <!--Base de datos: Usuario-->
+                  <input type="text" class="form-control" [(ngModel)]="cliente.dbuse" name="dbuse"
+                     placeholder="Usuario de la base de datos" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <!--Base de datos: Contraseña-->
+                  <div class="input-group m-0 p-0">
+                     <button *ngIf="this.rol === '12345' || this.rol === '234567'" type="button" class="btn btn-outline-secondary" (click)="mostrarBd = !mostrarBd"
+                        (click)="desencriptar(cliente.dbpas, cliente.dbuse, 'bdd')">
+                        <i *ngIf="mostrarBd" class="bi bi-eye-fill"></i>
+                        <i *ngIf="!mostrarBd" class="bi bi-eye-slash-fill"></i>
+                     </button>
+   
+                     <input type="text" class="form-control" [(ngModel)]="cliente.dbpas" name="dbpas"
+                        placeholder="Contraseña de la base de datos" disabled>
+   
+                     <button type="button" class="btn btn-outline" style="background-color: white;"
+                        (click)="copiar = !copiar" (click)="copyToClipboard(cliente.dbpas)" (click)="openSnackBar()">
+                        <i class="bi bi-clipboard" style="z-index: 2;"></i></button>
+                  </div>
+               </div>
+            </div>
+
+         </div>
+
+
+
+         <div class="row mb-3">
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>Vencimientos</h2>
+               <div class="form-group row">
+                  <label >Dominio</label>
+                  <!-- <input type="date" class="form-control" [(ngModel)]="cliente.venssl" name="venssl" disabled> -->
+                  <input disabled [matDatepicker]="pickerDominio" class="form-control picker" [(ngModel)]="cliente.domven" name="domven">
+                  <mat-datepicker-toggle style="display: none;" matSuffix [for]="pickerDominio"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerDominio></mat-datepicker>
+               </div>
+               <div class="form-group row">
+                  <label>Hosting</label>
+                  <!-- <input type="date" class="form-control" [(ngModel)]="cliente.hosven" name="hosven" disabled> -->
+                  <input disabled [matDatepicker]="pickerHosting" class="form-control picker" [(ngModel)]="cliente.hosven" name="hosven">
+                  <mat-datepicker-toggle style="display: none;" matSuffix [for]="pickerHosting"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerHosting></mat-datepicker>
+               </div>
+               <div class="form-group row">
+                  <label >SSL</label>
+                  <!-- <input type="date" class="form-control" [(ngModel)]="cliente.venssl" name="venssl" disabled> -->
+                  <input disabled [matDatepicker]="pickerSSL" class="form-control picker" [(ngModel)]="cliente.venssl" name="venssl">
+                  <mat-datepicker-toggle style="display: none;" matSuffix [for]="pickerSSL"></mat-datepicker-toggle>
+                  <mat-datepicker #pickerSSL></mat-datepicker>
+               </div>
+            </div>
+            <!--   placeholder="vencimiento SSL"> -->
+            <!----aqui terminan -->
+
+            <div class="col-6 pe-4 ps-4 mb-3">
+               <h2>FTP</h2>
+               <div class="form-group row">
+                  <label>Usuario</label>
+                  <input type="text" class="form-control" [(ngModel)]="cliente.ftpuse" name="ftpuse"
+                     placeholder="FTP Usuario" disabled>
+               </div>
+               <div class="form-group row">
+                  <label>Contraseña</label>
+                  <div class="input-group m-0 p-0">
+                     <button *ngIf="this.rol === '12345' || this.rol === '234567'" type="button" class="btn btn-outline-secondary" (click)="mostrarFtp = !mostrarFtp"
+                        (click)="desencriptar(cliente.ftppas, cliente.ftpuse, 'ftp')">
+                        <i *ngIf="mostrarFtp" class="bi bi-eye-fill"></i>
+                        <i *ngIf="!mostrarFtp" class="bi bi-eye-slash-fill"></i>
+                     </button>
+   
+                     <input type="text" class="form-control" [(ngModel)]="cliente.ftppas" name="ftppas"
+                        placeholder="FTP Contraseña" disabled>
+   
+                     <button type="button" class="btn btn-outline" style="background-color: white;"
+                        (click)="copiar = !copiar" (click)="copyToClipboard(cliente.ftppas)" (click)="openSnackBar()">
+                        <i class="bi bi-clipboard" style="z-index: 2;"></i></button>
+                  </div>
+               </div>
+            </div>
+
+
+         </div>
+
+
+
+
+
+         <div class="row mb-3">
+            <div class="form-group">
+               <label>Estado</label>
+               <br>
+
+               <button *ngIf="cliente.estado" (click)="cliente.estado = false" class="btn btn-outline-success w-50"
+                  type="button" disabled>
+                  <i class="bi bi-emoji-smile-fill"></i>
+                  Activo
+               </button>
+
+               <button *ngIf="!cliente.estado" (click)="cliente.estado = true" class="btn btn-outline-danger w-50"
+                  type="button" disabled>
+                  <i class="bi bi-emoji-frown-fill"></i>
+                  Inactivo
+               </button>
+
+            </div>
+         </div>
+      </form>
+   </div>
+</div>
+
+<app-footer></app-footer>
+
+
+
+
+
+
+
+<!-- <div class="contGeneral">
+   Comentada--&& cliente.length >0 
+<table *ngIf="!cargando " class="table text-white tablaCuentas ">
+   <thead>
+      <tr>
+         <th scope="col">#</th>
+         <th scope="col">Empresa</th>
+         <th scope="col">Dominio</th>
+         <th scope="col">Direccion IP</th>
+         <th scope="col">estado</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr *ngFor="let Cliente of Cliente; let i = index">
+         <td scope="row">{{ i + 1}}</td>
+         <td>{{Cliente.nomcli}}</td>
+         <td>{{Cliente.domcli}}</td>
+         <td>{{Cliente.dirip}}</td>
+
+
+         <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                     ...
+                  </div>
+                  <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                     <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+      </tr>
+
+   </tbody>
+</table>
+Comentada--&& cliente.length === 0" 
+<div *ngIf="!cargando " class="alert alert-warning text-center mt-3 animated fadeIn faster tablaCuentas">
+   <h4 class="alert-heading">No hay registros</h4>
+   <p>
+      <i class="fa fa-exclamation fa-2x"></i>
+   </p>
+</div>
+
+<div *ngIf="cargando" class="alert alert-info text-center mt-3 animated fadeIn faster tablaCuentas">
+   <h4 class="alert-heading">Cargando</h4>
+   <p>
+      <i class="fa fa-sync-alt fa-spin fa-2x"></i>
+   </p>
+   <p class="mb-0">
+      Espere por favor
+   </p>
+</div>
+</div> -->

@@ -1,0 +1,155 @@
+<app-header></app-header>
+
+<main class="container">
+  <div class="row mt-4">
+    <h1 class="col-md-10">Registro</h1>
+    <div class="col-lg-2">
+      <button [routerLink]="['/usuarios']" routerLinkActive="router-link-active" class="btn btn-danger col-lg-12">
+        <i class="bi bi-arrow-left-circle-fill"></i> Regresar
+      </button>
+    </div>
+  </div>
+
+  <form [formGroup]="registroForm" (ngSubmit)="registrarSubmit()">
+
+    <div class="form-group container">
+
+      <div class="row mt-5">
+        <div class="col-md-6 mb-3">
+          <label for="formNombre" class="mb-2"> Nombre</label>
+          <input type="text" class="form-control" name="nombre" id="formNombre" placeholder="Nombre" required
+            formControlName="nombre">
+          <span
+            *ngIf="this.registroForm.controls['nombre'].invalid && this.registroForm.controls['nombre'].touched && this.registroForm.controls['nombre'].errors.required"
+            class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
+          <span
+            *ngIf="this.registroForm.controls['nombre'].invalid && this.registroForm.controls['nombre'].touched && this.registroForm.controls['nombre'].errors.minlength"
+            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 2 caracteres</span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="formApellido" class="mb-2">Apellido(s)</label>
+          <input type="text" class="form-control" name="apellido" id="formApellido" placeholder="Apellido(s)" required
+            formControlName="apellido">
+          <span
+            *ngIf="this.registroForm.controls['apellido'].invalid && this.registroForm.controls['apellido'].touched && this.registroForm.controls['apellido'].errors.required"
+            class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
+          <span
+            *ngIf="this.registroForm.controls['apellido'].invalid && this.registroForm.controls['apellido'].touched && this.registroForm.controls['apellido'].errors.minlength"
+            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 2 caracteres</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="formCorreo" class="mb-2">Correo</label>
+          <input type="email" class="form-control" name="correo" id="formCorreo" placeholder="Correo" required
+            formControlName="correo">
+          <span
+            *ngIf="this.registroForm.controls['correo'].invalid && this.registroForm.controls['correo'].touched && this.registroForm.controls['correo'].errors.required"
+            class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label for="formContrasena" class="mb-2">Contraseña</label>
+          <div class="input-group m-0 p-0">
+            <input *ngIf="!mostrarContrasena" type="password" class="form-control" name="contrasena" id="formContrasena"
+              placeholder="Contraseña" required formControlName="password">
+            <input *ngIf="mostrarContrasena" type="text" class="form-control" name="contrasena" id="formContrasena"
+              placeholder="Contraseña" required formControlName="password">
+
+            <button type="button" class="btn btn-light" (click)="mostrarContrasena = !mostrarContrasena">
+              <i *ngIf=mostrarContrasena class="bi bi-eye-fill"></i>
+              <i *ngIf=!mostrarContrasena class="bi bi-eye-slash-fill"></i>
+            </button>
+          </div>
+
+          <span
+            *ngIf="this.registroForm.controls['password'].invalid && this.registroForm.controls['password'].touched && this.registroForm.controls['password'].errors.required"
+            class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
+          <span
+            *ngIf="this.registroForm.controls['password'].invalid && this.registroForm.controls['password'].touched && this.registroForm.controls['password'].errors.minlength"
+            class="fw-light text-danger" style="font-size:12px;">*Deben ser mínimo 6 caracteres</span>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label for="formRol" class="mb-2"> Rol</label>
+          <select class="form-select form-select-md mb-3" id="formRol" name="rol" formControlName="rol"
+           aria-label=".form-select-md example">
+            <option>Administrador</option>
+            <option>Editor</option>
+            <option>Lector</option>
+          </select>
+        </div>
+
+        <div class="col-md-4">
+          <label for="formPuesto" class="mb-2"> Puesto</label>
+          <input type="text" class="form-control" name="puesto" id="formPuesto" placeholder="Puesto" required
+            formControlName="puesto">
+          <span
+            *ngIf="this.registroForm.controls['puesto'].invalid && this.registroForm.controls['puesto'].touched && this.registroForm.controls['puesto'].errors.required"
+            class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
+          <span
+            *ngIf="this.registroForm.controls['puesto'].invalid && this.registroForm.controls['puesto'].touched && this.registroForm.controls['puesto'].errors.minlength"
+            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 3 caracteres</span>
+        </div>
+
+        <div class="col-md-4">
+          <label for="formDepto" class="mb-2"> Departamento</label>
+          <input type="text" class="form-control" name="dep
+          to" id="formDepto" placeholder="Departamento" required formControlName="depto">
+          <span
+            *ngIf="this.registroForm.controls['depto'].invalid && this.registroForm.controls['depto'].touched && this.registroForm.controls['depto'].errors.required"
+            class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
+          <span
+            *ngIf="this.registroForm.controls['depto'].invalid && this.registroForm.controls['depto'].touched && this.registroForm.controls['depto'].errors.minlength"
+            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 4 caracteres</span>
+        </div>
+
+      </div>
+
+      <div class="row">
+        <div class="col mb-3">
+          <label class="mb-2">Estado</label>
+          <br>
+
+          <button *ngIf="registro.habilitado" (click)="registro.habilitado = false" class="btn btn-outline-success w-50"
+            type="button">
+            <i class="bi bi-emoji-smile-fill"></i>
+            Habilitar
+          </button>
+
+          <button *ngIf="!registro.habilitado" (click)="registro.habilitado = true" class="btn btn-outline-danger w-50"
+            type="button">
+            <i class="bi bi-emoji-frown-fill"></i>
+            Deshabilitar
+          </button>
+        </div>
+      </div>
+
+      <div class="row" style="display: flex; justify-content:center;">
+        <div class="form-group col-md-4 mt-3">
+          <button [disabled]="registroForm.invalid" type="submit" class="btn btn-primary btn-lg w-100">
+            <!-- [disabled] = "registroForm.invalid" -->
+            <i class="bi bi-save"></i>
+            Registrar
+          </button>
+        </div>
+      </div>
+
+      <!--   Registro con cuenta google 
+    <div class="form-group mt-4">
+      <a class="btn btn-light" (click) = 'onLoginGoogle()'>Google</a>
+    </div> -->
+
+    </div>
+
+
+  </form>
+
+
+</main>
+
+<app-footer></app-footer>

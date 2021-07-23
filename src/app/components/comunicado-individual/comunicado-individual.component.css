@@ -1,0 +1,17 @@
+.cont-inputs {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.subir {
+    padding: 5px 10px;
+    background: #f55d3e;
+    color: #fff;
+    border: 0px solid #fff;
+}
+
+.subir:hover {
+    color: #fff;
+    background: #f7cb15;
+}

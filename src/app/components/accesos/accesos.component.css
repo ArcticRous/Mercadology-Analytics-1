@@ -1,0 +1,45 @@
+@media (max-width: 480px){
+    .encabezado .row{
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 767px){
+    .opciones{
+        display: flex;
+        justify-content: center;
+    }    
+}
+.opciones{        
+    width: 150px!important;
+    text-align: center;
+}
+
+
+table {
+    width: 100%;
+    color: white;
+  }
+
+.buscador {
+    font-size: 18px;
+}
+.buscador input{
+    /* background-color: transparent; */
+    color: white;
+    border: 0;
+    outline: none;
+    border-bottom: solid 2px white;
+    width: 100%;
+}
+
+th.mat-header-cell, td.mat-cell, td.mat-footer-cell{
+    color: white !important;
+    padding-right: 5px;
+    padding-left: 5px;
+}
+
+:disabled{
+    background-color: white;
+}

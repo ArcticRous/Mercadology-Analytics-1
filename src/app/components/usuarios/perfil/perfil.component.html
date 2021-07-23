@@ -1,0 +1,235 @@
+<app-header></app-header>
+
+<hr>
+<div class="container bootstrap snippet text-white">
+    <div class="row">
+        <div class="col-sm-8" *ngIf='registro'>
+            <h1> {{registro.nombre}} {{registro.apellido}} </h1>
+        </div>
+        <div class="col-lg-4" *ngIf="this.local === 'x'">
+            <button [routerLink]="['/usuarios']" routerLinkActive="router-link-active" class="btn btn-danger col-lg-12">
+                <i class="bi bi-arrow-left-circle-fill"></i> Regresar
+            </button>
+        </div>
+        <div class="col-sm-2"><a href="javascript:void(0);" class="pull-right"><img title="profile image"
+                    class="img-logo img-responsive" style="object-fit: cover;"
+                    src="../../../assets/imagenes/imagenPerfil/mercadology_logo.png"></a></div>
+    </div>
+
+    <div class="row" *ngIf='registro'>
+        <div class="col-sm-4 contenedor-foto">
+            <!--left col-->
+
+            <form [formGroup]="imageForm" (ngSubmit)="onSubmit()">
+                <div class="imagenContenedor">
+                    <img *ngIf="usuario.urlPhoto" class="avatar mb-1 img-fluid image cover" [src]="usuario.urlPhoto"
+                        alt="avatar">
+                </div>
+                <div *ngIf="this.local === 'propio'">
+                    <h6 class="text-center center-block">Sube una foto...</h6>
+                    <label class="btn btn-secondary w-100" for="btnArchivo">Seleccionar
+                        archivo</label>
+                    <input type="file" style="display: none;" formControlName="file" name="btnArchivo" id="btnArchivo"
+                        (change)="onfileChange($event)">
+                    <!--                <button type="submit" style="display: none;" [disabled]="!imageForm.valid">Enviar</button> -->
+                </div>
+            </form><br>
+
+            <ul class="list-group text-dark w-100">
+                <li class="list-group-item text-muted"> Datos <i class="fa fa-dashboard fa-1x"></i></li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Rol:</strong></span>
+                    {{registro.rol}} </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Puesto:</strong></span>
+                    {{registro.puesto}} </li>
+                <li class="list-group-item text-right"><span class="pull-left"><strong>Departamento:</strong>
+                        {{registro.depto}} </span></li>
+            </ul>
+
+        </div>
+        <!--/col-sm-3-->
+
+        <div class="col-sm-8">
+            <div class="tab-content">
+                <hr />
+                <form (ngSubmit)="actualizarSubmit( formR )" #formR="ngForm">
+
+                    <div class="form-group row">
+                        <div class="col-xm-6">
+                            <label for="formName">
+                                <h4>Nombre</h4>
+                            </label>
+                            <input type="text" *ngIf=" this.local === 'propio' " class="form-control" name="nombre"
+                                id="formName" [(ngModel)]="registro.nombre" placeholder="Nombre"
+                                title="Ingrese su nombre">
+                            <input type="text" *ngIf=" this.local === 'x' " class="form-control" name="nombre"
+                                id="formName" [(ngModel)]="registro.nombre" placeholder="Nombre"
+                                title="Ingrese su nombre" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="formApellido">
+                                <h4>Apellido</h4>
+                            </label>
+                            <input type="text" *ngIf=" this.local === 'propio' " class="form-control" name="apellido"
+                                id="formApellido" [(ngModel)]=registro.apellido placeholder="Apellido"
+                                title="Ingrese su apellido">
+                            <input type="text" *ngIf=" this.local === 'x' " class="form-control" name="apellido"
+                                id="formApellido" [(ngModel)]=registro.apellido placeholder="Apellido"
+                                title="Ingrese su apellido" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="formTelefono">
+                                <h4>Teléfono</h4>
+                            </label>
+                            <input type="tel" *ngIf=" this.local === 'propio' " class="form-control" name="telefono"
+                                id="formTelefono" [(ngModel)]=registro.telefono placeholder="Teléfono"
+                                title="Ingrese su teléfono">
+                            <input type="tel" *ngIf=" this.local === 'x' " class="form-control" name="telefono"
+                                id="formTelefono" [(ngModel)]=registro.telefono placeholder="Teléfono"
+                                title="Ingrese su teléfono" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="formCelular">
+                                <h4>Celular</h4>
+                            </label>
+                            <input type="tel" *ngIf=" this.local === 'propio' " class="form-control" name="celular"
+                                id="formCelular" [(ngModel)]=registro.celular placeholder="Celular"
+                                title="Ingrese su celular">
+                            <input type="tel" *ngIf=" this.local === 'x' " class="form-control" name="celular"
+                                id="formTelefono" [(ngModel)]=registro.celular placeholder="Celular"
+                                title="Ingrese su celular" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <label for="email">
+                                <h4>Email</h4>
+                            </label>
+                            <input type="email" class="form-control" name="email" id="formEmail"
+                                [(ngModel)]=registro.correo placeholder="Email" disabled title="Ingrese su email">
+                        </div>
+                    </div>
+
+                    <div class="form-group text-center">
+                        <div class="mt-3 row" style="display: flex; justify-content:space-evenly ">
+                            <button *ngIf="this.local === 'propio' && this.rol !== '' && this.idUsuario === this.id"
+                                class="btn btn-md col-4 btn-success" (click)="onSubmit()" type="submit">
+                                <i class="bi bi-save"></i>
+                                Guardar
+                            </button>
+
+                            <button *ngIf="this.local === 'propio' && this.rol !== ''  && this.idUsuario === this.id"
+                                type="button" class="btn btn-md btn-primary col-4" data-bs-toggle="modal"
+                                data-bs-target="#cambiarContrasena" data-bs-whatever="@cambiarContrasena">Cambiar
+                                contraseña</button>
+
+
+                            <!-- Cambiar contraseña -->
+
+
+
+                            <div class="modal fade" id="cambiarContrasena" tabindex="-1"
+                                aria-labelledby="cambiarContrasenaLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-dark" id="cambiarContrasenaModalLabel">Cambiar
+                                                contraseña
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form [formGroup]="cambiarContrasenaForm" (ngSubmit)="cambiarContrasena()">
+                                                <div class="mb-3">
+                                                    <div class="input-group m-0 p-0">
+                                                        <input *ngIf="!mostrarContrasena" type="password" class="form-control"
+                                                            id="nueva-Contrasena" placeholder="Nueva contraseña"
+                                                            formControlName="nuevaContrasena" required>
+                                                        <input *ngIf="mostrarContrasena" type="text" class="form-control"
+                                                            id="nueva-Contrasena" placeholder="Nueva contraseña"
+                                                            formControlName="nuevaContrasena" required>
+                                                        <button type="button" class="btn btn-light boton"
+                                                            (click)="mostrarContrasena = !mostrarContrasena">
+                                                            <i *ngIf=mostrarContrasena class="bi bi-eye-fill"></i>
+                                                            <i *ngIf=!mostrarContrasena
+                                                                class="bi bi-eye-slash-fill"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-primary"
+                                                (click)="cambiarContrasena()">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <!-- Cambiar email -->
+                            <button style="display: none;" type="button" class="btn btn-lg btn-primary col-4"
+                                data-bs-toggle="modal" data-bs-target="#cambiarEmail"
+                                data-bs-whatever="@cambiarEmail">Cambiar Email</button>
+
+                            <div class="modal fade" id="cambiarEmail" tabindex="-1" aria-labelledby="cambiarEmailLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title text-dark" id="exampleModalLabel">Ingrese nuevo email
+                                            </h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form [formGroup]="cambiarEmailForm" (ngSubmit)="cambiarEmail()">
+                                                <div class="mb-3">
+                                                    <label for="nuevo-email"
+                                                        class="col-form-label text-dark">Email:</label>
+                                                    <input type="email" class="form-control" id="nuevo-email"
+                                                        formControlName="nuevoEmail" required>
+                                                </div>
+                                            </form>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Cerrar</button>
+                                            <button type="button" class="btn btn-primary"
+                                                (click)="cambiarEmail()">Aceptar</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- <button class="btn btn-lg btn-primary" (click)="verificarCorreo()" type="button"> Verificar
+                                correo</button> -->
+                            <!--                              	<button class="btn btn-lg btn-primary" type="reset"><i class="glyphicon glyphicon-repeat"></i> Reset</button>   -->
+                        </div>
+                    </div>
+
+                </form>
+                <hr />
+            </div>
+            <!--/tab-content-->
+        </div>
+        <!--/col-9-->
+    </div>
+    <!--/row-->
+</div>
+
+<app-footer></app-footer>

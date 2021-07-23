@@ -1,1 +1,42 @@
-<p>header works!</p>
+<nav *ngIf="this.local !== 'x'" class="navbar /*fixed-top*/ navbar-expand-lg navbar-dark /*bg-dark*/ navHome">
+    <div class="container container-fluid">
+        <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active">
+            <!-- <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active" style="font-size: 35px; margin-bottom: 20px; margin-top: 20px; font-weight: 700;"> -->
+            <!-- ErickCM -->
+            <img src="../../../assets/imagenes/login/logo-mercadology-blanco.png" alt="Logo mercadology" width="200" height="">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a [routerLink]="['/ComunView']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">Comunicados</a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/MisComun']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">MisComunicados</a>
+                </li>
+                <li class="nav-item" *ngIf="this.rol === '12345' || this.rol === '234567'">
+                    <a [routerLink]="['/usuarios']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">Gestión de usuarios</a>
+                </li>
+                <li class="nav-item">
+                    <!-- <a routerLinkActive="router-link-active" class="nav-link" href="https://gestion.mercadology.mx/MercadologyAnalytics.html" aria-current="page">SEO</a> -->
+                    <a routerLinkActive="router-link-active" class="nav-link" href="/MercadologyAnalytics.html" aria-current="page">SEO</a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/cuentas']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">Cuentas</a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/accesos']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">Accesos</a>
+                </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/perfil', this.id]" routerLinkActive="router-link-active" (click)="guardarLocal('propio')" class="nav-link" aria-current="page">Mi cuenta</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a (click)="salir()" tabindex="-1" class="nav-link">Salir</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
