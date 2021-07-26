@@ -38,7 +38,7 @@ export class ComunViewComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    sessionStorage.removeItem('local');
+    // sessionStorage.removeItem('local');
     this.rol = sessionStorage.getItem('rol');
     this.cargando = true;
     this.Auth.getComun()

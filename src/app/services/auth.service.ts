@@ -83,6 +83,8 @@ export class AuthService {
     sessionStorage.removeItem('refresh_token');
     sessionStorage.removeItem('rol');
     sessionStorage.removeItem('propio');
+    sessionStorage.removeItem('puesto');
+    sessionStorage.removeItem('depto');
   }
 
   Login(usuario: UsuarioModel) {
@@ -117,6 +119,8 @@ export class AuthService {
     sessionStorage.setItem('idUsuario', idToken['localId']);
     this.getUsuario(id).subscribe(resp => {
       const rol = resp['rol'];
+      sessionStorage.setItem('puesto', resp['puesto']);
+      sessionStorage.setItem('depto', resp['depto']);
       this.regreso = rol;
       if (rol == 'Administrador') {
         sessionStorage.setItem('rol', '12345');
@@ -412,7 +416,16 @@ export class AuthService {
       Comunicado.push(comunicado);
     });
 
-    return Comunicado;
+    let date = new Date();
+    let mes = date.getMonth() + 1;
+    let meses;
+    if(mes < 10){
+       meses = `0${date.getMonth() + 1}`;
+    }
+    let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
+    return Comunicado.filter((({fecha}) => fecha <= hoy));
+
+    // return Comunicado;
   }
 
   getShow(ids: string) {
@@ -666,51 +679,51 @@ export class AuthService {
 
 
   /** Agregar comunicados **/
-  agregarComunicado(token:string, comunicado:ComunicadoModel){
+  // agregarComunicado(token:string, comunicado:ComunicadoModel){
     
-    let comunicadoDatos = {
-      ...comunicado
-    };
+  //   let comunicadoDatos = {
+  //     ...comunicado
+  //   };
 
-    return this.http.post(`${this.urlDatos}/comunicados.json` + this.auth + token, comunicadoDatos);
-  }
+  //   return this.http.post(`${this.urlDatos}/comunicados.json` + this.auth + token, comunicadoDatos);
+  // }
 
-  getComunicado(id: string) {
-    return this.http.get(`${this.urlDatos}/comunicados/${id}.json`);
-  }
+  // getComunicado(id: string) {
+  //   return this.http.get(`${this.urlDatos}/comunicados/${id}.json`);
+  // }
 
-  getComunicados() {
-    return this.http.get(`${this.urlDatos}/comunicados.json`)
-      .pipe(
-        map(this.crearArregloComunicado)
-      );
-  }
+  // getComunicados() {
+  //   return this.http.get(`${this.urlDatos}/comunicados.json`)
+  //     .pipe(
+  //       map(this.crearArregloComunicado)
+  //     );
+  // }
 
-  private crearArregloComunicado(comunicadoObj: object) {
-    const comunicados: ComunicadoModel[] = [];
+  // private crearArregloComunicado(comunicadoObj: object) {
+  //   const comunicados: ComunicadoModel[] = [];
     
-    if (comunicadoObj === null) { return []; }
+  //   if (comunicadoObj === null) { return []; }
 
-    Object.keys(comunicadoObj).forEach(key => {
-      const comunicado = comunicadoObj[key];
-      comunicado.id = key;
-      comunicados.push(comunicado);
-    });
-    return comunicados;
-  }
+  //   Object.keys(comunicadoObj).forEach(key => {
+  //     const comunicado = comunicadoObj[key];
+  //     comunicado.id = key;
+  //     comunicados.push(comunicado);
+  //   });
+  //   return comunicados;
+  // }
 
-  modificarComunicado(comunicado: ComunicadoModel, token: string) {
+  // modificarComunicado(comunicado: ComunicadoModel, token: string) {
     
-    const ComunicadoTemp = {
-      ...comunicado
-    };
-    delete ComunicadoTemp.id;
+  //   const ComunicadoTemp = {
+  //     ...comunicado
+  //   };
+  //   delete ComunicadoTemp.id;
 
-    return this.http.put(`${this.url}/comunicados/${comunicado.id}.json` + this.auth + token, ComunicadoTemp);
-  }
+  //   return this.http.put(`${this.url}/comunicados/${comunicado.ids}.json` + this.auth + token, ComunicadoTemp);
+  // }
 
-  eliminarComunicado(id: string, token: string) {
-    return this.http.delete(`${this.urlDatos}/comunicados/${id}.json` + this.auth + token);
-  }
+  // eliminarComunicado(id: string, token: string) {
+  //   return this.http.delete(`${this.urlDatos}/comunicados/${id}.json` + this.auth + token);
+  // }
 
 }/**Cierra el export data**/

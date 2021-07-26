@@ -22,6 +22,25 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
+    let date = new Date();
+    console.log(date);
+    
+    this.auth.getComun().subscribe(next => {
+      console.log(Date.parse(`${date}`), "eiririr");
+      console.log(Date.parse("July, 25, 2021, 17:38:00"));
+      console.log(Date.parse("January, 1, 1970"));
+      
+      let mes = date.getMonth() + 1;
+      let meses;
+      if(mes < 10){
+         meses = `0${date.getMonth() + 1}`;
+      }
+      let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
+      console.log(next.filter(({fecha}) => fecha == hoy));
+    }, error => {
+      console.log(error);
+    })
+
     setInterval(() => {
       let tiempo = new Date();
 

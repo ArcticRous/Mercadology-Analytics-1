@@ -1,3 +1,4 @@
+import { ComunicadoGuard } from './guards/comunicado.guard';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -29,9 +30,9 @@ const routes: Routes = [
   {path: 'comunicados/:ids' , component: ComunicadosComponent,canActivate: [AuthGuard,RolGuard]},
   {path: 'comunicado-individual/' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
   {path: 'comunicado-individual/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
-  {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard]},
+  {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
 
-  {path: 'ComunView' , component: ComunViewComponent,canActivate: [AuthGuard,RolGuard]},
+  {path: 'ComunView' , component: ComunViewComponent,canActivate: [AuthGuard]},
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'mostrar/:ids' , component: MostrarComponent,canActivate: [AuthGuard]},
   {path: 'generadorReportes', component: GeneradorReportesComponent, canActivate: [AuthGuard]},
