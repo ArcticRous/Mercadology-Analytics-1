@@ -210,7 +210,7 @@ export class CuentaComponent implements OnInit {
 
     }
 
-  }
+  }// termina el
 
   //Guarda en el clipboard el texto del campo
   copyToClipboard(campo: string) {

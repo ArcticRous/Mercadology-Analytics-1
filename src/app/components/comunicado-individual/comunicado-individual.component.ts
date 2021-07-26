@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class ComunicadoIndividualComponent implements OnInit {
 
   constructor() { }
-
+//dsaddasdasdas
   ngOnInit(): void {
   }
 

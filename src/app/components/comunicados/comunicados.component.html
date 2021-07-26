@@ -1,116 +1,90 @@
 <app-header></app-header>
-
-<div class="container encabezado">
-    <div class="row mt-4">
-        <h1 class="col-12 text-white ">Comunicados</h1>
+<div class="container mb-4">
+    <div class="row mt-5">
+       <h1 *ngIf="agregar" class="text-white col-10">Nuevo comunicado</h1>
+       <h1 *ngIf="!agregar" class="text-white col-10">Actualizar {{comunicado.nomcli}}</h1>
+       <div class="col-lg-2">
+          <button class="btn btn-danger col-lg-12" routerLink="/MisComun">
+             <i class="bi bi-arrow-left-circle-fill"></i>
+             Regresar
+          </button>
+       </div>
     </div>
-</div>
-<div class="container mt-2">
-    <div class="row" style="justify-content: space-between;">
-        <div class="col-lg-4 mb-4">
-            <button [routerLink]="['/comunicado-individual']" class="btn btn-primary col-lg-12">
-            <i class="bi bi-cloud-arrow-up-fill me-1"></i> Crear comunicado
-        </button>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-12" *ngFor = "let comunicado of comunicados">
-            <div class="card mt-3 mb-3 card-cs">
-                <div class="row g-0">
-                    <div class="col-md-3 negro">
-                        <div class="contenedor-img-cs">
-                            <!-- <img src="../../../assets/imagenes/imagenPerfil/avatar.jpg" class=" img-cs " alt="imagen usuario"> -->
-                            <img [src]="comunicado.foto" class=" img-cs " alt="imagen usuario">
-                            <h5 class="text-white mt-2">{{comunicado.autor}}</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{comunicado.titulo}}</h5>
-                            <p class="card-text pb-3">{{comunicado.descripcion}}</p>
-                            <a href="" class="descargar-cs">Descargar Comunicado</a>
-                            <p class="text-muted">Publicado el <strong>{{comunicado.fecha}}</strong></p>
-                        </div>
-                    </div>
-                    <div class="cont-btn" style="background-color: #242424;">
-                        <button class="btn eliminar btn-cs" (click)="borrarComunicado(comunicado)"><i class="bi bi-trash-fill"></i></button>
-                        <button class="btn actualizar btn-cs" href=""><i class="bi bi-pencil-square"></i></button>
-                    </div>
+ </div>
+ 
+ <div class="row animated fadeIn faster container contenedor">
+    <div class="col-12">
+ 
+       <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white">
+ 
+          <div  class="form-group">
+             <label>ID</label>
+             <input style="width: 10% !important;" type="text" class="form-control" placeholder="ID" [(ngModel)]="comunicado.ids" name="ids"
+                disabled="disabled">
+             <small class="form-text text-muted">Este campo es autogenerado</small>
+          </div>
+ 
+          <div class="row mb-3">
+ 
+             <div class="col-6 pe-4 ps-4 mb-3">
+                <div class="form-group row">
+                   <!--col-4-->
+                   <input type="text" class="form-control" placeholder="Titulo de comunicado"
+                      [(ngModel)]="comunicado.titulo" name="titulo" required>
                 </div>
-            </div>
-
-            <!-- <div class="card mt-3 mb-3 card-cs">
-                <div class="row g-0">
-                    <div class="col-md-3 negro">
-                        <div class="contenedor-img-cs">
-                            <img src="../../../assets/imagenes/imagenPerfil/avatar.jpg" class=" img-cs " alt="imagen usuario">
-                            <h5 class="text-white mt-2">Omar jimenez</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Comunidado title</h5>
-                            <p class="card-text pb-3">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <a href="" class="descargar-cs">Descargar Comunicado</a>
-                            <p class="text-muted">Publicado el <strong>17 de julio 2021</strong></p>
-                        </div>
-                    </div>
-                    <div class="cont-btn" style="background-color: #242424;">
-                        <button class="btn eliminar btn-cs" href=""><i class="bi bi-trash-fill"></i></button>
-                        <button class="btn actualizar btn-cs" href=""><i class="bi bi-pencil-square"></i></button>
-                    </div>
+ 
+                <div class="form-group row">
+                   <!---->
+                   <label>Descripcion</label>
+                   <!--comunicado: Correo-->
+                   <textarea type="input" rows="10" cols="100" class="form-control" [(ngModel)]="comunicado.descripcion" name="descripcion"
+                      placeholder="Descripcion" required></textarea>
                 </div>
-            </div>
-
-            <div class="card mt-3 mb-3 card-cs">
-                <div class="row g-0">
-                    <div class="col-md-3 negro">
-                        <div class="contenedor-img-cs">
-                            <img src="../../../assets/imagenes/imagenPerfil/avatar.jpg" class=" img-cs " alt="imagen usuario">
-                            <h5 class="text-white mt-2">Omar jimenez</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Comunidado title</h5>
-                            <p class="card-text pb-3">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <a href="" class="descargar-cs">Descargar Comunicado</a>
-                            <p class="text-muted">Publicado el <strong>17 de julio 2021</strong></p>
-                        </div>
-                    </div>
-                    <div class="cont-btn" style="background-color: #242424;">
-                        <button class="btn eliminar btn-cs" href=""><i class="bi bi-trash-fill"></i></button>
-                        <button class="btn actualizar btn-cs" href=""><i class="bi bi-pencil-square"></i></button>
-                    </div>
+             </div>
+ 
+ 
+             <div class="col-6 pe-4 ps-4 mb-3">
+                <div class="form-group row">
+                   <!--col-4-->
+                   <input type="date" matInput [(ngModel)]="comunicado.fecha" name="fecha" required>
                 </div>
-            </div>
-
-            <div class="card mt-3 mb-3 card-cs">
-                <div class="row g-0">
-                    <div class="col-md-3 negro">
-                        <div class="contenedor-img-cs">
-                            <img src="../../../assets/imagenes/imagenPerfil/avatar.jpg" class=" img-cs " alt="imagen usuario">
-                            <h5 class="text-white mt-2">Omar jimenez</h5>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">Comunidado title</h5>
-                            <p class="card-text pb-3">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                            <a href="" class="descargar-cs">Descargar Comunicado</a>
-                            <p class="text-muted">Publicado el <strong>17 de julio 2021</strong></p>
-                        </div>
-                    </div>
-                    <div class="cont-btn" style="background-color: #242424;">
-                        <button class="btn eliminar btn-cs" href=""><i class="bi bi-trash-fill"></i></button>
-                        <button class="btn actualizar btn-cs" href=""><i class="bi bi-pencil-square"></i></button>
-                    </div>
+                <div class="form-group row">
+                   <!--Hospedaje: Usuario-->
+                   <input type="text" value="Mercadology" class="form-control" [(ngModel)]="comunicado.quien" name="quien"
+                      placeholder="Mercadology" required>
+                      
                 </div>
+<<<<<<< HEAD
             </div> -->
 
         </div>
+=======
+                
+             </div>
+ 
+          </div>
+          <hr>
+          <div class="row" style="display: flex; justify-content:center;">
+             <div class="form-group text-center col-md-4">
+                <button *ngIf="agregar" type="submit" class="btn btn-primary btn-lg w-100">
+                   <i class="bi bi-save"></i>
+                   Guardar
+                </button>
+                <button *ngIf="!agregar" type="submit" id="upt"class="btn btn-primary btn-lg w-100">
+                  <i class="bi bi-save "></i>
+               Actualizar
+               </button>
+              
+                
+               </div>
+          </div>
+ 
+ 
+       </form>
+ 
+ 
+>>>>>>> upstream/master
     </div>
-
-</div>
-<app-footer></app-footer>
+ </div>
+ 
+ <app-footer></app-footer>
