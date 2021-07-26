@@ -1,84 +1,85 @@
 <app-header></app-header>
-<div class="container mb-4">
-    <div class="row mt-5">
-       <h1 *ngIf="agregar" class="text-white col-10">Nuevo comunicado</h1>
-       <h1 *ngIf="!agregar" class="text-white col-10">Actualizar {{comunicado.nomcli}}</h1>
-       <div class="col-lg-2">
-          <button class="btn btn-danger col-lg-12" routerLink="/MisComun">
-             <i class="bi bi-arrow-left-circle-fill"></i>
-             Regresar
-          </button>
-       </div>
+<div class="container encabezado">
+    <div class="row mt-4">
+       <h1 class="text-white col-12">Comunicados Mercadology</h1>
     </div>
- </div>
- 
- <div class="row animated fadeIn faster container contenedor">
-    <div class="col-12">
- 
-       <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white">
- 
-          <div  class="form-group">
-             <label>ID</label>
-             <input style="width: 10% !important;" type="text" class="form-control" placeholder="ID" [(ngModel)]="comunicado.ids" name="ids"
-                disabled="disabled">
-             <small class="form-text text-muted">Este campo es autogenerado</small>
-          </div>
- 
-          <div class="row mb-3">
- 
-             <div class="col-6 pe-4 ps-4 mb-3">
-                <div class="form-group row">
-                   <!--col-4-->
-                   <input type="text" class="form-control" placeholder="Titulo de comunicado"
-                      [(ngModel)]="comunicado.titulo" name="titulo" required>
-                </div>
- 
-                <div class="form-group row">
-                   <!---->
-                   <label>Descripcion</label>
-                   <!--comunicado: Correo-->
-                   <textarea type="input" rows="10" cols="100" class="form-control" [(ngModel)]="comunicado.descripcion" name="descripcion"
-                      placeholder="Descripcion" required></textarea>
-                </div>
-             </div>
- 
- 
-             <div class="col-6 pe-4 ps-4 mb-3">
-                <div class="form-group row">
-                   <!--col-4-->
-                   <input type="date" matInput [(ngModel)]="comunicado.fecha" name="fecha" required>
-                </div>
-                <div class="form-group row">
-                   <!--Hospedaje: Usuario-->
-                   <input type="text" value="Mercadology" class="form-control" [(ngModel)]="comunicado.quien" name="quien"
-                      placeholder="Mercadology" required>
-                      
-                </div>
+</div>
+
+<div class="container mt-2">
+
+  
+<!--holaaa  -->
+    <div style="background: #242424;" class="mat-elevation-z8 table-responsive">
+        <table style="background: #242424;" mat-table [dataSource]="dataSource" matSort  class="bg-dark">
+
+            <!-- Position Column -->
+            <ng-container style="background: #242424;" matColumnDef="#" style="display:none;">
                 
-             </div>
- 
-          </div>
-          <hr>
-          <div class="row" style="display: flex; justify-content:center;">
-             <div class="form-group text-center col-md-4">
-                <button *ngIf="agregar" type="submit" class="btn btn-primary btn-lg w-100">
-                   <i class="bi bi-save"></i>
-                   Guardar
-                </button>
-                <button *ngIf="!agregar" type="submit" id="upt"class="btn btn-primary btn-lg w-100">
-                  <i class="bi bi-save "></i>
-               Actualizar
-               </button>
-              
+                <th mat-header-cell *matHeaderCellDef style="display:none; color: black !important;"> # </th>
+                <td class="contenedor-img-cs" mat-cell *matCellDef="let element; let i = index"> {{(i+1) +
+                    (paginator.pageIndex*paginator.pageSize)}}
+                    <div class="col-md-3 negro">
+                        <div class="contenedor-img-cs">
+                            <img src="../../../assets/imagenes/imagenPerfil/merca.jpeg" class=" img-cs " alt="imagen usuario">
+                        </div>
+                    </div>
                 
-               </div>
-          </div>
- 
- 
-       </form>
- 
- 
+                </td>
+            </ng-container>
+
+            <!-- Cliente Column -->
+            <ng-container matColumnDef="titulo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="tite so"><span cwlass="tite so" style="color: black !important;"> Titulo</span> </th>
+                <td mat-cell *matCellDef="let element" class="tite">
+                    {{element.titulo}}</td>
+            </ng-container>
+
+            <!-- Dominio Column -->
+            <ng-container matColumnDef="descripcion">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="so"style="color: black !important;"> Descripcion </th>
+                <td mat-cell *matCellDef="let element" class="desc po"> {{element.descripcion}} </td>
+            </ng-container>
+
+            <!-- IP Column -->
+            <ng-container matColumnDef="fecha">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="so" style="color: black !important;">Fecha</th>
+                <td mat-cell *matCellDef="let element" class="fecha po" style="color: black !important;"> <span>Publicado el:</span>    {{element.fecha}} </td>
+            </ng-container>
+
+            <!-- Estado Column -->
+            <ng-container matColumnDef="quien">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="so" style="color: black !important;">Usuario/th>
+                <td mat-cell *matCellDef="let element" class="quien po">  {{element.quien}} </td>
+            </ng-container>
+
+            <ng-container style="display: none !important;" matColumnDef="ids">
+                <th mat-header-cell *matHeaderCellDef class="so" style="text-align: center; color: black !important;" > Opciones </th>
+                <!-- <td> {{element.ids}} </td> -->
+                <td mat-cell *matCellDef="let element; let i = index" style="display: none !important;" class="opciones" style="padding:0">
+          
+                    <!-- *ngIf="this.rol === '12345'"-->
+                    <button  *ngIf="this.rol === '12345'" class="btn btn-danger ms-3 btn-sm" style="display: none !important; width: 1% !important;"
+                        (click)="borrarComunicado( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
+                        <i class="bi bi-trash-fill"></i>
+                    </button>
+                </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-light"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+            <!-- Row shown when there is no matching data. -->
+            <tr class="mat-row" *matNoDataRow>
+                <td class="mat-cell" colspan="4">No hay datos de acuerdo a la búsqueda "{{input.value}}"</td>
+            </tr>
+
+        </table>
+
+
+        <!-- showFirstLastButtons -->
     </div>
- </div>
- 
- <app-footer></app-footer>
+    <mat-paginator style="background: rgba(255, 255, 255, 0.322)  " [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+</div>
+
+<app-footer></app-footer>

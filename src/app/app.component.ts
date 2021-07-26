@@ -25,7 +25,7 @@ export class AppComponent implements OnInit {
     let date = new Date();
     console.log(date);
     
-    this.auth.getComun().subscribe(next => {
+    this.auth.getComun("").subscribe(next => {
       console.log(Date.parse(`${date}`), "eiririr");
       console.log(Date.parse("July, 25, 2021, 17:38:00"));
       console.log(Date.parse("January, 1, 1970"));
