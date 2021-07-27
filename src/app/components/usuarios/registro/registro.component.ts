@@ -25,14 +25,15 @@ export class RegistroComponent implements OnInit {
   constructor(private authS: AuthService,
     private route: ActivatedRoute,
     private router: Router) { 
+      console.log(sessionStorage.getItem('rol'));
        this.registroForm = new FormGroup({
          nombre: new FormControl(null, [Validators.required, Validators.minLength(2)]),
          apellido: new FormControl(null, [Validators.required, Validators.minLength(2)]),
          correo: new FormControl(null, [Validators.required, Validators.email]),
          password: new FormControl(null, [Validators.required, Validators.minLength(6)]),
          rol: new FormControl('Administrador', [Validators.required]),
-         puesto: new FormControl(null, [Validators.required, Validators.minLength(3)]),
-         depto: new FormControl(null, [Validators.required, Validators.minLength(4)])
+         puesto: new FormControl('Manager', [Validators.required, Validators.minLength(3)]),
+         depto: new FormControl("Marketing", [Validators.required])
        })
     }
 
