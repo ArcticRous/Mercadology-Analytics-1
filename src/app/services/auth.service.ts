@@ -433,9 +433,11 @@ export class AuthService {
       meses = `0${date.getMonth() + 1}`;
     }
     let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
-    return Comunicado.filter((({ fecha }) => fecha <= hoy));
+    
+    return Comunicado.filter((({ fecha }) => fecha <= hoy)).sort((a,b) => {
+      return new Date(b.fecha).getTime() - new Date(a.fecha).getTime(); 
+    });
 
-    // return Comunicado;
   }
 
   private CrearComunPrivado(ComunicadoObj: object) {
@@ -699,56 +701,5 @@ export class AuthService {
   eliminarAcceso(id: string, token: string) {
     return this.http.delete(`${this.urlDatos}/acceso/${id}.json` + this.auth + token);
   }
-
-
-
-
-  /** Agregar comunicados **/
-  // agregarComunicado(token:string, comunicado:ComunicadoModel){
-
-  //   let comunicadoDatos = {
-  //     ...comunicado
-  //   };
-
-  //   return this.http.post(`${this.urlDatos}/comunicados.json` + this.auth + token, comunicadoDatos);
-  // }
-
-  // getComunicado(id: string) {
-  //   return this.http.get(`${this.urlDatos}/comunicados/${id}.json`);
-  // }
-
-  // getComunicados() {
-  //   return this.http.get(`${this.urlDatos}/comunicados.json`)
-  //     .pipe(
-  //       map(this.crearArregloComunicado)
-  //     );
-  // }
-
-  // private crearArregloComunicado(comunicadoObj: object) {
-  //   const comunicados: ComunicadoModel[] = [];
-
-  //   if (comunicadoObj === null) { return []; }
-
-  //   Object.keys(comunicadoObj).forEach(key => {
-  //     const comunicado = comunicadoObj[key];
-  //     comunicado.id = key;
-  //     comunicados.push(comunicado);
-  //   });
-  //   return comunicados;
-  // }
-
-  // modificarComunicado(comunicado: ComunicadoModel, token: string) {
-
-  //   const ComunicadoTemp = {
-  //     ...comunicado
-  //   };
-  //   delete ComunicadoTemp.id;
-
-  //   return this.http.put(`${this.url}/comunicados/${comunicado.ids}.json` + this.auth + token, ComunicadoTemp);
-  // }
-
-  // eliminarComunicado(id: string, token: string) {
-  //   return this.http.delete(`${this.urlDatos}/comunicados/${id}.json` + this.auth + token);
-  // }
 
 }/**Cierra el export data**/
