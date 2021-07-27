@@ -30,7 +30,8 @@
       <div class="row">
         <div class="col-md-4 mb-3">
           <label for="formRol" class="mb-2"> Rol</label>
-          <select class="form-control" id="formRol" name="rol" [(ngModel)]="registro.rol">
+          <select class="form-select form-select-md mb-3" id="formRol" name="rol" 
+          aria-label=".form-select-md example" [(ngModel)]="registro.rol">
             <option hidden value="">Seleccione</option>
             <option>Administrador</option>
             <option>Editor</option>
@@ -40,14 +41,34 @@
 
         <div class="col-md-4">
           <label for="formPuesto" class="mb-2"> Puesto</label>
-          <input type="text" class="form-control" name="puesto" id="formPuesto" placeholder="Puesto" required
-            [(ngModel)]="registro.puesto">
+          <select class="form-select form-select-md mb-3" id="formPuesto" name="puesto" 
+          aria-label=".form-select-md example"[(ngModel)]="registro.puesto">
+            <!-- <option hidden value="">Seleccione</option> -->
+            <option>Manager</option>
+            <option>Diseñador</option>
+            <option>Diseñador Jr</option>
+            <option>Copywriter</option>
+            <option>Copywriter Jr</option>
+            <option>Desarrollador web</option>
+            <option>Director</option>
+          </select>
+          <!-- <input type="text" class="form-control" name="puesto" id="formPuesto" placeholder="Puesto" requir ed
+            [(ngModel)]="registro.puesto"> -->
         </div>
 
         <div class="col-md-4">
           <label for="formDepto" class="mb-2"> Departamento</label>
-          <input type="text" class="form-control" name="depto" id="formDepto" placeholder="Departamento" required
-            [(ngModel)]="registro.depto">
+          <select class="form-select form-select-md mb-3" id="formDepto" name="depto"
+           aria-label=".form-select-md example" [(ngModel)]="registro.depto">
+            <option>Marketing</option>
+            <option>Sistemas</option>
+            <option>Diseño</option>
+            <option>RRHH</option>
+            <option>Operaciones</option>
+            <option>Dirección</option>
+          </select>
+          <!-- <input type="text" class="form-control" name="depto" id="formDepto" placeholder="Departamento" required
+            [(ngModel)]="registro.depto"> -->
         </div>
 
       </div>
