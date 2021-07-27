@@ -83,6 +83,8 @@ export class AuthService {
     sessionStorage.removeItem('refresh_token');
     sessionStorage.removeItem('rol');
     sessionStorage.removeItem('propio');
+    sessionStorage.removeItem('puesto');
+    sessionStorage.removeItem('depto');
   }
 
   Login(usuario: UsuarioModel) {
@@ -117,6 +119,8 @@ export class AuthService {
     sessionStorage.setItem('idUsuario', idToken['localId']);
     this.getUsuario(id).subscribe(resp => {
       const rol = resp['rol'];
+      sessionStorage.setItem('puesto', resp['puesto']);
+      sessionStorage.setItem('depto', resp['depto']);
       this.regreso = rol;
       if (rol == 'Administrador') {
         sessionStorage.setItem('rol', '12345');
@@ -161,7 +165,7 @@ export class AuthService {
         this.regreso = "Administrador";
       } else if (sessionStorage.getItem('rol') == "234567") {
         this.regreso = "Editor";
-      }else if(sessionStorage.getItem('rol') == undefined || sessionStorage.getItem('rol') == ""){
+      } else if (sessionStorage.getItem('rol') == undefined || sessionStorage.getItem('rol') == "") {
         this.regreso = undefined;
         this.Logout();
       }
@@ -355,7 +359,7 @@ export class AuthService {
         })
       );
   }
-  
+
   UpdatCliente(cliente: ClienteModel) {
     const token = sessionStorage.getItem('token');
     const ClienteTemp = {
@@ -387,13 +391,23 @@ export class AuthService {
   getComunicado(ids: string) {
     return this.http.get(`${this.url}/comunicados/${ids}.json`);
   }
-  getComun() {
-    return this.http.get(`${this.url}/comunicados.json`)
-    .pipe(
-      map(this.CrearComun),
-      delay(1500)
-    );
-     
+  //Tipo se refiere a si se va a kostrar en comunicados general (donde se visualizan) o si es donde se eliminan, agregan o editan comunicados
+  getComun(tipo: string) {
+
+    if (tipo == "privado") {
+      return this.http.get(`${this.url}/comunicados.json`)
+      .pipe(
+        map(this.CrearComunPrivado),
+        delay(1500)
+      );
+    } else {
+      return this.http.get(`${this.url}/comunicados.json`)
+        .pipe(
+          map(this.CrearComun),
+          delay(1500)
+        );
+    }
+
   }
   DeleteComun(ids: string) {
     const token = sessionStorage.getItem('token');
@@ -402,6 +416,30 @@ export class AuthService {
   private CrearComun(ComunicadoObj: object) {
     const Comunicado: ComunicadoModel[] = [];
     // console.log(ComunicadoObj);
+    if (ComunicadoObj === null) {
+      return [];
+    }
+
+    Object.keys(ComunicadoObj).forEach(key => {
+      const comunicado: ComunicadoModel = ComunicadoObj[key];
+      comunicado.ids = key;
+      Comunicado.push(comunicado);
+    });
+
+    let date = new Date();
+    let mes = date.getMonth() + 1;
+    let meses;
+    if (mes < 10) {
+      meses = `0${date.getMonth() + 1}`;
+    }
+    let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
+    return Comunicado.filter((({ fecha }) => fecha <= hoy));
+
+    // return Comunicado;
+  }
+
+  private CrearComunPrivado(ComunicadoObj: object) {
+    const Comunicado: ComunicadoModel[] = [];
     if (ComunicadoObj === null) {
       return [];
     }
@@ -431,7 +469,7 @@ export class AuthService {
     const Cliente: ClienteModel[] = [];
     // console.log(ClienteObj);
     if (ClienteObj === null) {
-      return []; 
+      return [];
     }
 
     Object.keys(ClienteObj).forEach(key => {
@@ -611,7 +649,7 @@ export class AuthService {
 
   /**Agrega a accesos**/
   agregarAccesos(acceso: AccesosModel, token: string) {
-    
+
     let authData = {
       ...acceso
     };
@@ -627,8 +665,8 @@ export class AuthService {
   };/**Cierra el Registrar datos accesos**/
 
 
-   /**Hacer un get de todos los usuarios**/
-   getAccesos() {
+  /**Hacer un get de todos los usuarios**/
+  getAccesos() {
     return this.http.get(`${this.urlDatos}/acceso.json`)
       .pipe(
         map(this.crearArregloAcceso)
@@ -637,7 +675,7 @@ export class AuthService {
 
   private crearArregloAcceso(accesoObj: object) {
     const accesos: AccesosModel[] = [];
-    
+
     if (accesoObj === null) { return []; }
 
     Object.keys(accesoObj).forEach(key => {
@@ -649,7 +687,7 @@ export class AuthService {
   }
 
   modificarAcceso(acceso: AccesosModel, token: string) {
-    
+
     const AccesoTemp = {
       ...acceso
     };
@@ -662,21 +700,55 @@ export class AuthService {
     return this.http.delete(`${this.urlDatos}/acceso/${id}.json` + this.auth + token);
   }
 
-  
+
+
 
   /** Agregar comunicados **/
-  agregarComunicado(token:string, comunicado:ComunicadoModel){
-    
-    let comunicadoDatos = {
-      ...comunicado
-    };
+  // agregarComunicado(token:string, comunicado:ComunicadoModel){
 
-    return this.http.post(`${this.urlDatos}/comunicados.json` + this.auth + token, comunicadoDatos);
-  }
+  //   let comunicadoDatos = {
+  //     ...comunicado
+  //   };
 
-  eliminarComunicado(id: string, token: string) {
-    return this.http.delete(`${this.urlDatos}/comunicados/${id}.json` + this.auth + token);
-  }
+  //   return this.http.post(`${this.urlDatos}/comunicados.json` + this.auth + token, comunicadoDatos);
+  // }
 
+  // getComunicado(id: string) {
+  //   return this.http.get(`${this.urlDatos}/comunicados/${id}.json`);
+  // }
+
+  // getComunicados() {
+  //   return this.http.get(`${this.urlDatos}/comunicados.json`)
+  //     .pipe(
+  //       map(this.crearArregloComunicado)
+  //     );
+  // }
+
+  // private crearArregloComunicado(comunicadoObj: object) {
+  //   const comunicados: ComunicadoModel[] = [];
+
+  //   if (comunicadoObj === null) { return []; }
+
+  //   Object.keys(comunicadoObj).forEach(key => {
+  //     const comunicado = comunicadoObj[key];
+  //     comunicado.id = key;
+  //     comunicados.push(comunicado);
+  //   });
+  //   return comunicados;
+  // }
+
+  // modificarComunicado(comunicado: ComunicadoModel, token: string) {
+
+  //   const ComunicadoTemp = {
+  //     ...comunicado
+  //   };
+  //   delete ComunicadoTemp.id;
+
+  //   return this.http.put(`${this.url}/comunicados/${comunicado.ids}.json` + this.auth + token, ComunicadoTemp);
+  // }
+
+  // eliminarComunicado(id: string, token: string) {
+  //   return this.http.delete(`${this.urlDatos}/comunicados/${id}.json` + this.auth + token);
+  // }
 
 }/**Cierra el export data**/

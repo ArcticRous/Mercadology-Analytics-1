@@ -32,7 +32,6 @@ import { MostrarComponent } from './components/mostrar/mostrar.component';
 import { AccesosComponent } from './components/accesos/accesos.component';
 import { MiscomunicadosComponent  } from './components/miscomunicados/miscomunicados.component';
 import { ComunicadosComponent } from './components/comunicados/comunicados.component';
-import { ComunViewComponent } from './components/ComunView/ComunView.component';
 import { ComunicadoIndividualComponent } from './components/comunicado-individual/comunicado-individual.component';
 
 
@@ -54,7 +53,6 @@ import { ComunicadoIndividualComponent } from './components/comunicado-individua
     MostrarComponent,
     AccesosComponent,
     ComunicadosComponent,
-    ComunViewComponent,
     ComunicadoIndividualComponent,
     MiscomunicadosComponent
   ],

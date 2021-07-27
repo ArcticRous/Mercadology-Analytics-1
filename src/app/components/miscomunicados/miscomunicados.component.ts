@@ -38,7 +38,7 @@ export class MiscomunicadosComponent implements OnInit, AfterViewInit {
     sessionStorage.removeItem('local');
     this.rol = sessionStorage.getItem('rol');
     this.cargando = true;
-    this.AuthS.getComun()
+    this.AuthS.getComun("privado")
       .subscribe(resp => {
         this.Comunicado = resp;
         this.cargando = false;

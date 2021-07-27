@@ -1,41 +1,84 @@
 <app-header></app-header>
 <div class="container mb-4">
     <div class="row mt-5">
-        <h1 class="text-white col-10">Agregar</h1>
-        <div class="col-lg-2">
-            <button class="btn btn-danger col-lg-12" routerLink="/MisComun">
+       <h1 *ngIf="agregar" class="text-white col-10">Nuevo comunicado</h1>
+       <h1 *ngIf="!agregar" class="text-white col-10">Actualizar {{comunicado.nomcli}}</h1>
+       <div class="col-lg-2">
+          <button class="btn btn-danger col-lg-12" routerLink="/MisComun">
              <i class="bi bi-arrow-left-circle-fill"></i>
              Regresar
           </button>
-        </div>
-        <p></p>
+       </div>
     </div>
-
-    <div class="row">
-        <div class="col">
-            <form action="">
-                <div class="row">
-                    <div class="col cont-inputs">
-                        <label for="" class=" label-form text-white">Titulo del comunicado:</label>
-                        <input type="text" name="tituloComunicado" id="tituloComunicado" class="mb-3">
-                        <label for="" class=" label-form text-white">Mensaje:</label>
-                        <textarea name="textComunicado" id="textComunicado" cols="30" rows="10" class="mb-3"></textarea>
-                        <label for="" class=" label-form text-white">Seleccionar Archivo:</label>
-                        <input type="file" name="ArchComunicado" id="ArchComunicado" class="mb-3 text-white">
-                    </div>
+ </div>
+ 
+ <div class="row animated fadeIn faster container contenedor">
+    <div class="col-12">
+ 
+       <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white">
+ 
+          <div  class="form-group">
+             <label>ID</label>
+             <input style="width: 10% !important;" type="text" class="form-control" placeholder="ID" [(ngModel)]="comunicado.ids" name="ids"
+                disabled="disabled">
+             <small class="form-text text-muted">Este campo es autogenerado</small>
+          </div>
+ 
+          <div class="row mb-3">
+ 
+             <div class="col-6 pe-4 ps-4 mb-3">
+                <div class="form-group row">
+                   <!--col-4-->
+                   <input type="text" class="form-control" placeholder="Titulo de comunicado"
+                      [(ngModel)]="comunicado.titulo" name="titulo" required>
                 </div>
-
-                <hr>
-                <div class="row" style="display: flex; justify-content:center;">
-                    <div class="form-group text-center col-md-4">
-                        <button type="submit" class="btn btn-primary btn-lg w-100">
-                         <i class="bi bi-save"></i>
-                         Publicar comunicado
-                      </button>
-                    </div>
+ 
+                <div class="form-group row">
+                   <!---->
+                   <label>Descripcion</label>
+                   <!--comunicado: Correo-->
+                   <textarea type="input" rows="10" cols="100" class="form-control" [(ngModel)]="comunicado.descripcion" name="descripcion"
+                      placeholder="Descripcion" required></textarea>
                 </div>
-            </form>
-        </div>
+             </div>
+ 
+ 
+             <div class="col-6 pe-4 ps-4 mb-3">
+                <div class="form-group row">
+                   <!--col-4-->
+                   <input type="date" matInput [(ngModel)]="comunicado.fecha" name="fecha" required>
+                </div>
+                <div class="form-group row">
+                   <!--Hospedaje: Usuario-->
+                   <input type="text" value="Mercadology" class="form-control" [(ngModel)]="comunicado.quien" name="quien"
+                      placeholder="Mercadology" required>
+                      
+                </div>
+                
+             </div>
+ 
+          </div>
+          <hr>
+          <div class="row" style="display: flex; justify-content:center;">
+             <div class="form-group text-center col-md-4">
+                <button *ngIf="agregar" type="submit" class="btn btn-primary btn-lg w-100">
+                   <i class="bi bi-save"></i>
+                   Guardar
+                </button>
+                <button *ngIf="!agregar" type="submit" id="upt"class="btn btn-primary btn-lg w-100">
+                  <i class="bi bi-save "></i>
+               Actualizar
+               </button>
+              
+                
+               </div>
+          </div>
+ 
+ 
+       </form>
+ 
+ 
     </div>
-</div>
-<app-footer></app-footer>
+ </div>
+ 
+ <app-footer></app-footer>

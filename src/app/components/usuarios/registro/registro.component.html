@@ -86,26 +86,45 @@
 
         <div class="col-md-4">
           <label for="formPuesto" class="mb-2"> Puesto</label>
-          <input type="text" class="form-control" name="puesto" id="formPuesto" placeholder="Puesto" required
+          <select class="form-select form-select-md mb-3" id="formPuesto" name="puesto" formControlName="puesto"
+           aria-label=".form-select-md example">
+            <option>Manager</option>
+            <option>Diseñador</option>
+            <option>Diseñador Jr</option>
+            <option>Copywriter</option>
+            <option>Copywriter Jr</option>
+            <option>Desarrollador web</option>
+            <option>Director</option>
+          </select>
+          <!-- <input type="text" class="form-control" name="puesto" id="formPuesto" placeholder="Puesto" required
             formControlName="puesto">
           <span
             *ngIf="this.registroForm.controls['puesto'].invalid && this.registroForm.controls['puesto'].touched && this.registroForm.controls['puesto'].errors.required"
             class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
           <span
             *ngIf="this.registroForm.controls['puesto'].invalid && this.registroForm.controls['puesto'].touched && this.registroForm.controls['puesto'].errors.minlength"
-            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 3 caracteres</span>
+            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 3 caracteres</span> -->
         </div>
 
         <div class="col-md-4">
           <label for="formDepto" class="mb-2"> Departamento</label>
-          <input type="text" class="form-control" name="dep
+          <select class="form-select form-select-md mb-3" id="formDepto" name="depto" formControlName="depto"
+           aria-label=".form-select-md example">
+            <option>Marketing</option>
+            <option>Sistemas</option>
+            <option>Diseño</option>
+            <option>RRHH</option>
+            <option>Operaciones</option>
+            <option>Dirección</option>
+          </select>
+          <!-- <input type="text" class="form-control" name="dep
           to" id="formDepto" placeholder="Departamento" required formControlName="depto">
           <span
             *ngIf="this.registroForm.controls['depto'].invalid && this.registroForm.controls['depto'].touched && this.registroForm.controls['depto'].errors.required"
             class="fw-light text-danger" style="font-size:12px;">*Este campo es requerido</span>
           <span
             *ngIf="this.registroForm.controls['depto'].invalid && this.registroForm.controls['depto'].touched && this.registroForm.controls['depto'].errors.minlength"
-            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 4 caracteres</span>
+            class="fw-light text-danger" style="font-size:12px;">*Ingrese mínimo 4 caracteres</span> -->
         </div>
 
       </div>

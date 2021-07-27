@@ -15,19 +15,19 @@ export class RolGuard implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-      let rol = this.auth.esAdmin()
+      let rol = this.auth.esAdmin();
       
       if( rol === 'Administrador' || rol === 'Editor'){
         return true;
       }else if(rol == undefined){
+        Swal.fire({
+          title: 'No tiene permisos para realizar esta acción',
+          icon: 'error',
+          timer: 3500
+        })
         this.router.navigateByUrl('/login');  
         return false;
       }
-      Swal.fire({
-        title: 'No tiene permisos para realizar esta acción',
-        icon: 'error',
-        timer: 3500
-      })
       this.router.navigateByUrl('/home');
     return false;
   }
