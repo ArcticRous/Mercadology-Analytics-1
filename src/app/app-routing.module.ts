@@ -18,6 +18,7 @@ import { RolGuard } from './guards/rol.guard';
 import { ComunicadosComponent } from './components/comunicados/comunicados.component';
 import { ComunicadoIndividualComponent } from './components/comunicado-individual/comunicado-individual.component';
 import { MiscomunicadosComponent } from './components/miscomunicados/miscomunicados.component';
+import { PeticionesComponent } from './components/peticiones/peticiones.component';
 
 
 const routes: Routes = [
@@ -30,6 +31,7 @@ const routes: Routes = [
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
+  {path: 'peticiones' , component: PeticionesComponent,canActivate: [AuthGuard]},
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'mostrar/:ids' , component: MostrarComponent,canActivate: [AuthGuard]},
   {path: 'generadorReportes', component: GeneradorReportesComponent, canActivate: [AuthGuard]},
