@@ -1,4 +1,5 @@
 export class SolicitudModel{
+    id:string;
     cuenta: string;
     fecha: string;
     material: string;

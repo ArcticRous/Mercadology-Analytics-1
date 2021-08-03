@@ -8,6 +8,8 @@ import { ClienteModel } from '../models/cliente.model';
 import { AccesosModel } from '../models/accesos.model';
 import { ComunicadoModel } from '../models/comunicado.model';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
@@ -721,6 +723,36 @@ export class AuthService {
         return solicitud;
       })
     );
+  }
+  
+  crearSolicitud(solicitud: SolicitudModel){
+    return this.http.post(`${this.urlDatos}/solicitud.json`, solicitud)
+      .pipe(
+        map((resp:any) => {
+          solicitud.id = resp.name;
+        })
+      );
+  }
+  getSolicitudes() {
+    return this.http.get(`${this.urlDatos}/solicitud.json`)
+      .pipe(
+        map(this.crearArregloSolicitud)
+      );
+  }
+
+  private crearArregloSolicitud ( solicitudesObj: Object){
+   const solicitudes: SolicitudModel [] = [];
+
+   Object.keys(solicitudesObj).forEach(key => {
+    const solicitud: SolicitudModel = solicitudesObj[key];
+    solicitud.id = key;
+
+    solicitudes.push(solicitud);
+
+  
+   });
+
+   return solicitudes;
   }
 
 }/**Cierra el export data**/

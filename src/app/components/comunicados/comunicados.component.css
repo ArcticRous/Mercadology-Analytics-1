@@ -2,7 +2,7 @@
     width: 120px;
     height: 120px;
     border-radius: 200px;
-    margin-bottom: 10px;
+    margin: 0;
 }
 
 .table-responsive {
@@ -16,10 +16,17 @@
     font-family: "Poppins";
 }
 
+.cont-cat {
+    width: 150px;
+}
+
 .contenedor-img-cs {
     display: flex;
     flex-direction: column;
-    padding: 0 30px;
+    padding: 10px;
+    width: 70px;
+    align-items: center;
+    margin: auto;
 }
 
 .cont-des {
@@ -36,9 +43,9 @@
 }
 
 .categoria {
-    text-align: center;
-    margin-bottom: 10px;
+    margin: 0;
     color: #fff;
+    width: 100%;
 }
 
 .texto-fecha {
@@ -51,6 +58,10 @@ th {
 
 tr,
 td {
-    margin: 20px;
+    margin: 20px 0;
     border-bottom: 5px solid #242424;
+}
+
+table {
+    width: 100%;
 }

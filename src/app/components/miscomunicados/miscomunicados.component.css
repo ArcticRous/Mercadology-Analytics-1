@@ -53,6 +53,8 @@ td {
 
 table {
     background: #242424;
+    margin: 0;
+    width: 100%;
 }
 
 .style-buscador {
