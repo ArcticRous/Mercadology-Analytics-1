@@ -111,7 +111,8 @@ export class PerfilComponent implements OnInit {
     let imagenNueva;
     const form = this.imageForm;
     if (form.valid) {
-      this.authService.uploadImage(this.file, this.usuario.id)
+      let ruta = 'photosProfile'
+      this.authService.uploadImage(this.file, this.usuario.id, ruta)
         .subscribe(data => {
           imagenNueva = data;
           this.imageForm = new FormGroup({
