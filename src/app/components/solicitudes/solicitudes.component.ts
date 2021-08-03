@@ -15,7 +15,25 @@ export class SolicitudesComponent implements OnInit {
 
   solicitudModel: SolicitudModel;
 
-  constructor( private auth: AuthService ) { 
+  fileArchivo: any;
+  altMediaArchivo: any;
+  existeMaterial: boolean = false;
+
+
+  fileMaterial: any;
+  // solicitud: SolicitudModel = {
+  //   cuenta: "",
+  //   fecha: "",
+  //   material: "",
+  //   disenos: 0,
+  //   desDisenos: "",
+  //   infDisenos: "",
+  //   urgencia: "",
+  //   existeMaterial: "",
+  //   fileMaterial: ""
+  // };
+
+  constructor(private auth: AuthService) {
     this.solicitudForm = new FormGroup({
       cuenta: new FormControl("Dos Arroyos", [Validators.required]),
       fecha: new FormControl(null, [Validators.required]),
@@ -32,11 +50,51 @@ export class SolicitudesComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  guardar(){
-    if(this.solicitudForm.invalid) { return false}
-    // const nombreArchivo = this.solicitudForm.controls['fileMaterial'].value;
-    // const archivo = nombreArchivo.slice(12, nombreArchivo.lenght);
+  /**Metodo para ver el cambio que existe en el input y el evento ejecutado guarda los datos del archivo **/
+  onfileArchivo(event) {
+    //Guardamos los datos del archivo
+    const file = event.target.files[0];
 
+    if (file.size <= 3145728) {
+      /**Vemos que exista algo en el archivo */
+      if (event.target.files && event.target.files.length > 0) {
+        //Hacemos condiciones para aceptar solo archvios que contengan esas palabras. NOTA: Pueden ser más estrictas las condiciones
+        if (file.type.includes("pdf") || file.type.includes("word") || file.type.includes("zip") || file.type.includes("image")) {
+          //Leer fichero
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+
+          //Asigna el resultado de la funcon a reader onload
+          reader.onload = function load() {
+            this.fileMaterial = reader.result;
+          }.bind(this);
+
+          //Asignar datos de mi archivo a mi variable
+          this.fileArchivo = file;
+        } else {
+          console.log('Hay un error');
+          Swal.fire({
+            title: "Formato de archivo",
+            text: "Solo se aceptan formatos pdf, word, zip o una imagen png, jpeg, jpg",
+            icon: "warning"
+          })
+        }
+      } else {
+        console.log('No entro' + event.target.files + event.target.files.lenght);
+      }
+    } else {
+      Swal.fire({
+        title: "Archivo demasiado grande",
+        text: "Cargue un archivo menor a 3MB",
+        icon: "warning"
+      })
+    }
+
+  }
+
+
+  guardar() {
+    if (this.solicitudForm.invalid) { return false }
 
     console.log(this.solicitudForm);
     Swal.fire({
@@ -46,19 +104,47 @@ export class SolicitudesComponent implements OnInit {
     });
     Swal.showLoading();
 
-    this.auth.enviarSolicitud(this.solicitudForm.value).subscribe( next => {
-      console.log(next);
-      Swal.fire(
-        'Solicitud enviada',
-        'Mercadology enviará una respuesta lo más pronto posible',
-        'success'
-      )
-    }, error => {
-      console.log(error);
-    }, () => {
+    let archivoMaterial;
+    let fecha = new Date(this.solicitudForm.controls['fecha'].value);
+    let ruta = 'solicitudes%2Farchivos';
 
-    } )
-  
+    //Si se adjunta material se sube primero el material, si no solo se suben los datos
+    if (this.solicitudForm.value['fileMaterial'] != null) {
+      this.auth.uploadFile(this.fileArchivo, fecha.getFullYear(), (fecha.getMonth() + 1), ruta).subscribe(next => {
+        // console.log(next); 
+        archivoMaterial = next;
+        let urlArchivo = archivoMaterial.contentDisposition;
+        const url = urlArchivo.slice(25, urlArchivo.lenght);
+        this.altMediaArchivo = archivoMaterial.downloadTokens;
+
+        const urlFirebase = this.auth.urlStorage + '/o/' + ruta + '%2F' + fecha.getFullYear() + '%2F' + (fecha.getMonth() + 1) + '%2F' + url + '?alt=media&token=' + this.altMediaArchivo;
+        this.solicitudForm.value['fileMaterial'] = urlFirebase;
+
+        this.auth.enviarSolicitud(this.solicitudForm.value).subscribe(next => {
+          Swal.fire(
+            'Solicitud enviada',
+            'Mercadology enviará una respuesta lo más pronto posible',
+            'success'
+          )
+        }, error => {
+          console.log(error);
+        })
+
+      }, error => {
+        console.log(error);
+      })
+    } else {
+      this.auth.enviarSolicitud(this.solicitudForm.value).subscribe(next => {
+        Swal.fire(
+          'Solicitud enviada',
+          'Mercadology enviará una respuesta lo más pronto posible',
+          'success'
+        )
+      }, error => {
+        console.log(error);
+      })
+    }
   }
+
 
 }
