@@ -8,5 +8,6 @@ export class SolicitudModel{
     infDisenos: string;
     urgencia: string;
     existeMaterial: string;
+    numDisenos: string;
     fileMaterial?: any;
 }
