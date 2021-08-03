@@ -1,3 +1,4 @@
+import { SolicitudModel } from './../models/solicitud.model';
 import { UsuarioModel } from './../models/usuario.model';
 import { RegistroModel } from './../models/registro.model';
 import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
@@ -327,6 +328,10 @@ export class AuthService {
   uploadImage(file: File, id: string) {
     return this.http.post(`${this.urlStorage}/o/photosProfile%2F${id}%2F${file.name}`, file);
   }
+
+  uploadFile(file: File) {
+    return this.http.post(`${this.urlStorage}/o/solicitudes%2Farchivos%2F${file}`, file);
+  }
   // guardar comunicados
   saveComun(comunicado: ComunicadoModel) {
     return this.http.post(`${this.url}/comunicados.json` + this.auth, comunicado)
@@ -396,10 +401,10 @@ export class AuthService {
 
     if (tipo == "privado") {
       return this.http.get(`${this.url}/comunicados.json`)
-      .pipe(
-        map(this.CrearComunPrivado),
-        delay(1500)
-      );
+        .pipe(
+          map(this.CrearComunPrivado),
+          delay(1500)
+        );
     } else {
       return this.http.get(`${this.url}/comunicados.json`)
         .pipe(
@@ -433,9 +438,9 @@ export class AuthService {
       meses = `0${date.getMonth() + 1}`;
     }
     let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
-    
-    return Comunicado.filter((({ fecha }) => fecha <= hoy)).sort((a,b) => {
-      return new Date(b.fecha).getTime() - new Date(a.fecha).getTime(); 
+
+    return Comunicado.filter((({ fecha }) => fecha <= hoy)).sort((a, b) => {
+      return new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
     });
 
   }
@@ -700,6 +705,22 @@ export class AuthService {
 
   eliminarAcceso(id: string, token: string) {
     return this.http.delete(`${this.urlDatos}/acceso/${id}.json` + this.auth + token);
+  }
+
+
+  enviarSolicitud(solicitud: SolicitudModel) {
+    let data = {
+      ...solicitud
+    };
+
+    return this.http.post(
+      `${this.urlDatos}/solicitud.json`,
+      data
+    ).pipe(
+      map((resp: any) => {
+        return solicitud;
+      })
+    );
   }
 
 }/**Cierra el export data**/

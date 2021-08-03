@@ -19,6 +19,7 @@ import { ComunicadosComponent } from './components/comunicados/comunicados.compo
 import { ComunicadoIndividualComponent } from './components/comunicado-individual/comunicado-individual.component';
 import { MiscomunicadosComponent } from './components/miscomunicados/miscomunicados.component';
 import { PeticionesComponent } from './components/peticiones/peticiones.component';
+import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 
 
 const routes: Routes = [
@@ -27,7 +28,7 @@ const routes: Routes = [
   {path: 'accesos' , component: AccesosComponent,canActivate: [AuthGuard]},
   {path: 'cuentas', component: CuentasComponent,canActivate: [AuthGuard]},
   {path: 'comunicados' , component: ComunicadosComponent,canActivate: [AuthGuard]},
-  // {path: 'comunicados/:ids' , component: ComunicadosComponent,canActivate: [AuthGuard,RolGuard]},
+  {path: 'solicitud' , component: SolicitudesComponent},
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
