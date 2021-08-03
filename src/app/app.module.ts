@@ -33,6 +33,7 @@ import { AccesosComponent } from './components/accesos/accesos.component';
 import { MiscomunicadosComponent  } from './components/miscomunicados/miscomunicados.component';
 import { ComunicadosComponent } from './components/comunicados/comunicados.component';
 import { ComunicadoIndividualComponent } from './components/comunicado-individual/comunicado-individual.component';
+import { PeticionesComponent } from './components/peticiones/peticiones.component';
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 
 
@@ -56,6 +57,7 @@ import { SolicitudesComponent } from './components/solicitudes/solicitudes.compo
     ComunicadosComponent,
     ComunicadoIndividualComponent,
     MiscomunicadosComponent,
+    PeticionesComponent,
     SolicitudesComponent
   ],
   imports: [

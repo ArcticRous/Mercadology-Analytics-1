@@ -25,12 +25,17 @@
         <table mat-table [dataSource]="dataSource" matSort class="cont-table-cs" ng-if="categoria.comunicado == 'omar'">
 
             <!-- Position Column -->
-            <ng-container matColumnDef="#">
+            <ng-container matColumnDef="#" class="cont-cat">
                 <th mat-header-cell *matHeaderCellDef> # </th>
                 <td class="contenedor-img-cs" mat-cell *matCellDef="let element; let i = index">
                     <!-- {{(i+1) + (paginator.pageIndex*paginator.pageSize)}} -->
-                    <img src="../../../assets/imagenes/imagenPerfil/merca.jpeg" class="img-cs " alt="imagen usuario">
-                    <span class="categoria">{{element.quien}}</span>
+                    <div>
+                        <img src="../../../assets/imagenes/imagenPerfil/merca.jpeg" class="img-cs " alt="imagen usuario">
+                    </div>
+
+                    <div>
+                        <p class="categoria">{{element.quien}}</p>
+                    </div>
                 </td>
             </ng-container>
 

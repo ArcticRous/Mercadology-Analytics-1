@@ -1,0 +1,17 @@
+table {
+    margin: 0;
+    width: 100%;
+}
+
+th {
+    text-align: center!important;
+}
+
+th p {
+    text-align: center;
+}
+
+td {
+    color: #fff;
+    text-align: center;
+}

@@ -16,6 +16,9 @@
                 <li class="nav-item" *ngIf="this.rol === '12345' || this.rol === '234567' || this.puesto == 'Manager' || this.puesto == 'Director'">
                     <a [routerLink]="['/MisComun']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">Mis Comunicados</a>
                 </li>
+                <li class="nav-item" *ngIf="this.rol === '234567' && this.depto === 'Diseño' && this.puesto == 'Manager'">
+                    <a [routerLink]="['/peticiones']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">Peticiones</a>
+                </li>
                 <li class="nav-item" *ngIf="this.rol === '12345' || this.rol === '234567'">
                     <a [routerLink]="['/usuarios']" routerLinkActive="router-link-active" class="nav-link" aria-current="page">Gestión de usuarios</a>
                 </li>
@@ -32,7 +35,7 @@
                 <li class="nav-item">
                     <a [routerLink]="['/perfil', this.id]" routerLinkActive="router-link-active" (click)="guardarLocal('propio')" class="nav-link" aria-current="page">Mi cuenta</a>
                 </li>
-                
+
                 <li class="nav-item">
                     <a (click)="salir()" tabindex="-1" class="nav-link">Salir</a>
                 </li>

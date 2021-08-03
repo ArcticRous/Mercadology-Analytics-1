@@ -13,6 +13,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   local: string;
   rol: string;
   puesto: string;
+  depto: string;
 
   constructor( private auth: AuthService, private router: Router) { }
 
@@ -21,6 +22,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.local = sessionStorage.getItem('local');
     this.rol = sessionStorage.getItem('rol');
     this.puesto = sessionStorage.getItem('puesto');
+    this.depto = sessionStorage.getItem('depto');
   }
 
   ngAfterViewInit(){
