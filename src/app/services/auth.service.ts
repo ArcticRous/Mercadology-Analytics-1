@@ -327,13 +327,16 @@ export class AuthService {
     return this.http.get(`${this.urlDatos}/Usuario.json`);
   }
 
-  uploadImage(file: File, id: string) {
-    return this.http.post(`${this.urlStorage}/o/photosProfile%2F${id}%2F${file.name}`, file);
+  //Subir imagen al storage
+  uploadImage(file: File, id: string, ruta:string) {
+    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${id}%2F${file.name}`, file);
   }
 
-  uploadFile(file: File) {
-    return this.http.post(`${this.urlStorage}/o/solicitudes%2Farchivos%2F${file}`, file);
+  //Subir PDF al storage
+  uploadFile(file: File, anio: any, mes: any, ruta:string) {
+    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${anio}%2F${mes}%2F${file.name}`, file);
   }
+
   // guardar comunicados
   saveComun(comunicado: ComunicadoModel) {
     return this.http.post(`${this.url}/comunicados.json` + this.auth, comunicado)
