@@ -146,7 +146,7 @@
                                                 contraseña
                                             </h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                aria-label="Close"></button>
+                                                aria-label="Close" (click)="resetearFormPassword()"></button>
                                         </div>
                                         <div class="modal-body">
                                             <form [formGroup]="cambiarContrasenaForm" (ngSubmit)="cambiarContrasena()">

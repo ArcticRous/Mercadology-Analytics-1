@@ -328,7 +328,9 @@ export class PerfilComponent implements OnInit {
 
 
 
-
+  resetearFormPassword(){
+    this.cambiarContrasenaForm.reset();
+  }
 
   cambiarContrasena(): void {
 
@@ -371,6 +373,7 @@ export class PerfilComponent implements OnInit {
                 title: 'Se cambio su contraseña',
                 text: 'La próxima vez que inicie sesión hagalo con su nueva contraseña'
               })
+              this.cambiarContrasenaForm.reset();
             }, (error) => {
               // console.log(error);
             })
