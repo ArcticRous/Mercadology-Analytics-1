@@ -8,10 +8,6 @@ export class SolicitudModel{
     desDisenos: string;
     infDisenos: string;
     urgencia: string;
-    existeMaterial: boolean;
+    existeMaterial: string;
     fileMaterial?: any;
-
-    constructor(){
-        this.existeMaterial = false;
-    }
 }
