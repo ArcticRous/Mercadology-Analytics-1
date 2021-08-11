@@ -17,27 +17,16 @@ export class SolicitudesComponent implements OnInit {
 
   fileArchivo: any;
   altMediaArchivo: any;
-  existeMaterial: boolean = false;
-
+  // existeMaterial: boolean;
 
   fileMaterial: any;
-  // solicitud: SolicitudModel = {
-  //   cuenta: "",
-  //   fecha: "",
-  //   material: "",
-  //   disenos: 0,
-  //   desDisenos: "",
-  //   infDisenos: "",
-  //   urgencia: "",
-  //   existeMaterial: "",
-  //   fileMaterial: ""
-  // };
 
   constructor(private auth: AuthService) {
     this.solicitudForm = new FormGroup({
       cuenta: new FormControl("Dos Arroyos", [Validators.required]),
       fecha: new FormControl(null, [Validators.required]),
       material: new FormControl(null, [Validators.required]),
+      email: new FormControl(null, [Validators.required, Validators.email]),
       numDisenos: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(100)]),
       desDisenos: new FormControl(null, [Validators.required]),
       infDisenos: new FormControl(null, [Validators.required]),
@@ -96,7 +85,17 @@ export class SolicitudesComponent implements OnInit {
   guardar() {
     if (this.solicitudForm.invalid) { return false }
 
-    console.log(this.solicitudForm);
+    if (this.solicitudForm.value.existeMaterial == "No") {
+      if (this.solicitudForm.value.fileMaterial) {
+        this.solicitudForm.value.fileMaterial = null;
+      }
+    } else if (this.solicitudForm.value.existeMaterial == "Si") {
+      if (!this.solicitudForm.value.fileMaterial) {
+        Swal.fire({ title: "Falta material", text: "Debe proporcionar material", icon: "warning" });
+        return false;
+      }
+    }
+
     Swal.fire({
       allowOutsideClick: false,
       icon: 'info',
@@ -105,9 +104,9 @@ export class SolicitudesComponent implements OnInit {
     Swal.showLoading();
 
     let archivoMaterial;
-    let fecha = new Date(this.solicitudForm.controls['fecha'].value);
-    let ruta = 'solicitudes%2Farchivos';
-
+    let fecha = new Date(this.solicitudForm.controls['fecha'].value);  
+    let ruta = 'solicitudes%2Farchivos';    
+  
     //Si se adjunta material se sube primero el material, si no solo se suben los datos
     if (this.solicitudForm.value['fileMaterial'] != null) {
       this.auth.uploadFile(this.fileArchivo, fecha.getFullYear(), (fecha.getMonth() + 1), ruta).subscribe(next => {
@@ -121,6 +120,9 @@ export class SolicitudesComponent implements OnInit {
         this.solicitudForm.value['fileMaterial'] = urlFirebase;
 
         this.auth.enviarSolicitud(this.solicitudForm.value).subscribe(next => {
+          this.solicitudForm.reset({
+            'cuenta': "Dos Arroyos"
+          });
           Swal.fire(
             'Solicitud enviada',
             'Mercadology enviará una respuesta lo más pronto posible',
@@ -135,6 +137,9 @@ export class SolicitudesComponent implements OnInit {
       })
     } else {
       this.auth.enviarSolicitud(this.solicitudForm.value).subscribe(next => {
+        this.solicitudForm.reset({
+          'cuenta': "Dos Arroyos"
+        });
         Swal.fire(
           'Solicitud enviada',
           'Mercadology enviará una respuesta lo más pronto posible',
@@ -144,7 +149,7 @@ export class SolicitudesComponent implements OnInit {
         console.log(error);
       })
     }
-  }
 
+  }
 
 }
