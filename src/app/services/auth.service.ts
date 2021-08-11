@@ -59,6 +59,8 @@ export class AuthService {
   //Envia mediante express, nodejs y nodemailer email de vencimiento de cuentas
   private vencimientoCuentas = this.urlEnviarCorreo + "/send-email";
   private vencimientoCuentaCliente = this.urlEnviarCorreo + "/send-clientes";
+  private solicitudManager = this.urlEnviarCorreo + "/send-solicitud-manager"
+  private solicitudCliente = this.urlEnviarCorreo + "/send-cliente-solicitud";
 
   //Envia mediante express, nodejs y nodemailer un email de backup
   private backup = this.urlEnviarCorreo + `/send-backup`;
@@ -328,12 +330,12 @@ export class AuthService {
   }
 
   //Subir imagen al storage
-  uploadImage(file: File, id: string, ruta:string) {
+  uploadImage(file: File, id: string, ruta: string) {
     return this.http.post(`${this.urlStorage}/o/${ruta}%2F${id}%2F${file.name}`, file);
   }
 
   //Subir PDF al storage
-  uploadFile(file: File, anio: any, mes: any, ruta:string) {
+  uploadFile(file: File, anio: any, mes: any, ruta: string) {
     return this.http.post(`${this.urlStorage}/o/${ruta}%2F${anio}%2F${mes}%2F${file.name}`, file);
   }
 
@@ -723,15 +725,39 @@ export class AuthService {
       data
     ).pipe(
       map((resp: any) => {
+        //Envia por correo al manager
+        this.sendSolicitudManager(solicitud).subscribe(next => {
+          console.log(next);
+
+          // Envia al cliente la confirmación de su envio
+          this.sendSolicitudConfirmacionCliente(solicitud).subscribe(next => {
+            console.log(next);
+          }, error => {
+            console.log(error);
+          })
+
+        }, error => {
+          console.log(error);
+        });
+
         return solicitud;
+
       })
     );
   }
-  
-  crearSolicitud(solicitud: SolicitudModel){
+
+  sendSolicitudManager(body: any) {
+    return this.http.post(this.solicitudManager, body)
+  }
+
+  sendSolicitudConfirmacionCliente(body: any) {
+    return this.http.post(this.solicitudCliente, body)
+  }
+
+  crearSolicitud(solicitud: SolicitudModel) {
     return this.http.post(`${this.urlDatos}/solicitud.json`, solicitud)
       .pipe(
-        map((resp:any) => {
+        map((resp: any) => {
           solicitud.id = resp.name;
         })
       );
@@ -743,19 +769,19 @@ export class AuthService {
       );
   }
 
-  private crearArregloSolicitud ( solicitudesObj: Object){
-   const solicitudes: SolicitudModel [] = [];
+  private crearArregloSolicitud(solicitudesObj: Object) {
+    const solicitudes: SolicitudModel[] = [];
 
-   Object.keys(solicitudesObj).forEach(key => {
-    const solicitud: SolicitudModel = solicitudesObj[key];
-    solicitud.id = key;
+    Object.keys(solicitudesObj).forEach(key => {
+      const solicitud: SolicitudModel = solicitudesObj[key];
+      solicitud.id = key;
 
-    solicitudes.push(solicitud);
+      solicitudes.push(solicitud);
 
-  
-   });
 
-   return solicitudes;
+    });
+
+    return solicitudes;
   }
 
 }/**Cierra el export data**/
