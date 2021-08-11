@@ -762,6 +762,11 @@ export class AuthService {
         })
       );
   }
+  
+  getSolicitud(id:string){
+    return this.http.get(`${this.urlDatos}/solicitud/${id}.json`)
+  }
+
   getSolicitudes() {
     return this.http.get(`${this.urlDatos}/solicitud.json`)
       .pipe(
