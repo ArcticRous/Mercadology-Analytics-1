@@ -1,8 +1,8 @@
 export class SolicitudModel{
-    id:string;
+    id?:string;
     cuenta: string;
     fecha: string;
-    correo: string;
+    email: string;
     material: string;
     disenos: number;
     desDisenos: string;
@@ -11,4 +11,5 @@ export class SolicitudModel{
     existeMaterial: string;
     numDisenos: string;
     fileMaterial?: any;
+    fechaEntrega?: string;
 }
