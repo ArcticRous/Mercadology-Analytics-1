@@ -10,7 +10,6 @@
                     <label for="formCuenta" class="mb-2">Cuenta</label>
                     <select class="form-select form-select-md mb-3" id="formCuenta" name="cuenta"
                         formControlName="cuenta" aria-label=".form-select-md example">
-                        <!-- <option disabled selected>Seleccione</option> -->
                         <option selected>Dos Arroyos</option>
                         <option>Paola Soto</option>
                         <option>Emplois</option>
@@ -111,17 +110,6 @@
                                 name="existeMaterial" id="btnradioNo" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btnradioNo">No</label>
                         </div>
-
-                        <!-- <button type="button" (click)="existeMaterial = true" formControlName="existeMaterial"
-                            name="existeMaterial" class="btn btn-outline-primary">
-                            Si
-                        </button>
-<!--  *ngIf="solicitudModel.existeMaterial" -->
-                        <!-- <button type="button" (click)="existeMaterial = false" formControlName="existeMaterial"
-                            name="existeMaterial" class="btn btn-outline-primary">
-                            No
-                        </button> -->
-
                     </div>
                 </div>
 
@@ -131,7 +119,6 @@
             <div class="row">
                 <div class="col-6">
                     <div [ngClass]="{'visually-hidden' : this.solicitudForm.controls['existeMaterial'].value != 'Si' }" class="mb-3">
-                    <!-- <div *ngIf="existeMaterial == true" class="mb-3"> -->
                         <label for="formFile" class="form-label">Por favor, proporcionenos el material</label>
                         <input class="form-control" type="file" id="formFile" formControlName="fileMaterial"
                             (change)="onfileArchivo($event)">
@@ -141,7 +128,6 @@
 
             <div class="row mb-3" style="display: flex; justify-content:center;">
                 <div class="form-group col-md-4 mt-3">
-                    <!-- <button type="submit" [disabled]="solicitudForm.invalid" class="btn btn-primary btn-lg w-100"> -->
                         <button type="submit"  class="btn btn-primary btn-lg w-100">
                         <i class="bi bi-cursor-fill"></i>
                         Enviar
