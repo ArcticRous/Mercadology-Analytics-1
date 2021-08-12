@@ -7,7 +7,7 @@
 
     <div class="row animated fadeIn faster container contenedor text-white mt-5">
         <!-- <div class="col-12"> -->
-        <form>
+        <form (ngSubmit)="guardar( form )" #form="ngForm">
             <div class="row">
                 <div class="col-6">
                     <label for="formCuenta" class="mb-2">Cuenta</label>
@@ -19,7 +19,8 @@
                 <div class="col-6">
                     <div class="form-group col-12">
                         <label for="formFecha" class="mb-2">Fecha en que lo solicita</label>
-                        <input [(ngModel)]="peticiones.fecha" type="date" class="form-control" name="fecha" id="formFecha" disabled>
+                        <input [(ngModel)]="peticiones.fecha" type="date" class="form-control" name="fecha"
+                            id="formFecha" disabled>
                     </div>
                 </div>
 
@@ -28,28 +29,44 @@
             <div class="row">
                 <div class="col-12">
                     <label for="formMaterial" class="mb-2">Material solicitado</label>
-                    <input [(ngModel)]="peticiones.material" type="text" class="form-control mb-3" name="material" id="formMaterial" placeholder="Material solicitado" disabled>
+                    <input [(ngModel)]="peticiones.material" type="text" class="form-control mb-3" name="material"
+                        id="formMaterial" placeholder="Material solicitado" disabled>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6">
+                    <label for="formEmail" class="mb-2">Email</label>
+                    <input [(ngModel)]="peticiones.email" type="email" class="form-control mb-3" name="email"
+                        id="formEmail" placeholder="ejemplo@correo.com" disabled>
+                </div>
+
+                <div class="col-6">
+                    <label for="formNumDisenos" class="mb-2">Número de diseños</label>
+                    <input [(ngModel)]="peticiones.numDisenos" type="number" class="form-control mb-3" min="1"
+                        max="1000" name="numDisenos" id="formNumDisenos" placeholder="Número de diseños" disabled>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
-                    <label for="formNumDisenos" class="mb-2">Número de diseños</label>
-                    <input [(ngModel)]="peticiones.numDisenos" type="number" class="form-control mb-3" min="1" max="1000" name="numDisenos" id="formNumDisenos" placeholder="Número de diseños" disabled>
+
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
                     <label for="formDesDisenos" class="mb-2">Descripción de diseños</label>
-                    <textarea [(ngModel)]="peticiones.desDisenos" class="form-control mb-3" id="formDesDisenos" placeholder="Descripción de diseños" name="desDisenos" disabled></textarea>
+                    <textarea [(ngModel)]="peticiones.desDisenos" class="form-control mb-3" id="formDesDisenos"
+                        placeholder="Descripción de diseños" name="desDisenos" disabled></textarea>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12">
                     <label for="formInfDisenos" class="mb-2">Información en diseños</label>
-                    <textarea [(ngModel)]="peticiones.infDisenos" class="form-control mb-3" id="formInfDisenos" placeholder="Información de diseños" name="infDisenos" disabled></textarea>
+                    <textarea [(ngModel)]="peticiones.infDisenos" class="form-control mb-3" id="formInfDisenos"
+                        placeholder="Información de diseños" name="infDisenos" disabled></textarea>
                 </div>
             </div>
 
@@ -65,10 +82,12 @@
                         <br>
                         <div class="btn-group d-flex justify-content-center">
                             <input type="radio" value="Si" class="btn-check" name="existeMaterial" id="btnradioSi">
-                            <label *ngIf="peticiones.existeMaterial == 'Si'" class="btn btn-outline-primary" for="btnradioSi" disabled>Si</label>
+                            <label *ngIf="peticiones.existeMaterial == 'Si'" class="btn btn-outline-primary"
+                                for="btnradioSi" disabled>Si</label>
 
                             <input type="radio" value="No" class="btn-check" name="existeMaterial" id="btnradioNo">
-                            <label *ngIf="peticiones.existeMaterial == 'No'" class="btn btn-outline-primary" for="btnradioNo" disabled>No</label>
+                            <label *ngIf="peticiones.existeMaterial == 'No'" class="btn btn-outline-primary"
+                                for="btnradioNo" disabled>No</label>
                         </div>
 
                     </div>
@@ -76,8 +95,9 @@
 
                 <div class="col-4">
                     <div class="form-group col-12">
-                        <label for="formFecha" class="mb-2">Fecha estimada de entrega: </label>
-                        <input [(ngModel)]="peticiones.fecha" type="date" class="form-control" name="fecha" id="formFecha">
+                        <label for="formFechaEntrega" class="mb-2">Fecha estimada de entrega: </label>
+                        <input [(ngModel)]="peticiones.fechaEntrega" type="date" class="form-control"
+                            name="fechaEntrega" id="formFechaEntrega" required>
                     </div>
                 </div>
 
@@ -87,17 +107,24 @@
                 <div class="col-6">
                     <div class="mb-3" *ngIf="peticiones.existeMaterial == 'Si'">
                         <label for="formFile" class="form-label">Material descargable</label>
-
-                        <input type="text" class="form-control" [(ngModel)]="peticiones.fileMaterial" name="fileMaterial">
+                        <div class="row ">
+                            <div class="col-10 pe-0">
+                                <input type="text" class="form-control" [(ngModel)]="peticiones.fileMaterial"
+                                    name="fileMaterial" disabled>
+                            </div>
+                            <div class="col-2 ps-0">
+                                <a href={{peticiones.fileMaterial}} class="btn btn-primary" target="_blank"><i class="bi bi-link">
+                                    </i></a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
             <div class="row mb-3" style="display: flex; justify-content:center;">
                 <div class="form-group col-md-4 mt-3">
-                    <button type="submit" class="btn btn-primary btn-lg w-100">
-                        <!-- [disabled]="solicitudForm.invalid" -->
-                        <i class="bi bi-save"></i>
+                    <button type="submit" [disabled]="form.invalid" class="btn btn-primary btn-lg w-100">
+                        <i class="bi bi-cursor-fill"></i>
                         Asignar Fecha
                     </button>
                 </div>

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SolicitudModel } from '../../models/solicitud.model';
 import { AuthService } from '../../services/auth.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -13,44 +14,68 @@ import { FormsModule } from '@angular/forms';
 export class PeticionComponent implements OnInit {
   peticiones: SolicitudModel = new SolicitudModel();
 
-
-  mostrar: boolean = false;
-  copiar: boolean = false;
-  agregar: boolean;
-  temporalPeticion: Object = {
-    'cuenta': "",
-    'desDisenos': "",
-    'existeMaterial': "",
-    'fecha': "",
-    'infDisenos': "",
-    'material': "",
-    'numDisenos': "",
-    'urgencia': ""
-
-  };
-  
-
-  constructor( private AuthService: AuthService,
-                private route: ActivatedRoute) { }
+  constructor(private AuthService: AuthService,
+    private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
 
-      this.AuthService.getSolicitud( id ).subscribe((resp:SolicitudModel) => {
-
-        this.temporalPeticion['cuenta'] = resp.cuenta;
-        this.temporalPeticion['desDisenos'] = resp.desDisenos;
-        this.temporalPeticion['existeMaterial'] = resp.existeMaterial;
-        this.temporalPeticion['fecha'] = resp.fecha;
-        this.temporalPeticion['infDisenos'] = resp.infDisenos;
-        this.temporalPeticion['material'] = resp.material;
-        this.temporalPeticion['numDisenos'] = resp.numDisenos;
-        this.temporalPeticion['urgencia'] = resp.urgencia;
-
+    this.AuthService.getSolicitud(id).subscribe((resp: SolicitudModel) => {
       console.log(resp);
       this.peticiones = resp;
+      console.log(this.peticiones);
+
       this.peticiones.id = id;
     });
   }
+
+  guardar(form: NgForm) {
+    console.log(this.peticiones);
+
+    if(form.invalid){console.log("Error");
+     return false}
+
+    console.log(form);
+    Swal.fire({
+      title: `¿Esta seguro?`,
+      text: `Se enviará la fecha: ${this.peticiones.fechaEntrega} como fecha estimada de entrega`,
+      icon: 'question',
+      showConfirmButton: true,
+      showCancelButton: true
+    }).then(resp => {
+      if (resp.value) {
+
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor...'
+        });
+        Swal.showLoading();
+  
+        this.AuthService.sendRespuestaCliente(this.peticiones).subscribe(next => {
+          console.log(next);
+  
+          this.AuthService.editarSolicitud(this.peticiones).subscribe(next => {
+            console.log(next);
+            Swal.fire({
+              title: 'Respuesta enviada',
+              text: `Se envio el correo a la cuenta de ${this.peticiones.cuenta} correctamente`,
+              icon: 'success'
+            })
+          }, error => {
+            console.log(error);
+          })
+  
+  
+        }, error => {
+          console.log(error);
+        })
+
+      }
+
+    })
+
+  }
+
 
 }
