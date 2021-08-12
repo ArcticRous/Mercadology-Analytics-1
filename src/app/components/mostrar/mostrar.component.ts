@@ -19,14 +19,10 @@ export class MostrarComponent implements OnInit {
   temporalCliente: Object = {
     'cuepas': "",
     'dompas': "",
-    'dbpas': "",
-    'ftppas': "",
     'hospas': ""
   };
   mostrarCorreo: boolean = false;
   mostrarDominio: boolean = false;
-  mostrarBd: boolean = false;
-  mostrarFtp: boolean = false;
   mostrarHosting: boolean = false;
 
   copiar: boolean = false;
@@ -86,29 +82,7 @@ export class MostrarComponent implements OnInit {
         this.cliente.dompas = this.temporalCliente['dompas'];
         break;
       }
-      case 'bdd': {
-        if (this.mostrarBd) {
-          //const dbpas = this.cliente.dbpas;
-          this.temporalCliente['dbpas'] = this.cliente.dbpas;
-          if (this.temporalCliente['dbpas'] !== "") {
-            this.cliente.dbpas = CryptoJS.AES.decrypt(contrasena, usuario).toString(CryptoJS.enc.Utf8);
-          }
-          break;
-        }
-        this.cliente.dbpas = this.temporalCliente['dbpas'];
-        break;
-      }
-      case 'ftp': {
-        if (this.mostrarFtp) {
-          this.temporalCliente['ftppas'] = this.cliente.ftppas;
-          if (this.temporalCliente['ftppas'] !== "") {
-            this.cliente.ftppas = CryptoJS.AES.decrypt(contrasena, usuario).toString(CryptoJS.enc.Utf8);
-          }
-          break;
-        }
-        this.cliente.ftppas = this.temporalCliente['ftppas'];
-        break;
-      }
+      
       case 'hosting': {
         if (this.mostrarHosting) {
           const hospas = this.cliente.hospas;
