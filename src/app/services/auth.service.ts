@@ -61,6 +61,7 @@ export class AuthService {
   private vencimientoCuentaCliente = this.urlEnviarCorreo + "/send-clientes";
   private solicitudManager = this.urlEnviarCorreo + "/send-solicitud-manager"
   private solicitudCliente = this.urlEnviarCorreo + "/send-cliente-solicitud";
+  private respuestaCliente = this.urlEnviarCorreo + "/send-respuesta-cliente"
 
   //Envia mediante express, nodejs y nodemailer un email de backup
   private backup = this.urlEnviarCorreo + `/send-backup`;
@@ -746,12 +747,28 @@ export class AuthService {
     );
   }
 
+  //Cuando el manager establece una fecha de entrega se guarda la fecha estipulada en la BDD
+  editarSolicitud(solicitud: SolicitudModel) {
+console.log(solicitud.id);
+
+    const SolicitudTemp = {
+      ...solicitud
+    };
+    delete SolicitudTemp.id;
+
+    return this.http.put(`${this.url}/solicitud/${solicitud.id}.json`, SolicitudTemp);
+  }
+
   sendSolicitudManager(body: any) {
     return this.http.post(this.solicitudManager, body)
   }
 
   sendSolicitudConfirmacionCliente(body: any) {
     return this.http.post(this.solicitudCliente, body)
+  }
+
+  sendRespuestaCliente(body: any){
+    return this.http.post(this.respuestaCliente, body);
   }
 
   crearSolicitud(solicitud: SolicitudModel) {
