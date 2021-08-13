@@ -335,6 +335,14 @@ export class AuthService {
     return this.http.post(`${this.urlStorage}/o/${ruta}%2F${id}%2F${file.name}`, file);
   }
 
+  uploadImages(file: File, anio: any, mes: any, ruta: string): any {
+    
+    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${anio}%2F${mes}%2F${file.name}`, file, {
+      reportProgress: true,
+      responseType: 'json'
+    });
+  }
+
   //Subir PDF al storage
   uploadFile(file: File, anio: any, mes: any, ruta: string) {
     return this.http.post(`${this.urlStorage}/o/${ruta}%2F${anio}%2F${mes}%2F${file.name}`, file);

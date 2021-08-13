@@ -71,6 +71,29 @@ dd <main class="container mt-4">
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-12">
+                    <div *ngFor="let img of this.img; let i = index">
+                        <div class="row">
+                            <p>{{img}} <span>{{i}}</span><span><i (click)="eliminarImg(i)"
+                                        class="bi bi-trash-fill text-danger"></i></span> </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-12">
+
+                    <label for="formFileMultiple">Imagenes</label>
+                    <input class="form-control mb-3" type="file" id="formFileMultiple" multiple
+                        (change)="onfileImagenes($event)">
+                </div>
+            </div>
+
+
             <div class="row mb-2">
                 <div class="col-4">
                     <label class="mb-2">Nivel de urgencia</label><br>
@@ -102,11 +125,11 @@ dd <main class="container mt-4">
                         <label class="mb-2">¿Existe material previo?</label>
                         <br>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input  formControlName="existeMaterial" type="radio" value="Si" class="btn-check"
+                            <input formControlName="existeMaterial" type="radio" value="Si" class="btn-check"
                                 name="existeMaterial" id="btnradioSi" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btnradioSi">Si</label>
 
-                            <input  formControlName="existeMaterial" type="radio" value="No" class="btn-check"
+                            <input formControlName="existeMaterial" type="radio" value="No" class="btn-check"
                                 name="existeMaterial" id="btnradioNo" autocomplete="off">
                             <label class="btn btn-outline-primary" for="btnradioNo">No</label>
                         </div>
@@ -118,7 +141,8 @@ dd <main class="container mt-4">
 
             <div class="row">
                 <div class="col-6">
-                    <div [ngClass]="{'visually-hidden' : this.solicitudForm.controls['existeMaterial'].value != 'Si' }" class="mb-3">
+                    <div [ngClass]="{'visually-hidden' : this.solicitudForm.controls['existeMaterial'].value != 'Si' }"
+                        class="mb-3">
                         <label for="formFile" class="form-label">Por favor, proporcionenos el material</label>
                         <input class="form-control" type="file" id="formFile" formControlName="fileMaterial"
                             (change)="onfileArchivo($event)">
@@ -128,12 +152,13 @@ dd <main class="container mt-4">
 
             <div class="row mb-3" style="display: flex; justify-content:center;">
                 <div class="form-group col-md-4 mt-3">
-                        <button type="submit" [disabled]="this.solicitudForm.invalid" class="btn btn-primary btn-lg w-100">
+                    <button type="submit" [disabled]="this.solicitudForm.invalid" class="btn btn-primary btn-lg w-100">
                         <i class="bi bi-cursor-fill"></i>
                         Enviar
                     </button>
                 </div>
             </div>
+
 
         </form>
     </div>

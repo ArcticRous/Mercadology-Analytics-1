@@ -7,6 +7,7 @@ export class SolicitudModel{
     disenos: number;
     desDisenos: string;
     infDisenos: string;
+    imagenes: any;
     urgencia: string;
     existeMaterial: string;
     numDisenos: string;

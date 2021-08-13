@@ -3,6 +3,7 @@ import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
+import { HttpEventType, HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-solicitudes',
@@ -21,7 +22,14 @@ export class SolicitudesComponent implements OnInit {
 
   fileMaterial: any;
 
+  imagenesMaterial: any
+  imagenesArchivo: any;
+
+  archivos: any;
+  img = [];
+
   constructor(private auth: AuthService) {
+
     this.solicitudForm = new FormGroup({
       cuenta: new FormControl("Dos Arroyos", [Validators.required]),
       fecha: new FormControl(null, [Validators.required]),
@@ -60,6 +68,12 @@ export class SolicitudesComponent implements OnInit {
 
           //Asignar datos de mi archivo a mi variable
           this.fileArchivo = file;
+          console.log(file);
+
+          console.log(typeof this.fileArchivo);
+
+          console.log(this.fileArchivo);
+
         } else {
           console.log('Hay un error');
           Swal.fire({
@@ -81,6 +95,40 @@ export class SolicitudesComponent implements OnInit {
 
   }
 
+  onfileImagenes(event) {
+    console.log(event.target.files);
+    this.archivos = event.target.files;
+    console.log(this.archivos);
+
+    for (let i = 0; i < this.archivos.length ; i++) {
+      console.log(this.archivos[i]);
+      console.log(this.archivos[i].name)
+      let variable = this.archivos[i].name;
+      this.img.push(variable);
+    }
+    console.log(this.img);
+    console.log(this.img[1]);
+    
+  }
+
+  eliminarImg(indice: any){
+    console.log(indice, indice-1);
+    let i = indice;
+    // console.log(this.img.length);
+    // console.log(this.img[indice]);
+    if(indice == 0){
+      i=2;
+    }
+    if(indice == 1){
+      i = 2;
+    }
+    
+    let otro = this.img.splice(indice, i-1)
+    console.log(otro);
+    // this.img = this.img;
+    console.log(this.img);
+    
+  }
 
   guardar() {
     if (this.solicitudForm.invalid) { return false }
@@ -104,11 +152,31 @@ export class SolicitudesComponent implements OnInit {
     Swal.showLoading();
 
     let archivoMaterial;
-    let fecha = new Date(this.solicitudForm.controls['fecha'].value);  
-    let ruta = 'solicitudes%2Farchivos';    
-  
+    let fecha = new Date(this.solicitudForm.controls['fecha'].value);
+    let ruta = 'solicitudes%2Farchivos';
+    let cuentaImg = this.solicitudForm.controls['cuenta'].value
+    let rutaImg = `solicitudes%2Fimagenes%2F${cuentaImg}`;
+
     //Si se adjunta material se sube primero el material, si no solo se suben los datos
     if (this.solicitudForm.value['fileMaterial'] != null) {
+
+      
+  
+      //Si se adjunta material se sube primero el material, si no solo se suben los datos
+      for (let archivo of this.archivos) {
+        this.auth.uploadImages(archivo, fecha.getFullYear(), (fecha.getMonth() + 1), rutaImg).subscribe(next => {
+          console.log(next);
+          // this.solicitudModel.imagenes.push(next);
+        }, error => {
+          console.log(error);
+        })
+      }
+      // console.log(this.solicitudModel.imagenes);
+      
+      console.log("----------------------paso---------------------");
+      
+      
+
       this.auth.uploadFile(this.fileArchivo, fecha.getFullYear(), (fecha.getMonth() + 1), ruta).subscribe(next => {
         // console.log(next); 
         archivoMaterial = next;
@@ -151,5 +219,7 @@ export class SolicitudesComponent implements OnInit {
     }
 
   }
+
+
 
 }
