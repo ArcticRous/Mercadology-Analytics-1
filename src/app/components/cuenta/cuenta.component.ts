@@ -23,14 +23,11 @@ export class CuentaComponent implements OnInit {
   temporalCliente: Object = {
     'cuepas': "",
     'dompas': "",
-    'dbpas': "",
-    'ftppas': "",
     'hospas': ""
   };
   mostrarCorreo: boolean = false;
   mostrarDominio: boolean = false;
   mostrarBd: boolean = false;
-  mostrarFtp: boolean = false;
   mostrarHosting: boolean = false;
 
   constructor(private AuthService: AuthService,
@@ -47,8 +44,6 @@ export class CuentaComponent implements OnInit {
           /** Guarda en un objeto temporal para comparar si hubo algun cambio de la contraseña**/
           this.temporalCliente['cuepas'] = resp.cuepas;
           this.temporalCliente['dompas'] = resp.dompas;
-          this.temporalCliente['dbpas'] = resp.dbpas;
-          this.temporalCliente['ftppas'] = resp.ftppas;
           this.temporalCliente['hospas'] = resp.hospas;
 
           this.cliente = resp;
@@ -98,20 +93,6 @@ export class CuentaComponent implements OnInit {
         this.cliente.dompas = CryptoJS.AES.encrypt(this.cliente.dompas.trim(), this.cliente.domuse.trim()).toString();
       }
 
-      if (this.cliente.dbpas === '') {
-        // console.log("Entro a dbpas vacio");
-      } else if (this.cliente.dbpas !== this.temporalCliente['dbpas']) {
-        // console.log("Entro a ELSE dbpas");
-        this.cliente.dbpas = CryptoJS.AES.encrypt(this.cliente.dbpas.trim(), this.cliente.dbuse.trim()).toString();
-      }
-
-      if (this.cliente.ftppas === '') {
-        // console.log("Entro a ftppas vacio");
-      } else if (this.cliente.ftppas !== this.temporalCliente['ftppas']) {
-        // console.log("Entro a ELSE ftppas");
-        this.cliente.ftppas = CryptoJS.AES.encrypt(this.cliente.ftppas.trim(), this.cliente.ftpuse.trim()).toString();
-      }
-
       if (this.cliente.hospas === '') {
         // console.log("Entro a hospas vacio");
       } else if (this.cliente.hospas !== this.temporalCliente['hospas']) {
@@ -120,10 +101,8 @@ export class CuentaComponent implements OnInit {
       }
 
       //Solo para que se regresen a input password las contraseñas
-      this.mostrarBd = false;
       this.mostrarCorreo = false;
       this.mostrarDominio = false;
-      this.mostrarFtp = false;
       this.mostrarHosting = false;
       // console.log(this.cliente.hosven, this.cliente.venssl, this.cliente.domven);
       peticionUpdate = this.AuthService.UpdatCliente(this.cliente);
@@ -153,16 +132,16 @@ export class CuentaComponent implements OnInit {
       );
 
     } else {
-      if (this.cliente.dbpas !== undefined) {
-        this.cliente.dbpas = CryptoJS.AES.encrypt(this.cliente.dbpas.trim(), this.cliente.dbuse.trim()).toString();
-      } else {
-        this.cliente.dbpas = "";
-      }
-      if (this.cliente.ftppas !== undefined) {
-        this.cliente.ftppas = CryptoJS.AES.encrypt(this.cliente.ftppas.trim(), this.cliente.ftpuse.trim()).toString();
-      } else {
-        this.cliente.ftppas = "";
-      }
+      // if (this.cliente.dbpas !== undefined) {
+      //   this.cliente.dbpas = CryptoJS.AES.encrypt(this.cliente.dbpas.trim(), this.cliente.dbuse.trim()).toString();
+      // } else {
+      //   this.cliente.dbpas = "";
+      // }
+      // if (this.cliente.ftppas !== undefined) {
+      //   this.cliente.ftppas = CryptoJS.AES.encrypt(this.cliente.ftppas.trim(), this.cliente.ftpuse.trim()).toString();
+      // } else {
+      //   this.cliente.ftppas = "";
+      // }
       if (this.cliente.hospas !== undefined) {
         this.cliente.hospas = CryptoJS.AES.encrypt(this.cliente.hospas.trim(), this.cliente.hosuse.trim()).toString();
       } else {
@@ -180,10 +159,9 @@ export class CuentaComponent implements OnInit {
       }
 
       //Solo para que se regresen a input password las contraseñas
-      this.mostrarBd = false;
+      
       this.mostrarCorreo = false;
       this.mostrarDominio = false;
-      this.mostrarFtp = false;
       this.mostrarHosting = false;
       // console.log(this.cliente.hosven, this.cliente.venssl, this.cliente.domven);
       
