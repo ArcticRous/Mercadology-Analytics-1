@@ -330,22 +330,15 @@ export class AuthService {
     return this.http.get(`${this.urlDatos}/Usuario.json`);
   }
 
+  //Estos dos metodos pueden unificarse en uno solo
   //Subir imagen al storage
   uploadImage(file: File, id: string, ruta: string) {
     return this.http.post(`${this.urlStorage}/o/${ruta}%2F${id}%2F${file.name}`, file);
   }
 
-  uploadImages(file: File, anio: any, mes: any, ruta: string): any {
-    
-    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${anio}%2F${mes}%2F${file.name}`, file, {
-      reportProgress: true,
-      responseType: 'json'
-    });
-  }
-
-  //Subir PDF al storage
-  uploadFile(file: File, anio: any, mes: any, ruta: string) {
-    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${anio}%2F${mes}%2F${file.name}`, file);
+  //Sube cualquier archivo al storage
+  uploadFile(file: File, ruta: string) {
+    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${file.name}`, file);
   }
 
   // guardar comunicados
