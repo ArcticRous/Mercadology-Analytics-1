@@ -49,9 +49,9 @@
             </div>
 
             <div class="row">
-                <div class="col-12">
-
-                </div>
+                    <picture *ngFor = "let img of this.peticiones.imagenes; let i = index" class="col-2">
+                        <img [src]=img class="w-100 imagenes img-thumbnail rounded" alt={{peticiones.cuenta}} style="height: 150px;">
+                    </picture>
             </div>
 
             <div class="row">

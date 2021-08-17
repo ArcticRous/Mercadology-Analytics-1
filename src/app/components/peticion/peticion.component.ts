@@ -14,6 +14,8 @@ import Swal from 'sweetalert2';
 export class PeticionComponent implements OnInit {
   peticiones: SolicitudModel = new SolicitudModel();
 
+  imagenes: [] = [];
+
   constructor(private AuthService: AuthService,
     private route: ActivatedRoute) { }
 
@@ -24,6 +26,13 @@ export class PeticionComponent implements OnInit {
       console.log(resp);
       this.peticiones = resp;
       console.log(this.peticiones);
+      this.imagenes = this.peticiones.imagenes;
+      // console.log(this.imagenes);
+      for (const img of this.imagenes) {
+        console.log(img);
+        
+      }
+      
 
       this.peticiones.id = id;
     });
