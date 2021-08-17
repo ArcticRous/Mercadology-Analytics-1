@@ -18,7 +18,7 @@ export class PeticionesComponent implements OnInit, AfterViewInit {
   durationInSeconds = 2;
   rol: string;
 
-  displayedColumns: string[] = ['#', 'cuenta', 'material', 'urgencia','id'];
+  displayedColumns: string[] = ['#', 'cuenta', 'material','id'];
   dataSource: MatTableDataSource<SolicitudModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
