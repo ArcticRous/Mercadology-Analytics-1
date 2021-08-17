@@ -3,7 +3,7 @@ import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { HttpEventType, HttpResponse } from '@angular/common/http';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-solicitudes',
@@ -12,21 +12,29 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 })
 export class SolicitudesComponent implements OnInit {
 
+  //Para el control del formulario
   solicitudForm: FormGroup;
 
+  //Modelo de Solicitud
   solicitudModel: SolicitudModel;
 
-  fileArchivo: any;
-  altMediaArchivo: any;
-  // existeMaterial: boolean;
-
+  //Solo lo uso para guardar el reader onload supuesta del PDF pero no lo renderiza
   fileMaterial: any;
+  //Lo uso en la parte de renderizacion dl PDF pero no se hace esa parte
+  fileArchivo: any;
 
-  imagenesMaterial: any
-  imagenesArchivo: any;
-
-  archivos: any;
+  //Guarda todos los archivos
+  archivos = [];
+  //Guarda los nombres de las imagenes para mostrarlas
   img = [];
+  //Solo par mostrar un texto fijo en los archivos subidos
+  textoLabel: string = "Seleccionar archivo";
+  //Guarda las url de las imagenes
+  imgProporcionadas: any[] = [];
+
+  //Boleanos para ver si proporciona imagenes o archivos
+  booleanFile: boolean = false;
+  booleanImg: boolean = false;
 
   constructor(private auth: AuthService) {
 
@@ -38,7 +46,7 @@ export class SolicitudesComponent implements OnInit {
       numDisenos: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(100)]),
       desDisenos: new FormControl(null, [Validators.required]),
       infDisenos: new FormControl(null, [Validators.required]),
-      urgencia: new FormControl(null, [Validators.required]),
+      imagenes: new FormControl(null),
       existeMaterial: new FormControl(null, [Validators.required]),
       fileMaterial: new FormControl(null)
     })
@@ -96,130 +104,173 @@ export class SolicitudesComponent implements OnInit {
   }
 
   onfileImagenes(event) {
-    console.log(event.target.files);
-    this.archivos = event.target.files;
-    console.log(this.archivos);
+    let archivosTempo = [...event.target.files];
 
-    for (let i = 0; i < this.archivos.length ; i++) {
-      console.log(this.archivos[i]);
-      console.log(this.archivos[i].name)
-      let variable = this.archivos[i].name;
-      this.img.push(variable);
+    for (let i = 0; i < archivosTempo.length; i++) {
+      let variable = archivosTempo[i].name;
+
+      if (!this.img.includes(variable)) {
+        this.archivos.push(archivosTempo[i]);
+        this.img.push(variable);
+      }
     }
-    console.log(this.img);
-    console.log(this.img[1]);
-    
+
+    this.solicitudForm.value['fileMaterial'] = this.archivos;
+    this.textoLabel = `${this.img.length} archivos seleccionados`;
   }
 
-  eliminarImg(indice: any){
-    console.log(indice, indice-1);
-    let i = indice;
-    // console.log(this.img.length);
-    // console.log(this.img[indice]);
-    if(indice == 0){
-      i=2;
-    }
-    if(indice == 1){
-      i = 2;
-    }
-    
-    let otro = this.img.splice(indice, i-1)
-    console.log(otro);
-    // this.img = this.img;
-    console.log(this.img);
-    
+  eliminarImg(indice: any) {
+    this.img.splice(indice, 1)
+    this.textoLabel = `${this.img.length} archivos seleccionados`;
+    this.archivos.splice(indice, 1);
+    this.solicitudForm.value['fileMaterial'] = this.archivos;
   }
 
   guardar() {
     if (this.solicitudForm.invalid) { return false }
 
+    let longitudImgs;
+
     if (this.solicitudForm.value.existeMaterial == "No") {
       if (this.solicitudForm.value.fileMaterial) {
         this.solicitudForm.value.fileMaterial = null;
       }
+      this.booleanFile = false;
     } else if (this.solicitudForm.value.existeMaterial == "Si") {
       if (!this.solicitudForm.value.fileMaterial) {
         Swal.fire({ title: "Falta material", text: "Debe proporcionar material", icon: "warning" });
         return false;
       }
+      this.booleanFile = true;
+    }
+
+    if (this.archivos.length) {
+      this.booleanImg = true;
+      this.solicitudForm.value['imagenes'] = this.archivos;
+      longitudImgs = this.archivos.length;
+      console.log(this.archivos);
+    } else {
+      this.booleanImg = false
+      this.solicitudForm.value['imagenes'] = "";
+      longitudImgs = 0;
     }
 
     Swal.fire({
       allowOutsideClick: false,
       icon: 'info',
-      text: 'Espere por favor...'
+      text: 'Espere por favor, se estan subiendo los archivos...'
     });
     Swal.showLoading();
 
-    let archivoMaterial;
     let fecha = new Date(this.solicitudForm.controls['fecha'].value);
-    let ruta = 'solicitudes%2Farchivos';
     let cuentaImg = this.solicitudForm.controls['cuenta'].value
-    let rutaImg = `solicitudes%2Fimagenes%2F${cuentaImg}`;
 
-    //Si se adjunta material se sube primero el material, si no solo se suben los datos
-    if (this.solicitudForm.value['fileMaterial'] != null) {
+    let dia = fecha.getDate();
+    let mes = fecha.getMonth() + 1;
+    let anio = fecha.getFullYear();
 
-      
-  
-      //Si se adjunta material se sube primero el material, si no solo se suben los datos
-      for (let archivo of this.archivos) {
-        this.auth.uploadImages(archivo, fecha.getFullYear(), (fecha.getMonth() + 1), rutaImg).subscribe(next => {
-          console.log(next);
-          // this.solicitudModel.imagenes.push(next);
+    let rutaFile = `solicitudes%2Farchivos%2F${cuentaImg}%2F${anio}%2F${mes}%2F${dia}`;
+    rutaFile = rutaFile.replace(/ /g, "%20")
+    let rutaImg = `solicitudes%2Fimagenes%2F${cuentaImg}%2F${anio}%2F${mes}%2F${dia}`;
+    //Si la cuenta tiene espacios o la ruta los contiene, lo siguiente lo remplaza
+    rutaImg = rutaImg.replace(/ /g, "%20")
+
+
+    if (this.booleanFile == true || this.booleanImg == true) {
+console.log("Entro aqui");
+
+      //Array para meter todas las peticiones al forkJoin que se realizaran en authServices
+      let arrayPeticion = [];
+      console.log(longitudImgs);
+      if (this.booleanImg) {
+        for (let archivo of this.archivos) {
+          //Recibe todos los archivos de las imagenes
+          this.solicitudForm.value['imagenes'] = this.archivos;
+          arrayPeticion.push(this.auth.uploadFile(archivo, rutaImg));
+        }
+      }
+      if (this.booleanFile) {
+        arrayPeticion.push(this.auth.uploadFile(this.fileArchivo, rutaFile));
+      }
+      //ForkJoin ejecuta las peticiones que se guardaron en el array de forma paralela
+      forkJoin(arrayPeticion).subscribe(next => {
+
+        for (const archivo of next) {
+
+          let archivoMaterial = archivo;
+          let urlArchivo = archivoMaterial['name'];
+          const url = urlArchivo.replace(/ /g, "%20").replace(/\//g, "%2F")
+          let altMediaArchivo = archivoMaterial['downloadTokens'];
+
+          const urlFirebase = this.auth.urlStorage + '/o/' + url + '?alt=media&token=' + altMediaArchivo;
+          console.log(urlFirebase);
+
+          //Si existe un archivo el ultimo 'archivo' será vinculado como File, los anteriores serán imgs
+          if (this.booleanFile) {
+            if (next[longitudImgs] == archivo) {
+              this.solicitudForm.value['fileMaterial'] = urlFirebase;
+            } else {
+              this.imgProporcionadas.push(urlFirebase);
+            }
+          } else {
+            this.imgProporcionadas.push(urlFirebase);
+          }
+        }
+
+      }, error => {
+        console.log(error);
+      }, () => {
+        console.log(this.imgProporcionadas);
+        this.solicitudForm.value['imagenes'] = this.imgProporcionadas;
+        this.solicitudModel = this.solicitudForm.value;
+
+        this.auth.enviarSolicitud(this.solicitudModel).subscribe(resp => {
+          console.log(resp);
         }, error => {
           console.log(error);
-        })
-      }
-      // console.log(this.solicitudModel.imagenes);
-      
-      console.log("----------------------paso---------------------");
-      
-      
-
-      this.auth.uploadFile(this.fileArchivo, fecha.getFullYear(), (fecha.getMonth() + 1), ruta).subscribe(next => {
-        // console.log(next); 
-        archivoMaterial = next;
-        let urlArchivo = archivoMaterial.contentDisposition;
-        const url = urlArchivo.slice(25, urlArchivo.lenght);
-        this.altMediaArchivo = archivoMaterial.downloadTokens;
-
-        const urlFirebase = this.auth.urlStorage + '/o/' + ruta + '%2F' + fecha.getFullYear() + '%2F' + (fecha.getMonth() + 1) + '%2F' + url + '?alt=media&token=' + this.altMediaArchivo;
-        this.solicitudForm.value['fileMaterial'] = urlFirebase;
-
-        this.auth.enviarSolicitud(this.solicitudForm.value).subscribe(next => {
+        }, () => {
+          Swal.fire({
+            title: 'Se envio la solicitud',
+            text: `Su solicitud ha sido enviada, Mercadology se pondrá en contacto a la brevedad`,
+            icon: 'success'
+          })
+          this.imgProporcionadas = [];
+          this.archivos = [];
+          this.img = [];
+          this.textoLabel = "Seleccionar archivo";
+          this.solicitudForm.value['fileMaterial'] = "";
           this.solicitudForm.reset({
             'cuenta': "Dos Arroyos"
           });
-          Swal.fire(
-            'Solicitud enviada',
-            'Mercadology enviará una respuesta lo más pronto posible',
-            'success'
-          )
-        }, error => {
-          console.log(error);
         })
+      })
 
+    } else {
+console.log("Entro en el else");
+
+      this.solicitudModel = this.solicitudForm.value;
+
+      this.auth.enviarSolicitud(this.solicitudModel).subscribe(resp => {
+        console.log(resp);
       }, error => {
         console.log(error);
-      })
-    } else {
-      this.auth.enviarSolicitud(this.solicitudForm.value).subscribe(next => {
+      }, () => {
+        Swal.fire({
+          title: 'Se envio la solicitud',
+          text: `Su solicitud ha sido enviada, Mercadology se pondrá en contacto a la brevedad`,
+          icon: 'success'
+        })
+        this.imgProporcionadas = [];
+        this.archivos = [];
+        this.img = [];
+        this.textoLabel = "Seleccionar archivo";
+        this.solicitudForm.value['fileMaterial'] = "";
         this.solicitudForm.reset({
           'cuenta': "Dos Arroyos"
         });
-        Swal.fire(
-          'Solicitud enviada',
-          'Mercadology enviará una respuesta lo más pronto posible',
-          'success'
-        )
-      }, error => {
-        console.log(error);
       })
     }
-
   }
-
 
 
 }

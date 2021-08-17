@@ -72,53 +72,37 @@ dd <main class="container mt-4">
             </div>
 
             <div class="row">
-                <div class="col-12">
-                    <div *ngFor="let img of this.img; let i = index">
-                        <div class="row">
-                            <p>{{img}} <span>{{i}}</span><span><i (click)="eliminarImg(i)"
-                                        class="bi bi-trash-fill text-danger"></i></span> </p>
-                        </div>
-                    </div>
+                <div class="">
+                    <div class="text-center d-flex justify-content-center align-items-center p-2"
+                        style="position: relative; border: dotted 3px #FCC42C;">
+                        
 
+                        <label for="formFileMultiple" class="text-danger" style="position: absolute; cursor: pointer;">
+                            {{textoLabel}}</label>
+                        <input class="form-control mb-3 py-5" type="file" id="formFileMultiple" multiple
+                            name="formFileMultiple" (change)="onfileImagenes($event)" 
+                            formControlName="imagenes">
+                    </div>
                 </div>
             </div>
 
-
             <div class="row">
                 <div class="col-12">
+                    <div class="overflow-auto mt-3 mb-3" style="max-height: 150px;">
+                        <div *ngFor="let img of this.img; let i = index">
 
-                    <label for="formFileMultiple">Imagenes</label>
-                    <input class="form-control mb-3" type="file" id="formFileMultiple" multiple
-                        (change)="onfileImagenes($event)">
+                            <div class="row" style="width: 100%;">
+                                <p style="display: flex; justify-content: space-between;"> {{img}} <span class="pe-5">
+                                        <i (click)="eliminarImg(i)" class="bi bi-trash-fill text-danger pe-auto"></i>
+                                    </span> </p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
 
             <div class="row mb-2">
-                <div class="col-4">
-                    <label class="mb-2">Nivel de urgencia</label><br>
-                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                        <input type="radio" formControlName="urgencia" class="btn-check" name="urgencia" value="1"
-                            id="btnradio1" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio1">1</label>
-
-                        <input type="radio" formControlName="urgencia" class="btn-check" name="urgencia" value="2"
-                            id="btnradio2" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio2">2</label>
-
-                        <input type="radio" formControlName="urgencia" class="btn-check" name="urgencia" value="3"
-                            id="btnradio3" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio3">3</label>
-
-                        <input type="radio" formControlName="urgencia" class="btn-check" name="urgencia" value="4"
-                            id="btnradio4" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio4">4</label>
-
-                        <input type="radio" formControlName="urgencia" class="btn-check" name="urgencia" value="5"
-                            id="btnradio5" autocomplete="off">
-                        <label class="btn btn-outline-primary" for="btnradio5">5</label>
-                    </div>
-                </div>
 
                 <div class="col-4">
                     <div class="form-group">
