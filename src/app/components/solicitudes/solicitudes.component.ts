@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
+import {MatSnackBar} from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-solicitudes',
@@ -11,7 +12,7 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./solicitudes.component.css']
 })
 export class SolicitudesComponent implements OnInit {
-
+  guardaCargaAnterior;
   //Para el control del formulario
   solicitudForm: FormGroup;
 
@@ -36,11 +37,23 @@ export class SolicitudesComponent implements OnInit {
   booleanFile: boolean = false;
   booleanImg: boolean = false;
 
-  constructor(private auth: AuthService) {
+  abrirCerrar: boolean = false;
 
+  constructor(private auth: AuthService, private _snackBar: MatSnackBar) {
+    const fecha = new Date();
+    const dia = fecha.getDate();
+    const mes = (fecha.getMonth() + 1)
+    const anio = fecha.getFullYear();
+    let date = "";
+    if(mes < 10){
+       date = `${anio}-0${mes}-${dia}`
+    }else {
+      date = `${anio}-${mes}-${dia}`
+    }
+    
     this.solicitudForm = new FormGroup({
       cuenta: new FormControl("Dos Arroyos", [Validators.required]),
-      fecha: new FormControl(null, [Validators.required]),
+      fecha: new FormControl(date, [Validators.required]),
       material: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       numDisenos: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(100)]),
@@ -59,12 +72,13 @@ export class SolicitudesComponent implements OnInit {
   onfileArchivo(event) {
     //Guardamos los datos del archivo
     const file = event.target.files[0];
+console.log(file.type);
 
     if (file.size <= 3145728) {
       /**Vemos que exista algo en el archivo */
       if (event.target.files && event.target.files.length > 0) {
         //Hacemos condiciones para aceptar solo archvios que contengan esas palabras. NOTA: Pueden ser más estrictas las condiciones
-        if (file.type.includes("pdf") || file.type.includes("word") || file.type.includes("zip") || file.type.includes("image")) {
+        if (file.type.includes("pdf") || file.type.includes("word") || file.type.includes("zip")) {
           //Leer fichero
           const reader = new FileReader();
           reader.readAsDataURL(file);
@@ -76,22 +90,20 @@ export class SolicitudesComponent implements OnInit {
 
           //Asignar datos de mi archivo a mi variable
           this.fileArchivo = file;
-          console.log(file);
-
-          console.log(typeof this.fileArchivo);
-
-          console.log(this.fileArchivo);
 
         } else {
-          console.log('Hay un error');
+          // console.log('Hay un error');
+          this.solicitudForm.value.fileMaterial = null;
+          console.log(this.solicitudForm.value.fileMaterial);
+          
           Swal.fire({
             title: "Formato de archivo",
-            text: "Solo se aceptan formatos pdf, word, zip o una imagen png, jpeg, jpg",
+            text: "Solo se aceptan formatos pdf, word o zip",
             icon: "warning"
           })
         }
       } else {
-        console.log('No entro' + event.target.files + event.target.files.lenght);
+        // console.log('No entro' + event.target.files + event.target.files.lenght);
       }
     } else {
       Swal.fire({
@@ -104,26 +116,53 @@ export class SolicitudesComponent implements OnInit {
   }
 
   onfileImagenes(event) {
+
     let archivosTempo = [...event.target.files];
+    console.log(archivosTempo);
+    
 
     for (let i = 0; i < archivosTempo.length; i++) {
-      let variable = archivosTempo[i].name;
-
-      if (!this.img.includes(variable)) {
-        this.archivos.push(archivosTempo[i]);
-        this.img.push(variable);
+      if(archivosTempo[i].type.includes("image")){
+        let variable = archivosTempo[i].name;
+        console.log("ess:::  ",archivosTempo[i].type );
+        
+        
+        if (!this.img.includes(variable)) {
+          this.archivos.push(archivosTempo[i]);
+          this.img.push(variable);
+        }
+      }else{
+        this.openSnackBar("Solo se pueden cargar imágenes")
       }
+      
     }
 
-    this.solicitudForm.value['fileMaterial'] = this.archivos;
-    this.textoLabel = `${this.img.length} archivos seleccionados`;
+    if (this.img.length == 0) {
+      this.textoLabel = `Seleccionar archivo`;
+    } else if (this.img.length == 1) {
+      this.textoLabel = `${this.img.length} archivo seleccionado`;
+    } else {
+      this.textoLabel = `${this.img.length} archivos seleccionados`;
+    }
+
+    this.solicitudForm.value['fileMaterial'] = "";
+    this.solicitudForm.value['imagenes'] = null;
   }
 
   eliminarImg(indice: any) {
-    this.img.splice(indice, 1)
-    this.textoLabel = `${this.img.length} archivos seleccionados`;
+    this.solicitudForm.value['imagenes'] = null;
+
+    this.img.splice(indice, 1);
     this.archivos.splice(indice, 1);
-    this.solicitudForm.value['fileMaterial'] = this.archivos;
+    this.textoLabel = `${this.archivos.length} archivos seleccionados`;
+
+    // this.solicitudForm.value['fileMaterial'] = this.archivos;
+    if (this.img.length == 0) {
+      this.textoLabel = "Seleccionar archivo";
+    } else if (this.img.length == 1) {
+      this.textoLabel = `${this.img.length} archivo seleccionado`;
+    }
+
   }
 
   guardar() {
@@ -138,6 +177,8 @@ export class SolicitudesComponent implements OnInit {
       this.booleanFile = false;
     } else if (this.solicitudForm.value.existeMaterial == "Si") {
       if (!this.solicitudForm.value.fileMaterial) {
+        console.log(this.solicitudForm.value.fileMaterial);
+        
         Swal.fire({ title: "Falta material", text: "Debe proporcionar material", icon: "warning" });
         return false;
       }
@@ -148,7 +189,7 @@ export class SolicitudesComponent implements OnInit {
       this.booleanImg = true;
       this.solicitudForm.value['imagenes'] = this.archivos;
       longitudImgs = this.archivos.length;
-      console.log(this.archivos);
+      // console.log(this.archivos);
     } else {
       this.booleanImg = false
       this.solicitudForm.value['imagenes'] = "";
@@ -177,11 +218,11 @@ export class SolicitudesComponent implements OnInit {
 
 
     if (this.booleanFile == true || this.booleanImg == true) {
-console.log("Entro aqui");
+      // console.log("Entro aqui");
 
       //Array para meter todas las peticiones al forkJoin que se realizaran en authServices
       let arrayPeticion = [];
-      console.log(longitudImgs);
+      // console.log(longitudImgs);
       if (this.booleanImg) {
         for (let archivo of this.archivos) {
           //Recibe todos los archivos de las imagenes
@@ -203,7 +244,7 @@ console.log("Entro aqui");
           let altMediaArchivo = archivoMaterial['downloadTokens'];
 
           const urlFirebase = this.auth.urlStorage + '/o/' + url + '?alt=media&token=' + altMediaArchivo;
-          console.log(urlFirebase);
+          // console.log(urlFirebase);
 
           //Si existe un archivo el ultimo 'archivo' será vinculado como File, los anteriores serán imgs
           if (this.booleanFile) {
@@ -220,12 +261,12 @@ console.log("Entro aqui");
       }, error => {
         console.log(error);
       }, () => {
-        console.log(this.imgProporcionadas);
+        // console.log(this.imgProporcionadas);
         this.solicitudForm.value['imagenes'] = this.imgProporcionadas;
         this.solicitudModel = this.solicitudForm.value;
 
         this.auth.enviarSolicitud(this.solicitudModel).subscribe(resp => {
-          console.log(resp);
+          // console.log(resp);
         }, error => {
           console.log(error);
         }, () => {
@@ -246,12 +287,10 @@ console.log("Entro aqui");
       })
 
     } else {
-console.log("Entro en el else");
-
       this.solicitudModel = this.solicitudForm.value;
 
       this.auth.enviarSolicitud(this.solicitudModel).subscribe(resp => {
-        console.log(resp);
+        // console.log(resp);
       }, error => {
         console.log(error);
       }, () => {
@@ -270,6 +309,21 @@ console.log("Entro en el else");
         });
       })
     }
+  }
+
+
+  abrirImagenes() {
+    this.abrirCerrar = true;
+  }
+
+  cerrarImagenes() {
+    this.abrirCerrar = false;
+  }
+
+  openSnackBar(texto: string):void {
+    this._snackBar.open(texto, "Cerrar", {
+      duration: 4000,
+    });
   }
 
 

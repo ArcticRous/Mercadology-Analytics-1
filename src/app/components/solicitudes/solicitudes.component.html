@@ -23,8 +23,9 @@ dd <main class="container mt-4">
 
                 <div class="col-6">
                     <div class="form-group col-12">
-                        <label for="formFecha" class="mb-2">Fecha en que lo solicita</label>
-                        <input type="date" class="form-control" name="fecha" id="formFecha" formControlName="fecha">
+                        <label for="formFecha" class="mb-2">Fecha de solicitud </label>
+                        <input type="date" class="form-control bg-white" name="fecha" id="formFecha"
+                            formControlName="fecha" disabled>
                     </div>
                 </div>
 
@@ -65,23 +66,34 @@ dd <main class="container mt-4">
             <div class="row">
                 <div class="col-12">
                     <label for="formInfDisenos" class="mb-2">Información en diseños</label>
-                    <textarea class="form-control mb-3" id="formInfDisenos"
+                    <textarea class="form-control mb-4" id="formInfDisenos"
                         placeholder="Especifique el contenido (textos) que desea que lleve el diseño" name="infDisenos"
                         formControlName="infDisenos"></textarea>
                 </div>
             </div>
 
             <div class="row">
-                <div class="">
-                    <div class="text-center d-flex justify-content-center align-items-center p-2"
-                        style="position: relative; border: dotted 3px #FCC42C;">
-                        
+                <div class="col-4 mb-3">
+                    <button class="btn btn-primary w-100" (click)="abrirImagenes()">Añadir imagen</button>
+                </div>
+            </div>
 
-                        <label for="formFileMultiple" class="text-danger" style="position: absolute; cursor: pointer;">
+            <div class="row">
+                <div class="inputFileImagenes" [ngStyle]="this.abrirCerrar ? {'display': 'block'} : {'display':'none'}">
+                    <div class="imagenesFile text-center d-flex justify-content-center align-items-center"
+                        style="position: relative; border: dotted 4px #FCC42C;">
+
+
+                        <button type="button" class="btn-close btn-close-white mt-2 me-2" (click)="cerrarImagenes()"
+                            style="position: absolute; top: 0; right: 0; z-index: 1;" aria-label="Close"></button>
+                        <h4 class="mt-2 text-warning" style="position: absolute; top:0">Arrastre archivos para subirlos</h4>
+                        <label for="formFileMultiple" class="btn btn-outline-warning"
+                            style="position: absolute; cursor: pointer; z-index: 1; ">
                             {{textoLabel}}</label>
-                        <input class="form-control mb-3 py-5" type="file" id="formFileMultiple" multiple
-                            name="formFileMultiple" (change)="onfileImagenes($event)" 
-                            formControlName="imagenes">
+                        <p class="mb-4 text-warning" style="position: absolute; bottom: 0; font-size: 11px;">Tamaño máximo recomendado 3MB</p>
+                        <input class="form-control" type="file" id="formFileMultiple" multiple name="formFileMultiple"
+                            (change)="onfileImagenes($event)" formControlName="imagenes"
+                            style="opacity: 0; padding: 80px 0 80px 0;">
                     </div>
                 </div>
             </div>
@@ -92,8 +104,9 @@ dd <main class="container mt-4">
                         <div *ngFor="let img of this.img; let i = index">
 
                             <div class="row" style="width: 100%;">
-                                <p style="display: flex; justify-content: space-between;"> {{img}} <span class="pe-5">
-                                        <i (click)="eliminarImg(i)" class="bi bi-trash-fill text-danger pe-auto"></i>
+                                <p style="display: flex; justify-content: space-between;"> {{img}} <span>
+                                        <i (click)="eliminarImg(i)" class="bi bi-trash-fill text-danger pe-auto"
+                                            style="cursor: pointer;"></i>
                                     </span> </p>
                             </div>
                         </div>
