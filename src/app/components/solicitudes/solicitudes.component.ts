@@ -38,22 +38,23 @@ export class SolicitudesComponent implements OnInit {
   booleanImg: boolean = false;
 
   abrirCerrar: boolean = false;
+  date:string = "";
 
   constructor(private auth: AuthService, private _snackBar: MatSnackBar) {
     const fecha = new Date();
     const dia = fecha.getDate();
     const mes = (fecha.getMonth() + 1)
     const anio = fecha.getFullYear();
-    let date = "";
+    
     if(mes < 10){
-       date = `${anio}-0${mes}-${dia}`
+       this.date = `${anio}-0${mes}-${dia}`
     }else {
-      date = `${anio}-${mes}-${dia}`
+      this.date = `${anio}-${mes}-${dia}`
     }
     
     this.solicitudForm = new FormGroup({
-      cuenta: new FormControl("Dos Arroyos", [Validators.required]),
-      fecha: new FormControl(date, [Validators.required]),
+      cuenta: new FormControl("Cinthya García", [Validators.required]),
+      fecha: new FormControl(this.date, [Validators.required]),
       material: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       numDisenos: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(100)]),
@@ -281,7 +282,8 @@ console.log(file.type);
           this.textoLabel = "Seleccionar archivo";
           this.solicitudForm.value['fileMaterial'] = "";
           this.solicitudForm.reset({
-            'cuenta': "Dos Arroyos"
+            'cuenta': "Cinthya García",
+            'fecha': this.date
           });
         })
       })
@@ -305,7 +307,8 @@ console.log(file.type);
         this.textoLabel = "Seleccionar archivo";
         this.solicitudForm.value['fileMaterial'] = "";
         this.solicitudForm.reset({
-          'cuenta': "Dos Arroyos"
+          'cuenta': "Cinthya García",
+          'fecha': this.date
         });
       })
     }

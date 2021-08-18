@@ -10,14 +10,24 @@ dd <main class="container mt-4">
                     <label for="formCuenta" class="mb-2">Cuenta</label>
                     <select class="form-select form-select-md mb-3" id="formCuenta" name="cuenta"
                         formControlName="cuenta" aria-label=".form-select-md example">
-                        <option selected>Dos Arroyos</option>
-                        <option>Paola Soto</option>
+                        <option selected>Cinthya García</option>
+                        <option>Dos Arroyos</option>
+                        <option>Endocéntrica</option>
                         <option>Emplois</option>
+                        <option>Euroventyc</option>
                         <option>Global Staffing</option>
-                        <option>Rohe</option>
+                        <option>KOM</option>
+                        <option>Lupita Chaidez</option>
+                        <option>Namaco</option>
                         <option>Nomenex</option>
-                        <option>Olivera Logistics</option>
                         <option>Noticias Querétaro</option>
+                        <option>Marmo</option>
+                        <option>Olivera Logistics</option>
+                        <option>Palconsulting</option>
+                        <option>Paola Soto</option>
+                        <option>PureWater</option>
+                        <option>Rohe</option>
+                        <option>Viva Casas</option>
                     </select>
                 </div>
 
@@ -41,7 +51,7 @@ dd <main class="container mt-4">
 
             <div class="row">
                 <div class="col-6">
-                    <label for="formEmail" class="mb-2">Email</label>
+                    <label for="formEmail" class="mb-2">Email al cual le llegarán las notificaciones</label>
                     <input type="email" class="form-control mb-3" name="email" id="formEmail"
                         placeholder="ejemplo@correo.com" formControlName="email">
                 </div>
@@ -74,7 +84,8 @@ dd <main class="container mt-4">
 
             <div class="row">
                 <div class="col-4 mb-3">
-                    <button class="btn btn-primary w-100" (click)="abrirImagenes()">Añadir imagen</button>
+                    <label for="botonAnadirImg" class="mb-2">Imágenes de referencia</label>
+                    <button id="botonAnadirImg" class="btn btn-primary w-100" (click)="abrirImagenes()">Añadir imagen</button>
                 </div>
             </div>
 
@@ -83,10 +94,9 @@ dd <main class="container mt-4">
                     <div class="imagenesFile text-center d-flex justify-content-center align-items-center"
                         style="position: relative; border: dotted 4px #FCC42C;">
 
-
+                        <h4 class="mt-2 text-warning" style="position: absolute; top:0">Arrastre archivos para subirlos</h4>
                         <button type="button" class="btn-close btn-close-white mt-2 me-2" (click)="cerrarImagenes()"
                             style="position: absolute; top: 0; right: 0; z-index: 1;" aria-label="Close"></button>
-                        <h4 class="mt-2 text-warning" style="position: absolute; top:0">Arrastre archivos para subirlos</h4>
                         <label for="formFileMultiple" class="btn btn-outline-warning"
                             style="position: absolute; cursor: pointer; z-index: 1; ">
                             {{textoLabel}}</label>
