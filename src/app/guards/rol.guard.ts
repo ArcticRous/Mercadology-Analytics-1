@@ -17,15 +17,15 @@ export class RolGuard implements CanActivate {
 
       let rol = this.auth.esAdmin();
       
-      if( rol === 'Administrador' || rol === 'Editor'){
+      if( rol === 'Administrador'){
         return true;
-      }else if(rol == undefined){
+      }else if(rol == undefined || rol === "Editor"){
         Swal.fire({
           title: 'No tiene permisos para realizar esta acción',
           icon: 'error',
           timer: 3500
         })
-        this.router.navigateByUrl('/login');  
+        this.router.navigateByUrl('/home');  
         return false;
       }
       this.router.navigateByUrl('/home');
