@@ -34,7 +34,6 @@ export class PeticionesComponent implements OnInit, AfterViewInit {
     //   .subscribe( resp => this.solicitud = resp);
     sessionStorage.removeItem('local');
     this.rol = sessionStorage.getItem('rol');
-    this.cargando = true;
     this.AuthService.getSolicitudes()
       .subscribe(resp => {
         this.solicitud = resp;
@@ -43,6 +42,10 @@ export class PeticionesComponent implements OnInit, AfterViewInit {
         this.paginator._intl.itemsPerPageLabel="Elementos por página";
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
+        this.cargando = true;
+      }, error => {
+        console.log(error);
+        this.cargando = false;
       });
   }
 
