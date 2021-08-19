@@ -22,6 +22,7 @@ import { PeticionesComponent } from './components/peticiones/peticiones.componen
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 import { PeticionComponent } from './components/peticion/peticion.component';
 import { PeticionGuard } from './guards/peticion.guard';
+import { MinutaComponent } from './components/minuta/minuta.component';
 
 
 const routes: Routes = [
@@ -34,6 +35,7 @@ const routes: Routes = [
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
+  {path: 'minuta' , component: MinutaComponent},
   {path: 'peticiones' , component: PeticionesComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'peticion/:id' , component: PeticionComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},

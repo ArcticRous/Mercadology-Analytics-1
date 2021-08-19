@@ -36,6 +36,7 @@ import { ComunicadoIndividualComponent } from './components/comunicado-individua
 import { PeticionesComponent } from './components/peticiones/peticiones.component';
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 import { PeticionComponent } from './components/peticion/peticion.component';
+import { MinutaComponent } from './components/minuta/minuta.component';
 
 
 
@@ -60,7 +61,8 @@ import { PeticionComponent } from './components/peticion/peticion.component';
     MiscomunicadosComponent,
     PeticionesComponent,
     SolicitudesComponent,
-    PeticionComponent
+    PeticionComponent,
+    MinutaComponent
   ],
   imports: [
     MatTabsModule,
