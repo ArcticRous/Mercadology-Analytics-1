@@ -37,7 +37,20 @@ import { PeticionesComponent } from './components/peticiones/peticiones.componen
 import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
 import { PeticionComponent } from './components/peticion/peticion.component';
 import { MinutaComponent } from './components/minuta/minuta.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
 
+import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
+import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
+import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
+import timeGridPlugin from '@fullcalendar/timegrid';
+import listPlugin from '@fullcalendar/list';
+
+FullCalendarModule.registerPlugins([
+  dayGridPlugin,
+  timeGridPlugin,
+  listPlugin,
+  interactionPlugin
+])
 
 
 @NgModule({
@@ -62,7 +75,8 @@ import { MinutaComponent } from './components/minuta/minuta.component';
     PeticionesComponent,
     SolicitudesComponent,
     PeticionComponent,
-    MinutaComponent
+    MinutaComponent,
+    CalendarioComponent
   ],
   imports: [
     MatTabsModule,
@@ -81,7 +95,8 @@ import { MinutaComponent } from './components/minuta/minuta.component';
     MatSnackBarModule,
     MatDatepickerModule, 
     // MatNativeDateModule,
-    MatMomentDateModule
+    MatMomentDateModule,
+    FullCalendarModule 
   ],
   providers: [
     

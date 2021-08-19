@@ -23,6 +23,7 @@ import { SolicitudesComponent } from './components/solicitudes/solicitudes.compo
 import { PeticionComponent } from './components/peticion/peticion.component';
 import { PeticionGuard } from './guards/peticion.guard';
 import { MinutaComponent } from './components/minuta/minuta.component';
+import { CalendarioComponent } from './components/calendario/calendario.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,7 @@ const routes: Routes = [
   {path: 'accesos' , component: AccesosComponent,canActivate: [AuthGuard]},
   {path: 'cuentas', component: CuentasComponent,canActivate: [AuthGuard]},
   {path: 'comunicados' , component: ComunicadosComponent,canActivate: [AuthGuard]},
+  {path: 'calendario' , component: CalendarioComponent},
   {path: 'solicitud' , component: SolicitudesComponent},
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},

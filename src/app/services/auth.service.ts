@@ -7,6 +7,7 @@ import { map, delay } from 'rxjs/operators';
 import { ClienteModel } from '../models/cliente.model';
 import { AccesosModel } from '../models/accesos.model';
 import { ComunicadoModel } from '../models/comunicado.model';
+import { CalendarioModel } from '../models/calendario.model';
 
 
 
@@ -805,6 +806,17 @@ console.log(solicitud.id);
     });
 
     return solicitudes;
+  }
+
+
+  saveCalendario(calendario: CalendarioModel) {
+
+    return this.http.post(`${this.url}/calendario.json`, calendario)
+      .pipe(
+        map((resp: any) => {
+          return calendario;
+        })
+      );
   }
 
 }/**Cierra el export data**/
