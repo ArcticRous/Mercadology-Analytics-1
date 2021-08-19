@@ -3,12 +3,7 @@ export class ClienteModel{
     nomcli: string;	
     domcli?: string;
     domven?: string;
-    dirip?: string;	
-    dbnam?: string;	
-    dbuse?: string;	
-    dbpas?: string;	
-    ftpuse?: string;	
-    ftppas?: string;	
+    dirip?: string;		
     hosnom?: string;
     hosven?: string;
     hosuse?: string;

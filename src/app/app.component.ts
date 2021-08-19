@@ -22,38 +22,18 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-    let date = new Date();
-    console.log(date);
-    
-    this.auth.getComun("").subscribe(next => {
-      console.log(Date.parse(`${date}`), "eiririr");
-      console.log(Date.parse("July, 25, 2021, 17:38:00"));
-      console.log(Date.parse("January, 1, 1970"));
-      
-      let mes = date.getMonth() + 1;
-      let meses;
-      if(mes < 10){
-         meses = `0${date.getMonth() + 1}`;
-      }
-      let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
-      console.log(next.filter(({fecha}) => fecha == hoy));
-    }, error => {
-      console.log(error);
-    })
-
     setInterval(() => {
       let tiempo = new Date();
 
-      let anio = tiempo.getFullYear();
       let mes = tiempo.getMonth() + 1;
       let dia = tiempo.getDate();
       let hora = tiempo.getHours();
       let minuto = tiempo.getMinutes();
-      let segundo = tiempo.getSeconds();
 
-
+      //Mensaje de vencimiento a cuenta de Mercadology
       if (hora == 9 && minuto == 0) {
         this.mensajeVencimiento(false);
+      //Mensaje de vencimiento de cuenta a clientes
       } if (hora == 11 && minuto == 0) {
         this.mensajeVencimiento(true);
       }
@@ -63,7 +43,6 @@ export class AppComponent implements OnInit {
         if (dia === 15 || dia === 30) {
 
           if (hora === 10 && minuto === 0) {
-            // console.log("SE ENVIARA LA PETICION PROGRAMADA A LA HORA DEL BACKUP");
             this.backup();
           } 
         }
@@ -101,63 +80,61 @@ export class AppComponent implements OnInit {
       resp.forEach(element => {
 
         fechaDomVen = dayjs(element.domven).format('DD/MM/YYYY');
-        // console.log(fechaDomVen);
-
         fechaHosVen = dayjs(element.hosven).format('DD/MM/YYYY');
-        // console.log(fechaHosVen);
-
         fechaSslVen = dayjs(element.venssl).format('DD/MM/YYYY');
-        // console.log(fechaSslVen);
 
+        //Vencimiento dominio
         if (dayjs().add(10, 'day').format('DD/MM/YYYY') == fechaDomVen) {
 
           this.dominio = true;
-          msjVenHos = "En 10 días el Dominio vencerá";
-          //            this.enviarMsj.push(element);
+          msjVenHos = "El Dominio vencerá en 10 días";
+
         } else if (dayjs().add(5, 'day').format('DD/MM/YYYY') == fechaDomVen) {
-          //          console.log("El vencimiento será en 5 días de: ", element.nomcli, "fecha de vencimiento hosting: ", element.hosven);
-          //            this.enviarMsj.push(element);
+
           this.dominio = true;
-          msjVenDom = "En 5 días el Dominio vencerá";
+          msjVenDom = "El Dominio vencerá en 5 días";
+
         } else if (dayjs().add(1, 'day').format('DD/MM/YYYY') == fechaDomVen) {
-          //          console.log("El vencimiento será en 1 día de: ", element.nomcli, "fecha de vencimiento hosting: ", element.hosven);            
-          //            this.enviarMsj.push(element);
+          
           this.dominio = true;
-          msjVenDom = "En un día el Dominio vencerá";
+          msjVenDom = "El Dominio vencerá en un día";
+
         }
 
+        //Vencimiento hosting
         if (dayjs().add(10, 'day').format('DD/MM/YYYY') == fechaHosVen) {
-          //          console.log("El vencimiento será en 10 días de: ", element.nomcli, "fecha de vencimiento hosting: ", element.hosven);
+
           this.hosting = true;
-          msjVenHos = "En 10 días el Hosting vencerá";
-          //            this.enviarMsj.push(element);
+          msjVenHos = "El Hosting vencerá en 10 días";
+
         } else if (dayjs().add(5, 'day').format('DD/MM/YYYY') == fechaHosVen) {
-          //          console.log("El vencimiento será en 5 días de: ", element.nomcli, "fecha de vencimiento hosting: ", element.hosven);
-          //            this.enviarMsj.push(element);
+          
           this.hosting = true;
-          msjVenHos = "En 5 días el Hosting vencerá";
+          msjVenHos = "El Hosting vencerá en 5 días";
+
         } else if (dayjs().add(1, 'day').format('DD/MM/YYYY') == fechaHosVen) {
-          //          console.log("El vencimiento será en 1 día de: ", element.nomcli, "fecha de vencimiento hosting: ", element.hosven);            
-          //            this.enviarMsj.push(element);
+          
           this.hosting = true;
-          msjVenHos = "En un día el Hosting vencerá";
+          msjVenHos = "El Hosting vencerá en un día";
+
         }
 
+        //Vencimiento SSL
         if (dayjs().add(10, 'day').format('DD/MM/YYYY') == fechaSslVen) {
-          //          console.log("El vencimiento será en 10 días de: ", element.nomcli, "fecha de vencimiento SSL: ", element.hosven);
-          //            this.enviarMsj.push(element);
+          
           this.ssl = true;
-          msjVenSsl = "En 10 días el SSL vencerá";
+          msjVenSsl = "El SSL vencerá en 10 días";
+
         } else if (dayjs().add(5, 'day').format('DD/MM/YYYY') == fechaSslVen) {
-          //          console.log("El vencimiento será en 5 días de: ", element.nomcli, "fecha de vencimiento SSL: ", element.hosven);            
-          //            this.enviarMsj.push(element);
+          
           this.ssl = true;
-          msjVenSsl = "En 5 días el SSL vencerá";
+          msjVenSsl = "El SSL vencerá en 5 días";
+
         } else if (dayjs().add(1, 'day').format('DD/MM/YYYY') == fechaSslVen) {
-          //          console.log("El vencimiento será en 1 día de: ", element.nomcli, "fecha de vencimiento SSL: ", element.hosven);
-          //            this.enviarMsj.push(element);
+          
           this.ssl = true;
-          msjVenSsl = "En un día el SSL vencerá";
+          msjVenSsl = "El SSL vencerá en un día";
+
         }
 
         if (this.dominio && this.hosting && this.ssl) {
@@ -198,10 +175,8 @@ export class AppComponent implements OnInit {
       });
 
       if (this.enviarMsj.length == 0) {
-        // console.log("Enviar mensaje vacioooo, NO ENVIAR");
         return false;
       }
-
       // console.log(this.enviarMsj);
 
       if (cliente == false) {
@@ -214,8 +189,6 @@ export class AppComponent implements OnInit {
         });
       }
 
-      // console.log(this.enviarMsj, "Termina todooooooo");
-
     })//Termina la peticion a auth
 
     this.enviarMsj.length = 0;
@@ -227,14 +200,11 @@ export class AppComponent implements OnInit {
     this.auth.exportarBase().subscribe(resp => {
 
       this.auth.descargarArchivo(resp).subscribe(resp => {
-        
+        // console.log(resp);
       });
-      // console.log("Se envio el backup---");
     });
-    // console.log("se envia el backup");
     return true;
   }
 
-
-
+  
 }

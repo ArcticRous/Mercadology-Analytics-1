@@ -104,6 +104,7 @@ export class AccesosComponent implements OnInit {
         title: 'Datos registrados',
         text: 'Se agregaron correctamente los datos'
       })
+      this.agregarForm.reset();
     }, (error) => {
       // console.log(error);
       this.metodoPorTokenVencido(error, this.agregarModel, "insert");

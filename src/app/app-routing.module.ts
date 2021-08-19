@@ -18,6 +18,10 @@ import { RolGuard } from './guards/rol.guard';
 import { ComunicadosComponent } from './components/comunicados/comunicados.component';
 import { ComunicadoIndividualComponent } from './components/comunicado-individual/comunicado-individual.component';
 import { MiscomunicadosComponent } from './components/miscomunicados/miscomunicados.component';
+import { PeticionesComponent } from './components/peticiones/peticiones.component';
+import { SolicitudesComponent } from './components/solicitudes/solicitudes.component';
+import { PeticionComponent } from './components/peticion/peticion.component';
+import { PeticionGuard } from './guards/peticion.guard';
 
 
 const routes: Routes = [
@@ -25,11 +29,13 @@ const routes: Routes = [
   {path: 'home' , component: HomeComponent,canActivate: [AuthGuard]},
   {path: 'accesos' , component: AccesosComponent,canActivate: [AuthGuard]},
   {path: 'cuentas', component: CuentasComponent,canActivate: [AuthGuard]},
-  {path: 'comunicados' , component: ComunicadosComponent,canActivate: [AuthGuard ,RolGuard]},
-  // {path: 'comunicados/:ids' , component: ComunicadosComponent,canActivate: [AuthGuard,RolGuard]},
+  {path: 'comunicados' , component: ComunicadosComponent,canActivate: [AuthGuard]},
+  {path: 'solicitud' , component: SolicitudesComponent},
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
-  {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
+  {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
+  {path: 'peticiones' , component: PeticionesComponent,canActivate: [AuthGuard, PeticionGuard]},
+  {path: 'peticion/:id' , component: PeticionComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'mostrar/:ids' , component: MostrarComponent,canActivate: [AuthGuard]},
   {path: 'generadorReportes', component: GeneradorReportesComponent, canActivate: [AuthGuard]},

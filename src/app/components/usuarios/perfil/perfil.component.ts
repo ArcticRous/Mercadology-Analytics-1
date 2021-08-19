@@ -111,7 +111,8 @@ export class PerfilComponent implements OnInit {
     let imagenNueva;
     const form = this.imageForm;
     if (form.valid) {
-      this.authService.uploadImage(this.file, this.usuario.id)
+      let ruta = 'photosProfile'
+      this.authService.uploadImage(this.file, this.usuario.id, ruta)
         .subscribe(data => {
           imagenNueva = data;
           this.imageForm = new FormGroup({
@@ -327,7 +328,9 @@ export class PerfilComponent implements OnInit {
 
 
 
-
+  resetearFormPassword(){
+    this.cambiarContrasenaForm.reset();
+  }
 
   cambiarContrasena(): void {
 
@@ -370,6 +373,7 @@ export class PerfilComponent implements OnInit {
                 title: 'Se cambio su contraseña',
                 text: 'La próxima vez que inicie sesión hagalo con su nueva contraseña'
               })
+              this.cambiarContrasenaForm.reset();
             }, (error) => {
               // console.log(error);
             })

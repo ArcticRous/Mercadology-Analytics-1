@@ -1,3 +1,4 @@
+import { SolicitudModel } from './../models/solicitud.model';
 import { UsuarioModel } from './../models/usuario.model';
 import { RegistroModel } from './../models/registro.model';
 import { HttpClient, HttpHeaders, HttpClientModule } from '@angular/common/http';
@@ -6,6 +7,8 @@ import { map, delay } from 'rxjs/operators';
 import { ClienteModel } from '../models/cliente.model';
 import { AccesosModel } from '../models/accesos.model';
 import { ComunicadoModel } from '../models/comunicado.model';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +59,9 @@ export class AuthService {
   //Envia mediante express, nodejs y nodemailer email de vencimiento de cuentas
   private vencimientoCuentas = this.urlEnviarCorreo + "/send-email";
   private vencimientoCuentaCliente = this.urlEnviarCorreo + "/send-clientes";
+  private solicitudManager = this.urlEnviarCorreo + "/send-solicitud-manager"
+  private solicitudCliente = this.urlEnviarCorreo + "/send-cliente-solicitud";
+  private respuestaCliente = this.urlEnviarCorreo + "/send-respuesta-cliente"
 
   //Envia mediante express, nodejs y nodemailer un email de backup
   private backup = this.urlEnviarCorreo + `/send-backup`;
@@ -324,9 +330,17 @@ export class AuthService {
     return this.http.get(`${this.urlDatos}/Usuario.json`);
   }
 
-  uploadImage(file: File, id: string) {
-    return this.http.post(`${this.urlStorage}/o/photosProfile%2F${id}%2F${file.name}`, file);
+  //Estos dos metodos pueden unificarse en uno solo
+  //Subir imagen al storage
+  uploadImage(file: File, id: string, ruta: string) {
+    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${id}%2F${file.name}`, file);
   }
+
+  //Sube cualquier archivo al storage
+  uploadFile(file: File, ruta: string) {
+    return this.http.post(`${this.urlStorage}/o/${ruta}%2F${file.name}`, file);
+  }
+
   // guardar comunicados
   saveComun(comunicado: ComunicadoModel) {
     return this.http.post(`${this.url}/comunicados.json` + this.auth, comunicado)
@@ -396,10 +410,10 @@ export class AuthService {
 
     if (tipo == "privado") {
       return this.http.get(`${this.url}/comunicados.json`)
-      .pipe(
-        map(this.CrearComunPrivado),
-        delay(1500)
-      );
+        .pipe(
+          map(this.CrearComunPrivado),
+          delay(1500)
+        );
     } else {
       return this.http.get(`${this.url}/comunicados.json`)
         .pipe(
@@ -433,9 +447,11 @@ export class AuthService {
       meses = `0${date.getMonth() + 1}`;
     }
     let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
-    return Comunicado.filter((({ fecha }) => fecha <= hoy));
 
-    // return Comunicado;
+    return Comunicado.filter((({ fecha }) => fecha <= hoy)).sort((a, b) => {
+      return new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
+    });
+
   }
 
   private CrearComunPrivado(ComunicadoObj: object) {
@@ -701,54 +717,94 @@ export class AuthService {
   }
 
 
+  enviarSolicitud(solicitud: SolicitudModel) {
+    let data = {
+      ...solicitud
+    };
+
+    return this.http.post(
+      `${this.urlDatos}/solicitud.json`,
+      data
+    ).pipe(
+      map((resp: any) => {
+        //Envia por correo al manager
+        this.sendSolicitudManager(solicitud).subscribe(next => {
+          console.log(next);
+
+          // Envia al cliente la confirmación de su envio
+          this.sendSolicitudConfirmacionCliente(solicitud).subscribe(next => {
+            console.log(next);
+          }, error => {
+            console.log(error);
+          })
+
+        }, error => {
+          console.log(error);
+        });
+
+        return solicitud;
+
+      })
+    );
+  }
+
+  //Cuando el manager establece una fecha de entrega se guarda la fecha estipulada en la BDD
+  editarSolicitud(solicitud: SolicitudModel) {
+console.log(solicitud.id);
+
+    const SolicitudTemp = {
+      ...solicitud
+    };
+    delete SolicitudTemp.id;
+
+    return this.http.put(`${this.url}/solicitud/${solicitud.id}.json`, SolicitudTemp);
+  }
+
+  sendSolicitudManager(body: any) {
+    return this.http.post(this.solicitudManager, body)
+  }
+
+  sendSolicitudConfirmacionCliente(body: any) {
+    return this.http.post(this.solicitudCliente, body)
+  }
+
+  sendRespuestaCliente(body: any){
+    return this.http.post(this.respuestaCliente, body);
+  }
+
+  crearSolicitud(solicitud: SolicitudModel) {
+    return this.http.post(`${this.urlDatos}/solicitud.json`, solicitud)
+      .pipe(
+        map((resp: any) => {
+          solicitud.id = resp.name;
+        })
+      );
+  }
+  
+  getSolicitud(id:string){
+    return this.http.get(`${this.urlDatos}/solicitud/${id}.json`)
+  }
+
+  getSolicitudes() {
+    return this.http.get(`${this.urlDatos}/solicitud.json`)
+      .pipe(
+        map(this.crearArregloSolicitud)
+      );
+  }
+
+  private crearArregloSolicitud(solicitudesObj: Object) {
+    const solicitudes: SolicitudModel[] = [];
+
+    Object.keys(solicitudesObj).forEach(key => {
+      const solicitud: SolicitudModel = solicitudesObj[key];
+      solicitud.id = key;
+
+      solicitudes.push(solicitud);
 
 
-  /** Agregar comunicados **/
-  // agregarComunicado(token:string, comunicado:ComunicadoModel){
+    });
 
-  //   let comunicadoDatos = {
-  //     ...comunicado
-  //   };
-
-  //   return this.http.post(`${this.urlDatos}/comunicados.json` + this.auth + token, comunicadoDatos);
-  // }
-
-  // getComunicado(id: string) {
-  //   return this.http.get(`${this.urlDatos}/comunicados/${id}.json`);
-  // }
-
-  // getComunicados() {
-  //   return this.http.get(`${this.urlDatos}/comunicados.json`)
-  //     .pipe(
-  //       map(this.crearArregloComunicado)
-  //     );
-  // }
-
-  // private crearArregloComunicado(comunicadoObj: object) {
-  //   const comunicados: ComunicadoModel[] = [];
-
-  //   if (comunicadoObj === null) { return []; }
-
-  //   Object.keys(comunicadoObj).forEach(key => {
-  //     const comunicado = comunicadoObj[key];
-  //     comunicado.id = key;
-  //     comunicados.push(comunicado);
-  //   });
-  //   return comunicados;
-  // }
-
-  // modificarComunicado(comunicado: ComunicadoModel, token: string) {
-
-  //   const ComunicadoTemp = {
-  //     ...comunicado
-  //   };
-  //   delete ComunicadoTemp.id;
-
-  //   return this.http.put(`${this.url}/comunicados/${comunicado.ids}.json` + this.auth + token, ComunicadoTemp);
-  // }
-
-  // eliminarComunicado(id: string, token: string) {
-  //   return this.http.delete(`${this.urlDatos}/comunicados/${id}.json` + this.auth + token);
-  // }
+    return solicitudes;
+  }
 
 }/**Cierra el export data**/
