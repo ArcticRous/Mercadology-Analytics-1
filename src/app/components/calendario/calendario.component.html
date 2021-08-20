@@ -2,12 +2,13 @@
 <div class="container mt-5">
     <div class="row">
         <div class="col-sm-12">
+            <button (click)="handleWeekendsToggle()">toggle weekends</button>
             <full-calendar [options]="calendarOptions"></full-calendar>
         </div>
     </div>
 </div>
 <!--Modal PopUp with Add Event Form-->
-<!-- <div class="modal" id="myModal">
+<div class="modal" id="myModal">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -33,7 +34,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Event Date:</label>
-                                <div class="form-control eventstarttitle"></div>
+                                <input class="form-control eventStartDate" type="text" formControlName="fecha">
                             </div>
                         </div>
 
@@ -45,5 +46,5 @@
             </div>
         </div>
     </div>
-</div> -->
+</div>
 <app-footer></app-footer>

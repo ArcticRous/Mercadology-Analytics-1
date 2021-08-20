@@ -30,10 +30,51 @@ export class CalendarioComponent implements OnInit {
   submitted = false;
   eventdate: string;
   get f() { return this.addEventForm.controls; }
+  hola: any
 
   constructor(public AuthS: AuthService, private formBuilder: FormBuilder) {
 
   }
+
+  ngOnInit() {
+    // need for load calendar bundle first
+    this.calendario = new CalendarioModel();
+
+    forwardRef(() => Calendar);
+
+    this.hola = [
+      { title: "evento", date: "2021-08-09" },
+      { title: "evento2", date: "2021-08-10" },
+      { title: "evento333", date: "2021-08-10" },
+      { title: "evento44444", date: "2021-08-10" }
+    ]
+
+    this.calendarOptions = {
+
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      },
+      initialView: 'dayGridMonth',
+      initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+      weekends: true,
+      editable: true,
+      selectable: true,
+      selectMirror: true,
+      dayMaxEvents: true,
+      dateClick: this.handleDateClick.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      eventsSet: this.handleEvents.bind(this),
+      events: this.hola
+    };
+    this.addEventForm = this.formBuilder.group({
+      title: ['', [Validators.required]],
+      fecha: ['', [Validators.required]]
+    });
+
+  }//Termina el oninit
+
   onSubmit() {
 
     // stop here if form is invalid and reset the validations
@@ -52,6 +93,8 @@ export class CalendarioComponent implements OnInit {
 
       myFormData.append('title', this.addEventForm.value.title);
       myFormData.append('startdate', this.eventdate);
+      console.log(myFormData);
+      
 
       this.calendario.title = tite;
       console.log(tite);
@@ -60,7 +103,7 @@ export class CalendarioComponent implements OnInit {
 
 
       // Begin assig
-
+this.hola.push({title:"Aja", date: "2021-08-12"})
       this.AuthS.saveCalendario(this.calendario).subscribe(resp => {
         console.log(resp);
         Swal.fire({
@@ -89,37 +132,7 @@ export class CalendarioComponent implements OnInit {
     
 
   }
-  ngOnInit() {
-    // need for load calendar bundle first
-    this.calendario = new CalendarioModel();
 
-    forwardRef(() => Calendar);
-
-    this.calendarOptions = {
-
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      initialView: 'dayGridMonth',
-      initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
-      weekends: true,
-      editable: true,
-      selectable: true,
-      selectMirror: true,
-      dayMaxEvents: true,
-      dateClick: this.handleDateClick.bind(this),
-      eventClick: this.handleEventClick.bind(this),
-      eventsSet: this.handleEvents.bind(this)
-    };
-    this.addEventForm = this.formBuilder.group({
-      title: ['', [Validators.required]]
-    });
-
-
-
-  }
   currentEvents: EventApi[] = [];
 
   handleCalendarToggle() {
@@ -165,16 +178,18 @@ export class CalendarioComponent implements OnInit {
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     console.log(events);
-    
+  
   }
 
   handleDateClick(arg) {
     console.log(arg);
     
     $("#myModal").modal("show");
-    $(".modal-title, .eventstarttitle").text("");
+    // $(".modal-title, .eventStartDate").text("");
     $(".modal-title").text("Add Event at : " + arg.dateStr);
-    $(".eventstarttitle").text(arg.dateStr);
+    $(".eventStartDate").text(arg.dateStr);
+    console.log($(".eventStartDate"));
+    
     tite = this.calendario.title = arg.dateStr;
     console.log(tite, "titttt");
   }
