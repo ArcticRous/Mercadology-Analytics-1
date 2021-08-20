@@ -4,7 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { forkJoin } from 'rxjs';
-import {MatSnackBar} from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-solicitudes',
@@ -38,23 +38,29 @@ export class SolicitudesComponent implements OnInit {
   booleanImg: boolean = false;
 
   abrirCerrar: boolean = false;
-  date:string = "";
+  fechaDefecto: string = "";
 
   constructor(private auth: AuthService, private _snackBar: MatSnackBar) {
     const fecha = new Date();
     const dia = fecha.getDate();
     const mes = (fecha.getMonth() + 1)
     const anio = fecha.getFullYear();
-    
-    if(mes < 10){
-       this.date = `${anio}-0${mes}-${dia}`
-    }else {
-      this.date = `${anio}-${mes}-${dia}`
+
+    if (mes < 10) {
+      this.fechaDefecto = `${anio}-0${mes}-${dia}`
+      if (dia < 10) {
+        this.fechaDefecto = `${anio}-0${mes}-0${dia}`
+      }
+    } else if (dia < 10) {
+      this.fechaDefecto = `${anio}-${mes}-0${dia}`
+      if (mes < 10) {
+        this.fechaDefecto = `${anio}-0${mes}-0${dia}`
+      }
     }
-    
+
     this.solicitudForm = new FormGroup({
       cuenta: new FormControl("Cinthya García", [Validators.required]),
-      fecha: new FormControl(this.date, [Validators.required]),
+      fecha: new FormControl(this.fechaDefecto, [Validators.required]),
       material: new FormControl(null, [Validators.required]),
       email: new FormControl(null, [Validators.required, Validators.email]),
       numDisenos: new FormControl(null, [Validators.required, Validators.min(1), Validators.max(100)]),
@@ -71,15 +77,17 @@ export class SolicitudesComponent implements OnInit {
 
   /**Metodo para ver el cambio que existe en el input y el evento ejecutado guarda los datos del archivo **/
   onfileArchivo(event) {
+    console.log(event);
+
     //Guardamos los datos del archivo
     const file = event.target.files[0];
-console.log(file.type);
+    console.log(file.type);
 
     if (file.size <= 3145728) {
       /**Vemos que exista algo en el archivo */
       if (event.target.files && event.target.files.length > 0) {
         //Hacemos condiciones para aceptar solo archvios que contengan esas palabras. NOTA: Pueden ser más estrictas las condiciones
-        if (file.type.includes("pdf") || file.type.includes("word") || file.type.includes("zip")) {
+        if (file.type.includes("pdf") || file.type.includes("word") || file.type.includes("zip") || file.type.includes('doc') || file.type.includes('docx')) {
           //Leer fichero
           const reader = new FileReader();
           reader.readAsDataURL(file);
@@ -96,7 +104,7 @@ console.log(file.type);
           // console.log('Hay un error');
           this.solicitudForm.value.fileMaterial = null;
           console.log(this.solicitudForm.value.fileMaterial);
-          
+
           Swal.fire({
             title: "Formato de archivo",
             text: "Solo se aceptan formatos pdf, word o zip",
@@ -120,22 +128,22 @@ console.log(file.type);
 
     let archivosTempo = [...event.target.files];
     console.log(archivosTempo);
-    
+
 
     for (let i = 0; i < archivosTempo.length; i++) {
-      if(archivosTempo[i].type.includes("image")){
+      if (archivosTempo[i].type.includes("image")) {
         let variable = archivosTempo[i].name;
-        console.log("ess:::  ",archivosTempo[i].type );
-        
-        
+        console.log("ess:::  ", archivosTempo[i].type);
+
+
         if (!this.img.includes(variable)) {
           this.archivos.push(archivosTempo[i]);
           this.img.push(variable);
         }
-      }else{
+      } else {
         this.openSnackBar("Solo se pueden cargar imágenes")
       }
-      
+
     }
 
     if (this.img.length == 0) {
@@ -179,7 +187,7 @@ console.log(file.type);
     } else if (this.solicitudForm.value.existeMaterial == "Si") {
       if (!this.solicitudForm.value.fileMaterial) {
         console.log(this.solicitudForm.value.fileMaterial);
-        
+
         Swal.fire({ title: "Falta material", text: "Debe proporcionar material", icon: "warning" });
         return false;
       }
@@ -283,7 +291,7 @@ console.log(file.type);
           this.solicitudForm.value['fileMaterial'] = "";
           this.solicitudForm.reset({
             'cuenta': "Cinthya García",
-            'fecha': this.date
+            'fecha': this.fechaDefecto
           });
         })
       })
@@ -308,7 +316,7 @@ console.log(file.type);
         this.solicitudForm.value['fileMaterial'] = "";
         this.solicitudForm.reset({
           'cuenta': "Cinthya García",
-          'fecha': this.date
+          'fecha': this.fechaDefecto
         });
       })
     }
@@ -323,7 +331,7 @@ console.log(file.type);
     this.abrirCerrar = false;
   }
 
-  openSnackBar(texto: string):void {
+  openSnackBar(texto: string): void {
     this._snackBar.open(texto, "Cerrar", {
       duration: 4000,
     });

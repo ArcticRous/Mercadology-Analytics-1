@@ -810,10 +810,13 @@ console.log(solicitud.id);
 
 
   saveCalendario(calendario: CalendarioModel) {
-
+    console.log(calendario);
+    
     return this.http.post(`${this.url}/calendario.json`, calendario)
       .pipe(
         map((resp: any) => {
+          console.log(resp);
+          
           return calendario;
         })
       );

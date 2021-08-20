@@ -28,72 +28,75 @@ export class CalendarioComponent implements OnInit {
   calendario: CalendarioModel;
   addEventForm: FormGroup;
   submitted = false;
-  eventdate:string;
+  eventdate: string;
   get f() { return this.addEventForm.controls; }
-  
-  constructor(public AuthS: AuthService,private formBuilder: FormBuilder) {
-    
+
+  constructor(public AuthS: AuthService, private formBuilder: FormBuilder) {
+
   }
-    onSubmit() {
-  
-    this.submitted = true;
+  onSubmit() {
+
     // stop here if form is invalid and reset the validations
     this.addEventForm.get('title').setValidators([Validators.required]);
     this.addEventForm.get('title').updateValueAndValidity();
-    if (this.addEventForm.invalid) {
-        return;
-    }
-    if(this.submitted)
-  {
-    // Initialize Params Object
-    var myFormData = new FormData();
-  
-    // Begin assigning parameters
+    console.log(this.addEventForm);
     
-       myFormData.append('title', this.addEventForm.value.title);
-       myFormData.append('startdate', this.eventdate);
-      
+    if (this.addEventForm.invalid) {
+      return;
+    }
+      // Initialize Params Object
+      var myFormData = new FormData();
+
+
+      // Begin assigning parameters
+
+      myFormData.append('title', this.addEventForm.value.title);
+      myFormData.append('startdate', this.eventdate);
+
       this.calendario.title = tite;
- 
+      console.log(tite);
       
- // Begin assig
+      console.log(this.calendario);
 
-    this.AuthS.saveCalendario(this.calendario).subscribe(resp => {
-      console.log(resp);
-      Swal.fire({
-        title: 'Se ha guardado el comunicado',
-        text: `Mensaje para mercadology`,
-        icon: 'success'
-      })
-      console.log("pasa hasta aqui");
 
-    }, error => {
-      Swal.fire({
-        title: 'No se pudo Guardar el',
-        text: `Mensaje para mercadology`,
-        icon: 'error'
+      // Begin assig
+
+      this.AuthS.saveCalendario(this.calendario).subscribe(resp => {
+        console.log(resp);
+        Swal.fire({
+          title: 'Se ha guardado el comunicado',
+          text: `Mensaje para mercadology`,
+          icon: 'success'
+        })
+        console.log("pasa hasta aqui");
+
+      }, error => {
+        Swal.fire({
+          title: 'No se pudo Guardar el',
+          text: `Mensaje para mercadology`,
+          icon: 'error'
+        })
+        console.log(error);
+
+      }, () => {
+        Swal.fire({
+          title: 'Se ha guardado el comunicado',
+          text: `Mensaje para mercadology`,
+          icon: 'success'
+        })
+
       })
-      console.log(error);
-      
-    }, () => {
-      Swal.fire({
-        title: 'Se ha guardado el comunicado',
-        text: `Mensaje para mercadology`,
-        icon: 'success'
-      })
-      
-    })
-  }
-       
+    
+
   }
   ngOnInit() {
     // need for load calendar bundle first
     this.calendario = new CalendarioModel();
-  
-  forwardRef(() => Calendar);
-    
+
+    forwardRef(() => Calendar);
+
     this.calendarOptions = {
-      
+
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -109,27 +112,33 @@ export class CalendarioComponent implements OnInit {
       dateClick: this.handleDateClick.bind(this),
       eventClick: this.handleEventClick.bind(this),
       eventsSet: this.handleEvents.bind(this)
-  };
-  this.addEventForm = this.formBuilder.group({
-    title: ['', [Validators.required]]
+    };
+    this.addEventForm = this.formBuilder.group({
+      title: ['', [Validators.required]]
     });
 
-    
-  
-}
+
+
+  }
   currentEvents: EventApi[] = [];
-  
+
   handleCalendarToggle() {
+    console.log("soy handleCalendarToggle");
+    
     this.calendarVisible = !this.calendarVisible;
   }
 
   handleWeekendsToggle() {
+    console.log("Soy handleWeekendsToggle");
+    
     const { calendarOptions } = this;
     calendarOptions.weekends = !calendarOptions.weekends;
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
-  
+    console.log("Soy handleDateSelect");
+    
+
     const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
 
@@ -147,6 +156,7 @@ export class CalendarioComponent implements OnInit {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
+    console.log("soy hideEvnetClick");
     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
       clickInfo.event.remove();
     }
@@ -154,24 +164,30 @@ export class CalendarioComponent implements OnInit {
 
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
-  }
-  
-  handleDateClick(arg) {
-    $("#myModal").modal("show");
-    $(".modal-title, .eventstarttitle").text("");
-    $(".modal-title").text("Add Event at : "+arg.dateStr);
-    $(".eventstarttitle").text(arg.dateStr);
-     tite = this.calendario.title = arg.dateStr;
-    console.log(tite);
-  }
-  
-  //Hide Modal PopUp and clear the form validations
-  hideForm(){
-    $("#myModal").modal("hide");
-    this.addEventForm.patchValue({ title : ""});
-    this.addEventForm.get('title').clearValidators();
-    this.addEventForm.get('title').updateValueAndValidity();
+    console.log(events);
     
   }
-  
- }
+
+  handleDateClick(arg) {
+    console.log(arg);
+    
+    $("#myModal").modal("show");
+    $(".modal-title, .eventstarttitle").text("");
+    $(".modal-title").text("Add Event at : " + arg.dateStr);
+    $(".eventstarttitle").text(arg.dateStr);
+    tite = this.calendario.title = arg.dateStr;
+    console.log(tite, "titttt");
+  }
+
+  //Hide Modal PopUp and clear the form validations
+  hideForm() {
+    console.log("soy hideForm");
+    
+    $("#myModal").modal("hide");
+    this.addEventForm.patchValue({ title: "" });
+    this.addEventForm.get('title').clearValidators();
+    this.addEventForm.get('title').updateValueAndValidity();
+
+  }
+
+}

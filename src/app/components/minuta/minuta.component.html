@@ -1,6 +1,6 @@
 <app-header></app-header>
 
-<main class="container">
+<main class="container mt-3">
 
     <form [formGroup]="minutaForm" (ngSubmit)="guardar()">
 
@@ -16,28 +16,65 @@
             <div class="col-4">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-hora">Hora</span>
-                    <input type="time" class="form-control" name="hora" id="" formControlName="hora">
+                    <input type="time" class="form-control" name="hora" id="formHora" formControlName="hora">
                 </div>
             </div>
 
             <div class="col-4">
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-numReunion">N° de reunión</span>
-                    <input type="text" class="form-control" name="numReunion" formControlName="noReunion" id="">
+                    <input type="text" class="form-control" name="numReunion" formControlName="noReunion"
+                        id="formNumReunion">
                 </div>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-6">
-                <button type="submit" class="btn btn-primary">Enviar</button>
+            <div class="d-flex">
+                    <h2 class="text-white" >Asistentes</h2>
+                <span class="ms-2">
+                    <button type="button" class="btn btn-primary" (click)="contador()"  >Nuevo</button>
+                </span>
             </div>
-
-            <div class="col-6">
-
+            <div class="col-12" id="inputAsistente">
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-asistente">N° 1</span>
+                    <input type="text" class="form-control" name="asistente" formControlName="asistente" id="">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">ñ</span>
+                    <input type="text" class="form-control" name="asistente" id="" formControlName="asistente">
+                </div>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-12 mb-3">
+                <h2 class="text-white">Objetivo</h2>
+                <textarea class="form-control" formControlName="objetivo" id="formObjetivo"></textarea>
+            </div>
+        </div>
+
+        <div>
+            <div class="row">
+                <h2 class="text-white">Pendientes y conclusiones de la reunión</h2>
+                <div class="col-7">
+                    <div class="input-group mb-3">
+                        <span class="input-group-text" id="basic-hecho">N°</span>
+                        <input class="form-control" name="hecho" id="formHecho">
+                    </div>
+                </div>
+                <div class="col-3">
+
+                    <input class="form-control" name="hecho" id="formHecho">
+                </div>
+                <div class="col-2">
+                    <input class="form-control" name="hecho" id="formHecho">
+                </div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Enviar</button>
     </form>
 
 </main>

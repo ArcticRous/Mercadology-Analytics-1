@@ -101,6 +101,6 @@ FullCalendarModule.registerPlugins([
   providers: [
     
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent,CalendarioComponent]
 })
 export class AppModule { }
