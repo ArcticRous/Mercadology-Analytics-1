@@ -11,8 +11,15 @@
     src: url('./assets/fonts/Poppins-Regular.ttf');
 }
 
+html{
+    min-height: 100%;
+    position: relative;
+}
+
 body {
     background-color: #242424!important;
+    margin: 0 0 125px 0!important;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .rojo {
@@ -41,16 +48,6 @@ body {
 
 .naranja {
     background-color: #FC6434;
-}
-
-html,
-body {
-    height: 100%;
-}
-
-body {
-    margin: 0;
-    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 body::-webkit-scrollbar,
