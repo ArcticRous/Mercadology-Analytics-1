@@ -26,110 +26,72 @@ export class CalendarioComponent implements OnInit {
   eventsModel: any;
   @ViewChild('fullcalendar') fullcalendar: FullCalendarComponent;
   calendario: CalendarioModel;
+  mostrarCalendario: CalendarioModel[] = [];
   addEventForm: FormGroup;
   submitted = false;
   eventdate: string;
   get f() { return this.addEventForm.controls; }
-  hola: any
+  hola: CalendarioModel[] = []
 
-  constructor(public AuthS: AuthService, private formBuilder: FormBuilder) {
 
-  }
+  constructor(public AuthS: AuthService, private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+
     // need for load calendar bundle first
     this.calendario = new CalendarioModel();
 
     forwardRef(() => Calendar);
 
-    this.hola = [
-      { title: "evento", date: "2021-08-09" },
-      { title: "evento2", date: "2021-08-10" },
-      { title: "evento333", date: "2021-08-10" },
-      { title: "evento44444", date: "2021-08-10" }
-    ]
+    this.AuthS.getCalendario().subscribe(next => {
 
-    this.calendarOptions = {
+      this.mostrarCalendario = next;
 
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      initialView: 'dayGridMonth',
-      initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
-      weekends: true,
-      editable: true,
-      selectable: true,
-      selectMirror: true,
-      dayMaxEvents: true,
-      dateClick: this.handleDateClick.bind(this),
-      eventClick: this.handleEventClick.bind(this),
-      eventsSet: this.handleEvents.bind(this),
-      events: this.hola
-    };
-    this.addEventForm = this.formBuilder.group({
-      title: ['', [Validators.required]],
-      fecha: ['', [Validators.required]]
-    });
+      console.log(this.mostrarCalendario);
+
+    }, error => {
+      console.log(error);
+      this.cargarCalendario();
+    }, () => {
+      this.cargarCalendario();
+    })
+      
 
   }//Termina el oninit
 
   onSubmit() {
-
-    // stop here if form is invalid and reset the validations
-    this.addEventForm.get('title').setValidators([Validators.required]);
-    this.addEventForm.get('title').updateValueAndValidity();
-    console.log(this.addEventForm);
-    
     if (this.addEventForm.invalid) {
       return;
     }
-      // Initialize Params Object
-      var myFormData = new FormData();
+    this.calendario.title = this.addEventForm.value.title;
 
-
-      // Begin assigning parameters
-
-      myFormData.append('title', this.addEventForm.value.title);
-      myFormData.append('startdate', this.eventdate);
-      console.log(myFormData);
-      
-
-      this.calendario.title = tite;
-      console.log(tite);
-      
-      console.log(this.calendario);
-
-
-      // Begin assig
-this.hola.push({title:"Aja", date: "2021-08-12"})
-      this.AuthS.saveCalendario(this.calendario).subscribe(resp => {
-        console.log(resp);
-        Swal.fire({
-          title: 'Se ha guardado el comunicado',
-          text: `Mensaje para mercadology`,
-          icon: 'success'
-        })
-        console.log("pasa hasta aqui");
-
-      }, error => {
-        Swal.fire({
-          title: 'No se pudo Guardar el',
-          text: `Mensaje para mercadology`,
-          icon: 'error'
-        })
-        console.log(error);
-
-      }, () => {
-        Swal.fire({
-          title: 'Se ha guardado el comunicado',
-          text: `Mensaje para mercadology`,
-          icon: 'success'
-        })
-
+    this.AuthS.saveCalendario(this.calendario).subscribe(resp => {
+      console.log(resp);
+      Swal.fire({
+        title: 'Se ha guardado el comunicado',
+        text: `Mensaje para mercadology`,
+        icon: 'success'
       })
-    
+      console.log("pasa hasta aqui");
+      this.cargarCalendario();
+
+    }, error => {
+      Swal.fire({
+        title: 'No se pudo Guardar el',
+        text: `Mensaje para mercadology`,
+        icon: 'error'
+      })
+      console.log(error);
+
+    }, () => {
+      Swal.fire({
+        title: 'Se ha guardado el comunicado',
+        text: `Mensaje para mercadology`,
+        icon: 'success'
+      })
+      $("#myModal").modal("hide");
+    })
+
 
   }
 
@@ -137,20 +99,20 @@ this.hola.push({title:"Aja", date: "2021-08-12"})
 
   handleCalendarToggle() {
     console.log("soy handleCalendarToggle");
-    
+
     this.calendarVisible = !this.calendarVisible;
   }
 
   handleWeekendsToggle() {
     console.log("Soy handleWeekendsToggle");
-    
+
     const { calendarOptions } = this;
     calendarOptions.weekends = !calendarOptions.weekends;
   }
 
   handleDateSelect(selectInfo: DateSelectArg) {
     console.log("Soy handleDateSelect");
-    
+
 
     const title = prompt('Please enter a new title for your event');
     const calendarApi = selectInfo.view.calendar;
@@ -178,31 +140,55 @@ this.hola.push({title:"Aja", date: "2021-08-12"})
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     console.log(events);
-  
+
   }
 
   handleDateClick(arg) {
     console.log(arg);
-    
+
     $("#myModal").modal("show");
     // $(".modal-title, .eventStartDate").text("");
     $(".modal-title").text("Add Event at : " + arg.dateStr);
-    $(".eventStartDate").text(arg.dateStr);
+    $(".eventStartDate").val(arg.dateStr);
     console.log($(".eventStartDate"));
-    
-    tite = this.calendario.title = arg.dateStr;
-    console.log(tite, "titttt");
+
+    this.calendario.start = arg.dateStr;
   }
 
   //Hide Modal PopUp and clear the form validations
   hideForm() {
     console.log("soy hideForm");
-    
+
     $("#myModal").modal("hide");
     this.addEventForm.patchValue({ title: "" });
     this.addEventForm.get('title').clearValidators();
     this.addEventForm.get('title').updateValueAndValidity();
+  }
 
+  cargarCalendario(){
+    this.calendarOptions = {
+
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      },
+      initialView: 'dayGridMonth',
+      // initialEvents: this.hola, // alternatively, use the `events` setting to fetch from a feed
+      weekends: true,
+      editable: true,
+      selectable: true,
+      selectMirror: true,
+      dayMaxEvents: true,
+      dateClick: this.handleDateClick.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      eventsSet: this.handleEvents.bind(this),
+      events: this.mostrarCalendario
+    };
+  
+  this.addEventForm = this.formBuilder.group({
+    title: ['', [Validators.required]]
+  });
   }
 
 }

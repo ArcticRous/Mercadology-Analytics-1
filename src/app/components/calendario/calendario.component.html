@@ -25,8 +25,8 @@
                                 <label>Event Title</label>
                                 <input placeholder="Add Event Title" type="text" formControlName="title"
                                     class="titleinp form-control"
-                                    [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
-                                <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                                    [ngClass]="{ 'is-invalid':f.title.errors && this.addEventForm.controls['title'].touched }" />
+                                <div *ngIf="f.title.errors" class="invalid-feedback">
                                     <div *ngIf="f.title.errors.required">Title is required</div>
                                 </div>
                             </div>
@@ -34,7 +34,7 @@
                         <div class="col-sm-12">
                             <div class="form-group">
                                 <label>Event Date:</label>
-                                <input class="form-control eventStartDate" type="text" formControlName="fecha">
+                                <input class="form-control eventStartDate" type="text" disabled>
                             </div>
                         </div>
 
