@@ -1,6 +1,6 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { AuthService } from '../../services/auth.service';
-import { ClienteModel } from "../../models/cliente.model";
+import { AuthService } from 'src/app/services/auth.service';
+import { ClienteModel } from "src/app/models/cliente.model";
 import Swal from 'sweetalert2';
 
 import { MatPaginator } from '@angular/material/paginator';

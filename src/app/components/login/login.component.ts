@@ -1,10 +1,10 @@
-import { RegistroModel } from './../../models/registro.model';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { UsuarioModel } from '../../models/usuario.model';
 import { Router, RouterModule } from '@angular/router';
+import { RegistroModel } from 'src/app/models/registro.model';
 
 @Component({
   selector: 'app-login',

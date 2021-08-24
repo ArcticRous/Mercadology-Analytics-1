@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ClienteModel } from '../../models/cliente.model';
+import { ClienteModel } from 'src/app/models/cliente.model';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
