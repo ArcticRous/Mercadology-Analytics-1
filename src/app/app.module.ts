@@ -15,6 +15,9 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
+import { NgxDropzoneModule } from 'ngx-dropzone';
+import { ToastrModule } from 'ngx-toastr';
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CuentasComponent } from './components/cuentas/cuentas.component';
@@ -96,7 +99,9 @@ FullCalendarModule.registerPlugins([
     MatDatepickerModule, 
     // MatNativeDateModule,
     MatMomentDateModule,
-    FullCalendarModule 
+    FullCalendarModule,
+    NgxDropzoneModule,
+    ToastrModule.forRoot(), // ToastrModule added
   ],
   providers: [
     
