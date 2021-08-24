@@ -1,0 +1,19 @@
+#upt {
+    background: rgb(29, 160, 29) !important;
+}
+
+.cont-general {
+    display: flex;
+    margin: auto;
+}
+
+.cont-form {
+    margin: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.fecha-input {
+    height: 40px;
+    border-radius: 7px;
+}

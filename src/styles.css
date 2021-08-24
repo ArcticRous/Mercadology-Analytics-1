@@ -11,12 +11,23 @@
     src: url('./assets/fonts/Poppins-Regular.ttf');
 }
 
+html{
+    min-height: 100%;
+    position: relative;
+}
+
 body {
-    background-color: #242424;
+    background-color: #242424!important;
+    margin: 0 0 125px 0!important;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .rojo {
     background-color: #FC041C;
+}
+
+.texto-rojo {
+    color: #FC041C;
 }
 
 .gris {
@@ -37,4 +48,32 @@ body {
 
 .naranja {
     background-color: #FC6434;
+}
+
+body::-webkit-scrollbar,
+.container::-webkit-scrollbar,
+.table-responsive::-webkit-scrollbar,
+div::-webkit-scrollbar{
+    width: 14px;
+    background-color: #242424;
+}
+
+select::-webkit-scrollbar{
+    width: 14px;
+    background-color: white;
+}
+
+body::-webkit-scrollbar-thumb,
+.container::-webkit-scrollbar-thumb,
+.table-responsive::-webkit-scrollbar-thumb,
+div::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, .2);
+    border-radius: 10px;
+    border-right: 2px solid #242424;
+}
+
+select::-webkit-scrollbar-thumb{
+    background-color: rgba(0, 0, 0, .2);
+    border-radius: 10px;
+    border-right: 2px solid #d4d4d4;
 }

@@ -1,0 +1,45 @@
+.custom-dropzone {
+    background-color: transparent;
+    border: 4px dashed #FCC42C;
+    height: 210px!important;
+}
+  
+.custom-dropzone.ngx-dz-hovered {
+    border: 5px solid #FCC42C;
+}
+
+ngx-dropzone-image-preview ngx-dropzone-label{
+    color: white!important;
+    font-size: 14px;
+    bottom: 0;
+    margin-bottom: -15px!important;
+    overflow: hidden;
+    max-height: 20px;
+    max-width: 100%;
+}
+
+ngx-dropzone-remove-badge[_nghost-gij-c171]{
+	    opacity: 1;
+        background: red!important;
+}
+
+@media(max-width:767px){
+    .container{
+        max-width: 100%;
+        margin: 0 auto;
+    }
+
+    .col-6{
+        width: 100%;
+    }
+
+    .col-4{
+        width: 40%;
+    }
+}
+
+@media(max-width:412px){
+    .col-4{
+        width: 100%;
+    }
+}

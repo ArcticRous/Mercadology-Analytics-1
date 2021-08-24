@@ -1,0 +1,74 @@
+.wi{
+    width: 80%;
+    margin: auto;
+}
+label{
+    color: #ccc;
+}
+
+.flo-rig{
+    float: right;
+}
+.flo-lef{
+    float: left;
+} 
+
+:disabled{
+    background-color: white;
+  }
+
+.contenedor{
+    margin: 0 auto;
+}
+
+@media (max-width: 768px){
+    .formulario .row{
+        display: flex;
+        flex-direction: column;
+    }
+
+    .formulario .row .col-6{
+        width: 100%;
+    }
+}
+
+.btn-outline:hover .bi-clipboard{
+    color: #0d6efd;
+}
+
+button:focus, .form-control:focus {
+    outline:none !important;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+
+.bi-eye-slash-fill, .bi-eye-fill{
+    color: white;
+}
+
+.btn-outline-secondary{
+    background-color: gray; 
+}
+
+.btn-outline-secondary:hover{
+    background-color: #5c636a;
+    border-color: #5c636a;
+}
+
+.mat-datepicker-toggle{
+    color: white !important;
+}
+
+.picker{
+    display: inline; 
+    width: 75%;
+    }
+
+@media (min-width:368px){
+    .picker{
+        display: inline; 
+        width: 85%;
+    }
+}

@@ -1,0 +1,49 @@
+.container{
+    color: white;
+    width: min(90%, 900px);
+}
+
+form{
+    margin: 0 auto;
+    color: white;
+}
+
+.botones{
+    display: flex;
+    flex-direction: column;
+}
+
+.botones button{
+    width: 100%;
+}
+
+@media(min-width: 768px){
+    .botones{
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .botones button{
+        width: 30%;
+    }
+
+}
+
+.input-group button:focus, .input-group .form-control:focus {
+    outline:none !important;
+    border: 1px solid #ced4da;
+    border-right: none;
+    outline-width: 0 !important;
+    box-shadow: none;
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+}
+.input-group .boton{
+    border: 1px solid #ced4da;
+    border-left: none;
+}
+.input-group .boton:focus{
+    border: 1px solid #ced4da;
+    border-left: none;
+}
