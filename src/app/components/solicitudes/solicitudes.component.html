@@ -35,74 +35,107 @@
                     <div class="form-group col-12">
                         <label for="formFecha" class="mb-2">Fecha de solicitud </label>
                         <input type="date" class="form-control bg-white" name="fecha" id="formFecha"
-                            formControlName="fecha" disabled>
+                            formControlName="fecha" readonly>
                     </div>
                 </div>
 
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 mb-3">
                     <label for="formMaterial" class="mb-2">Material solicitado</label>
-                    <input type="text" class="form-control mb-3" name="material" id="formMaterial"
+                    <input type="text" class="form-control" name="material" id="formMaterial"
                         placeholder="Defina el tipo de material o formato que solicita" formControlName="material">
+                    <span *ngIf="getErrores('material')" class="form-text text-danger">Este campo requiere mínimo 5
+                        caracteres</span>
                 </div>
+
             </div>
 
             <div class="row">
-                <div class="col-6">
+                <div class="col-6 mb-3">
                     <label for="formEmail" class="mb-2">Email al cual le llegarán las notificaciones</label>
-                    <input type="email" class="form-control mb-3" name="email" id="formEmail"
+                    <input type="email" class="form-control" name="email" id="formEmail"
                         placeholder="ejemplo@correo.com" formControlName="email">
+                    <span *ngIf="getErrores('email')" class="form-text text-danger">Debe ingresar un email valido</span>
                 </div>
 
-                <div class="col-6">
+                <div class="col-6 mb-3">
                     <label for="formNumDisenos" class="mb-2">Número de diseños</label>
-                    <input type="number" class="form-control mb-3" min="1" max="1000" name="numDisenos"
-                        id="formNumDisenos" placeholder="Defina la cantidad de número de diseños"
-                        formControlName="numDisenos">
+                    <input type="number" class="form-control" name="numDisenos" id="formNumDisenos"
+                        placeholder="Defina la cantidad de número de diseños" formControlName="numDisenos">
+                    <span *ngIf="getErrores('numDisenos')" class="form-text text-danger">Debe ser mínimo 1, máximo
+                        100</span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 mb-3">
                     <label for="formDesDisenos" class="mb-2">Descripción de diseños</label>
-                    <textarea class="form-control mb-3" id="formDesDisenos"
+                    <textarea class="form-control" id="formDesDisenos"
                         placeholder="Especifique como tiene que ser el diseño" name="desDisenos"
                         formControlName="desDisenos"></textarea>
+                    <span *ngIf="getErrores('desDisenos')" class="form-text text-danger">Este campo requiere mínimo 10
+                        caracteres</span>
                 </div>
             </div>
 
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 mb-3">
                     <label for="formInfDisenos" class="mb-2">Información en diseños</label>
-                    <textarea class="form-control mb-4" id="formInfDisenos"
+                    <textarea class="form-control" id="formInfDisenos"
                         placeholder="Especifique el contenido (textos) que desea que lleve el diseño" name="infDisenos"
                         formControlName="infDisenos"></textarea>
+                    <span *ngIf="getErrores('infDisenos')" class="form-text text-danger">Este campo requiere mínimo 10
+                        caracteres</span>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-4 mb-3">
                     <label for="botonAnadirImg" class="mb-2">Imágenes de referencia</label>
-                    <button id="botonAnadirImg" class="btn btn-primary w-100" (click)="abrirImagenes()">Añadir imagen</button>
+                    <button type="button" id="botonAnadirImg" class="btn btn-primary w-100" (click)="abrirImagenes()">Añadir
+                        imagen</button>
                 </div>
             </div>
 
             <div class="row">
+                <div class="col-12 mb-3" style="position: relative;"
+                    [ngStyle]="this.abrirCerrar ? {'display': 'block'} : {'display':'none'}">
+                    <button type="button" class="btn-close btn-close-white mt-3 me-4" (click)="cerrarImagenes()"
+                        style="position: absolute; top: 0; right: 0; z-index: 10;" aria-label="Close"></button>
+                    <div class="custom-dropzone" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
+                        <ngx-dropzone-label>
+                            <div>
+                                <h4 style="z-index: 0;" class="text-warning">Arrastre sus archivos para subirlos</h4>
+                                <i class="bi bi-cloud-upload-fill text-warning fs-2 "></i>
+                                <p class="form-text text-warning">Tamaño máximo recomendado por archivo: 3MB</p>
+                            </div>
+                        </ngx-dropzone-label>
+                        <ngx-dropzone-image-preview class="imgPreview" ngProjectAs="ngx-dropzone-preview"
+                            *ngFor="let f of filesDropZone" [file]="f" [removable]="true" (removed)="onRemove(f)">
+                            <ngx-dropzone-label>{{ f.name }} ({{ f.type }})</ngx-dropzone-label>
+                        </ngx-dropzone-image-preview>
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="row">
                 <div class="inputFileImagenes" [ngStyle]="this.abrirCerrar ? {'display': 'block'} : {'display':'none'}">
                     <div class="imagenesFile text-center d-flex justify-content-center align-items-center"
                         style="position: relative; border: dotted 4px #FCC42C;">
 
-                        <h4 class="mt-2 text-warning" style="position: absolute; top:0">Arrastre archivos para subirlos</h4>
+                        <h4 class="mt-2 text-warning" style="position: absolute; top:0">Arrastre archivos para subirlos
+                        </h4>
                         <button type="button" class="btn-close btn-close-white mt-2 me-2" (click)="cerrarImagenes()"
                             style="position: absolute; top: 0; right: 0; z-index: 1;" aria-label="Close"></button>
                         <label for="formFileMultiple" class="btn btn-outline-warning"
                             style="position: absolute; cursor: pointer; z-index: 1; ">
                             {{textoLabel}}</label>
-                        <p class="mb-4 text-warning" style="position: absolute; bottom: 0; font-size: 11px;">Tamaño máximo recomendado 3MB</p>
+                        <p class="mb-4 text-warning" style="position: absolute; bottom: 0; font-size: 11px;">Tamaño
+                            máximo recomendado 3MB</p>
                         <input class="form-control" type="file" id="formFileMultiple" multiple name="formFileMultiple"
-                            (change)="onfileImagenes($event)" formControlName="imagenes"
+                            (change)="onfileImagenes($event)" formControlName="imagenes" accept="image/*"
                             style="opacity: 0; padding: 80px 0 80px 0;">
                     </div>
                 </div>
@@ -122,7 +155,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
             <div class="row mb-2">
@@ -141,6 +174,7 @@
                             <label class="btn btn-outline-primary" for="btnradioNo">No</label>
                         </div>
                     </div>
+                    <span *ngIf="this.solicitudForm.controls.existeMaterial.errors" class="form-text text-danger">Este campo es requerido</span>
                 </div>
 
 
@@ -152,14 +186,17 @@
                         class="mb-3">
                         <label for="formFile" class="form-label">Por favor, proporcionenos el material</label>
                         <input class="form-control" type="file" id="formFile" formControlName="fileMaterial"
-                            (change)="onfileArchivo($event)">
+                            (change)="onfileArchivo($event)"
+                            accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        <p class="form-text text-white">Tamaño máximo 3MB</p>
                     </div>
                 </div>
             </div>
 
+
             <div class="row mb-3" style="display: flex; justify-content:center;">
                 <div class="form-group col-md-4 mt-3">
-                    <button type="submit" [disabled]="this.solicitudForm.invalid" class="btn btn-primary btn-lg w-100">
+                    <button type="submit"  class="btn btn-primary btn-lg w-100">
                         <i class="bi bi-cursor-fill"></i>
                         Enviar
                     </button>
