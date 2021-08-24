@@ -26,7 +26,7 @@ export class ComunicadosComponent implements OnInit, AfterViewInit {
    durationInSeconds = 2;
    rol: string;
  
-   displayedColumns: string[] = ['#', 'titulo', 'descripcion', 'fecha', 'quien', 'ids'];
+   displayedColumns: string[] = ['#', 'titulo', 'descripcion', 'fecha', 'categoria'];
    dataSource: MatTableDataSource<ComunicadoModel>;
  
    @ViewChild(MatPaginator) paginator: MatPaginator;

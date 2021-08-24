@@ -7,81 +7,68 @@
 
 <div class="container mt-2">
 
-    <div class="col m-auto">
-        <form action="">
-            <label class="text-white" for="categoria">Selecciona una categoría</label>
-            <select name="" id="categoria" class="form-select w-25">
-                <option value="">General</option>
-                <option value="">Personal</option>
-                <option value="">Festividades</option>
-                <option value="">Vacaciones</option>
-                <option value="">Dudas</option>
-                <option value="">Contrato y reglamento</option>    
-            </select>
-        </form>
+    <div class="row">
+        <div class="col-md-6">
+            <form action="">
+                <label class="text-white mb-2" for="categoria">Selecciona una categoría</label>
+                <select name="" id="categoria" class="form-select w-100">
+                    <option value="">General</option>
+                    <option value="">Personal</option>
+                    <option value="">Festividades</option>
+                    <option value="">Vacaciones</option>
+                    <option value="">Dudas</option>
+                    <option value="">Contrato y reglamento</option>    
+                </select>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <label class="text-white mb-2" for="filtro">Busqueda rapida</label>
+            <input class="form-control w-100" matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+        </div>
     </div>
-    <!--holaaa  -->
-    <div class="table-responsive">
-        <table mat-table [dataSource]="dataSource" matSort class="cont-table-cs" ng-if="categoria.comunicado == 'omar'">
+
+    <div class="mat-elevation-z8 table-responsive mt-3">
+        <table mat-table [dataSource]="dataSource" matSort class="cont-table-mc">
 
             <!-- Position Column -->
-            <ng-container matColumnDef="#" class="cont-cat">
-                <th mat-header-cell *matHeaderCellDef> # </th>
-                <td class="contenedor-img-cs" mat-cell *matCellDef="let element; let i = index">
-                    <!-- {{(i+1) + (paginator.pageIndex*paginator.pageSize)}} -->
-                    <div>
-                        <img src="../../../assets/imagenes/imagenPerfil/merca.jpeg" class="img-cs " alt="imagen usuario">
-                    </div>
-
-                    <div>
-                        <p class="categoria">{{element.quien}}</p>
-                    </div>
+            <ng-container matColumnDef="#">
+                <th mat-header-cell *matHeaderCellDef class="n-td" mat-sort-header> N° </th>
+                <td mat-cell *matCellDef="let element; let i = index">
+                    <p>
+                        {{(i+1) + (paginator.pageIndex*paginator.pageSize)}}
+                    </p>
                 </td>
             </ng-container>
 
             <!-- Cliente Column -->
             <ng-container matColumnDef="titulo">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header><span cwlass="tite so" style="color: black !important;"> Titulo</span> </th>
-                <td mat-cell *matCellDef="let element" class="tite">
-                    <!-- <h5 class="texto-titulo">{{element.titulo}}</h5> -->
+                <th mat-header-cell *matHeaderCellDef mat-sort-header><span> Título</span> </th>
+                <td mat-cell *matCellDef="let element">
+                    <p class="t-td t-left">{{element.titulo}}</p>
                 </td>
             </ng-container>
 
             <!-- Dominio Column -->
             <ng-container matColumnDef="descripcion">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: black !important;"> Descripcion </th>
-                <td mat-cell *matCellDef="let element" class="cont-des">
-                    <h5 class="texto-titulo">{{element.titulo}}</h5>
-                    <p class="texto-descripcion">{{element.descripcion}}</p>
-                    <span class="texto-fecha">Publicado el: {{element.fecha}}</span>
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Descripción </th>
+                <td mat-cell *matCellDef="let element">
+                    <p>{{element.descripcion}} </p>
                 </td>
             </ng-container>
 
             <!-- IP Column -->
             <ng-container matColumnDef="fecha">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: black !important;">Fecha</th>
-                <td mat-cell *matCellDef="let element" class="fecha po" style="color: black !important;">
-                    <!-- <span class="texto-fecha">Publicado el: {{element.fecha}}</span> -->
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+                <td mat-cell *matCellDef="let element">
+                    <p class="c-td">{{element.fecha}}</p>
                 </td>
             </ng-container>
 
             <!-- Estado Column -->
-            <ng-container matColumnDef="quien">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header style="color: black !important;">Usuario</th>
-                <td mat-cell *matCellDef="let element" class="quien po">
-                    <!-- <span class="categoria">{{element.quien}}</span>  -->
-                </td>
-            </ng-container>
-
-            <ng-container style="display: none !important;" matColumnDef="ids">
-                <th mat-header-cell *matHeaderCellDef style="text-align: center; color: black !important;"> Opciones </th>
-                <!-- <td> {{element.ids}} </td> -->
-                <td mat-cell *matCellDef="let element; let i = index" style="display: none !important;" class="opciones" style="padding:0">
-
-                    <!-- *ngIf="this.rol === '12345'"-->
-                    <button *ngIf="this.rol === '12345'" class="btn btn-danger ms-3 btn-sm" style="display: none !important; width: 1% !important;" (click)="borrarComunicado( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
-                        <i class="bi bi-trash-fill"></i>
-                    </button>
+            <ng-container matColumnDef="categoria">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoría</th>
+                <td mat-cell *matCellDef="let element">
+                    <p class="c-td">{{element.quien}}</p>
                 </td>
             </ng-container>
 
@@ -95,10 +82,9 @@
             </tr>
 
         </table>
-
-
         <!-- showFirstLastButtons -->
     </div>
+
     <mat-paginator style="color: #242424;" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>
 
