@@ -1,3 +1,4 @@
+import { MinutaModel } from './../models/minuta.model';
 import { SolicitudModel } from './../models/solicitud.model';
 import { UsuarioModel } from './../models/usuario.model';
 import { RegistroModel } from './../models/registro.model';
@@ -8,7 +9,6 @@ import { ClienteModel } from '../models/cliente.model';
 import { AccesosModel } from '../models/accesos.model';
 import { ComunicadoModel } from '../models/comunicado.model';
 import { CalendarioModel } from '../models/calendario.model';
-
 
 
 @Injectable({
@@ -751,7 +751,7 @@ export class AuthService {
 
   //Cuando el manager establece una fecha de entrega se guarda la fecha estipulada en la BDD
   editarSolicitud(solicitud: SolicitudModel) {
-console.log(solicitud.id);
+    console.log(solicitud.id);
 
     const SolicitudTemp = {
       ...solicitud
@@ -769,7 +769,7 @@ console.log(solicitud.id);
     return this.http.post(this.solicitudCliente, body)
   }
 
-  sendRespuestaCliente(body: any){
+  sendRespuestaCliente(body: any) {
     return this.http.post(this.respuestaCliente, body);
   }
 
@@ -781,8 +781,8 @@ console.log(solicitud.id);
         })
       );
   }
-  
-  getSolicitud(id:string){
+
+  getSolicitud(id: string) {
     return this.http.get(`${this.urlDatos}/solicitud/${id}.json`)
   }
 
@@ -811,15 +811,67 @@ console.log(solicitud.id);
 
   saveCalendario(calendario: CalendarioModel) {
     console.log(calendario);
-    
+
     return this.http.post(`${this.url}/calendario.json`, calendario)
       .pipe(
         map((resp: any) => {
           console.log(resp);
-          
+
           return calendario;
         })
       );
   }
+
+  getCalendario() {
+    return this.http.get(`${this.url}/calendario.json`)
+      .pipe(
+        map(this.crearArregloCalendario)
+      );
+  }
+
+  private crearArregloCalendario(calendarioObj: Object) {
+    const calendarios: CalendarioModel[] = [];
+
+    Object.keys(calendarioObj).forEach(key => {
+      const calendario: CalendarioModel = calendarioObj[key];
+      calendario.id = key;
+
+      calendarios.push(calendario);
+    });
+
+    return calendarios;
+  }
+
+
+  //Minuta
+  guardarMinuta(minuta: MinutaModel) {
+    const token = sessionStorage.getItem('token');
+    return this.http.post(`${this.url}/minuta.json` + this.auth + token , minuta)
+      .pipe(
+        map((resp: any) => {
+          console.log(resp);
+          return minuta;
+        })
+      );
+  }
+
+  obtenerMinutas() {
+    return this.http.get(`${this.url}/minuta.json`)
+      .pipe(map(this.crearArregloMinuta))
+  }
+
+  crearArregloMinuta(minutaObj: MinutaModel) {
+    const minutas: MinutaModel[] = []
+
+    Object.keys(minutaObj).forEach(key => {
+      const minuta: MinutaModel = minutaObj[key];
+      minuta.id = key;
+      
+      minutas.push(minuta);
+    })
+
+    return minutas;
+  }
+
 
 }/**Cierra el export data**/
