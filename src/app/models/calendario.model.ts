@@ -1,6 +1,6 @@
 export class CalendarioModel{
-    ids?:string;
-    title: any;
-    date?:any;
+    id?:string;
+    title: string;
+    start:any;
     myFormData?: any;
 }
