@@ -11,6 +11,7 @@ import { ComunicadoModel } from '../models/comunicado.model';
 import { CalendarioModel } from '../models/calendario.model';
 
 
+
 @Injectable({
   providedIn: 'root'
 })
@@ -406,6 +407,28 @@ export class AuthService {
   getComunicado(ids: string) {
     return this.http.get(`${this.url}/comunicados/${ids}.json`);
   }
+  
+  // getfiltradoCon (filtro:string){
+  //   return this.http.get(`${this.url}/comunicados.json`)
+  //   .pipe(
+  //     map(
+  //       this.crearFiltradoCon
+  //     )
+  //   );
+  // }
+  // crearFiltradoCon( comunicadoObj: object){
+  //   const comunicados: ComunicadoModel[] = [];
+  //   console.log(comunicadoObj);
+  //   if ( comunicadoObj === null) {return [];}
+  //   Object.keys(comunicadoObj).forEach(key => {
+  //     const comunicado: ComunicadoModel = comunicadoObj[key];
+  //     comunicado.ids = key;
+  //     comunicados.push(comunicado);
+  //   });
+  //   let cat:string [] = ['General'];
+  //   return comunicados.filter(cat => 'ss')
+  // }
+
   //Tipo se refiere a si se va a kostrar en comunicados general (donde se visualizan) o si es donde se eliminan, agregan o editan comunicados
   getComun(tipo: string) {
 

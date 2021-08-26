@@ -3,6 +3,11 @@ label {
     font-size: 15px;
 }
 
+option {
+    font-family: "Poppins";
+    font-size: 15px;
+}
+
 table {
     width: 100%;
     background-color: #242424;
