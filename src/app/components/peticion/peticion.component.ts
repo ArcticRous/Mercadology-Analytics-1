@@ -30,9 +30,9 @@ export class PeticionComponent implements OnInit {
       // console.log(this.imagenes);
       for (const img of this.imagenes) {
         console.log(img);
-        
+
       }
-      
+
 
       this.peticiones.id = id;
     });
@@ -41,16 +41,20 @@ export class PeticionComponent implements OnInit {
   guardar(form: NgForm) {
     console.log(this.peticiones);
 
-    if(form.invalid){console.log("Error");
-     return false}
+    if (form.invalid) {
+      console.log("Error");
+      return false
+    }
 
     console.log(form);
     Swal.fire({
       title: `¿Esta seguro?`,
       text: `Se enviará la fecha: ${this.peticiones.fechaEntrega} como fecha estimada de entrega`,
       icon: 'question',
+      showCancelButton: true,
       showConfirmButton: true,
-      showCancelButton: true
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Enviar'
     }).then(resp => {
       if (resp.value) {
 
@@ -60,10 +64,10 @@ export class PeticionComponent implements OnInit {
           text: 'Espere por favor...'
         });
         Swal.showLoading();
-  
+
         this.AuthService.sendRespuestaCliente(this.peticiones).subscribe(next => {
           console.log(next);
-  
+
           this.AuthService.editarSolicitud(this.peticiones).subscribe(next => {
             console.log(next);
             Swal.fire({
@@ -74,10 +78,25 @@ export class PeticionComponent implements OnInit {
           }, error => {
             console.log(error);
           })
-  
-  
+
         }, error => {
           console.log(error);
+          this.AuthService.sendRespuestaCliente2(this.peticiones).subscribe(next => {
+            console.log(next);
+            this.AuthService.editarSolicitud(this.peticiones).subscribe(next => {
+              console.log(next);
+              Swal.fire({
+                title: 'Respuesta enviada',
+                text: `Se envio el correo a la cuenta de ${this.peticiones.cuenta} correctamente`,
+                icon: 'success'
+              })
+            }, error => {
+              console.log(error);
+            })
+
+          }, error => {
+            console.log(error);
+          })
         })
 
       }
