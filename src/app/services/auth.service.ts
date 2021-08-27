@@ -10,7 +10,6 @@ import { AccesosModel } from '../models/accesos.model';
 import { ComunicadoModel } from '../models/comunicado.model';
 import { CalendarioModel } from '../models/calendario.model';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,8 +20,9 @@ export class AuthService {
   private key: string = `AIzaSyDmvkHWhK6TV-6K3KtF-Zui0D17hCuqzEk`;
   private realDatabase: string = 'https://mercadology-analytics-default-rtdb.firebaseio.com';
   public urlStorage = `https://firebasestorage.googleapis.com/v0/b/mercadology-analytics.appspot.com`;
-  // private urlEnviarCorreo: string = `https://mercadologyemail.herokuapp.com`;
-  private urlEnviarCorreo: string = `http://localhost:3000`;
+  private urlEnviarCorreo: string = `https://mercadologyemail.herokuapp.com`;
+  // private urlEnviarCorreo: string = `http://localhost:3000`;
+  private urlEnviarCorreo2: string = `https://mercadologyemail-2.herokuapp.com`;
 
   //Inicio Sesion Auth
   private apikey = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + this.key;
@@ -61,8 +61,11 @@ export class AuthService {
   private vencimientoCuentas = this.urlEnviarCorreo + "/send-email";
   private vencimientoCuentaCliente = this.urlEnviarCorreo + "/send-clientes";
   private solicitudManager = this.urlEnviarCorreo + "/send-solicitud-manager"
+  private solicitudManager2 = this.urlEnviarCorreo2 + "/send-solicitud-manager"
   private solicitudCliente = this.urlEnviarCorreo + "/send-cliente-solicitud";
-  private respuestaCliente = this.urlEnviarCorreo + "/send-respuesta-cliente"
+  private solicitudCliente2 = this.urlEnviarCorreo2 + "/send-cliente-solicitud";
+  private respuestaCliente = this.urlEnviarCorreo + "/send-respuesta-cliente";
+  private respuestaCliente2 = this.urlEnviarCorreo2 + "/send-respuesta-cliente";
 
   //Envia mediante express, nodejs y nodemailer un email de backup
   private backup = this.urlEnviarCorreo + `/send-backup`;
@@ -728,23 +731,7 @@ export class AuthService {
       data
     ).pipe(
       map((resp: any) => {
-        //Envia por correo al manager
-        this.sendSolicitudManager(solicitud).subscribe(next => {
-          console.log(next);
-
-          // Envia al cliente la confirmación de su envio
-          this.sendSolicitudConfirmacionCliente(solicitud).subscribe(next => {
-            console.log(next);
-          }, error => {
-            console.log(error);
-          })
-
-        }, error => {
-          console.log(error);
-        });
-
         return solicitud;
-
       })
     );
   }
@@ -765,12 +752,24 @@ export class AuthService {
     return this.http.post(this.solicitudManager, body)
   }
 
+  sendSolicitudManager2(body: any) {
+    return this.http.post(this.solicitudManager2, body)
+  }
+
   sendSolicitudConfirmacionCliente(body: any) {
     return this.http.post(this.solicitudCliente, body)
   }
 
+  sendSolicitudConfirmacionCliente2(body: any) {
+    return this.http.post(this.solicitudCliente2, body)
+  }
+
   sendRespuestaCliente(body: any) {
     return this.http.post(this.respuestaCliente, body);
+  }
+
+  sendRespuestaCliente2(body: any) {
+    return this.http.post(this.respuestaCliente2, body);
   }
 
   crearSolicitud(solicitud: SolicitudModel) {
@@ -802,12 +801,10 @@ export class AuthService {
 
       solicitudes.push(solicitud);
 
-
     });
 
     return solicitudes;
   }
-
 
   saveCalendario(calendario: CalendarioModel) {
     console.log(calendario);
@@ -846,13 +843,25 @@ export class AuthService {
   //Minuta
   guardarMinuta(minuta: MinutaModel) {
     const token = sessionStorage.getItem('token');
-    return this.http.post(`${this.url}/minuta.json` + this.auth + token , minuta)
+    return this.http.post(`${this.url}/minuta.json` + this.auth + token, minuta)
       .pipe(
         map((resp: any) => {
           console.log(resp);
           return minuta;
         })
       );
+  }
+
+  editarMinuta(minuta: MinutaModel) {
+    const token = sessionStorage.getItem('token');
+    console.log(minuta.id);
+
+    const MinutaTemp = {
+      ...minuta
+    };
+    delete MinutaTemp.id;
+
+    return this.http.put(`${this.url}/minuta/${minuta.id}.json` + this.auth + token, MinutaTemp);
   }
 
   obtenerMinutas() {
@@ -866,11 +875,17 @@ export class AuthService {
     Object.keys(minutaObj).forEach(key => {
       const minuta: MinutaModel = minutaObj[key];
       minuta.id = key;
-      
+
       minutas.push(minuta);
     })
 
     return minutas;
+  }
+
+  obtenerMinuta(id: string){
+    console.log(id);
+    
+    return this.http.get(`${this.urlDatos}/minuta/${id}.json`);
   }
 
 
