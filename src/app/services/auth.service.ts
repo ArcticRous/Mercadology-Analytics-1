@@ -18,7 +18,7 @@ import { CalendarioModel } from '../models/calendario.model';
 export class AuthService {
   //Se utiliza como variable local para obtener el rol y usar los guards para el routeo de páginas
   regreso;
-
+  
   private key: string = `AIzaSyDmvkHWhK6TV-6K3KtF-Zui0D17hCuqzEk`;
   private realDatabase: string = 'https://mercadology-analytics-default-rtdb.firebaseio.com';
   public urlStorage = `https://firebasestorage.googleapis.com/v0/b/mercadology-analytics.appspot.com`;
@@ -923,6 +923,10 @@ export class AuthService {
     console.log(id);
     
     return this.http.get(`${this.urlDatos}/minuta/${id}.json`);
+  }
+
+  eliminarMinuta(id: string, token: string) {
+    return this.http.delete(`${this.urlDatos}/minuta/${id}.json` + this.auth + token);
   }
 
 

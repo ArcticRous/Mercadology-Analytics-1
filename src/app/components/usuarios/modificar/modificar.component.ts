@@ -56,76 +56,91 @@ export class ModificarComponent implements OnInit {
     if (form.invalid) { return; }
 
     Swal.fire({
-      allowOutsideClick: false,
-      icon: 'info',
-      text: 'Espere por favor...'
-    });
-    Swal.showLoading();
-    //No se puede actualizar el nombre de usuario en el Auth porque necesto el idToken del usuario y no se tiene el idToken desde otro usuario
-    //this.auth.modificarUsuarioAuth(this.idToken, this.registro).subscribe();
-    this.auth.actualizarUsuario(this.registro).subscribe(resp => {
+      title: `¿Esta seguro que los datos son correctos?`,
+      text: `Se editaran los datos de ${this.registro.nombre}`,
+      icon: 'question',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+    }).then(resp => {
 
-
-      Swal.fire(
-        'Actualizado!',
-        'Datos correctamente actualizados!',
-        'success'
-      )
-      this.router.navigateByUrl('/usuarios');
-    }, (err) => {
-      // console.log(err.error.error.message);
-
-      const tokenVencido = err.error.error;
-      // console.log(err);
-
-      if (tokenVencido === "Auth token is expired") {
-        // console.log("Entro a la comparativa de permiso denegado");
-        const refresh = sessionStorage.getItem('refresh_token');
-        this.auth.refrescarToken(refresh).subscribe(resp => {
-          // console.log(resp);
-          sessionStorage.setItem('token', resp['id_token']);
-          sessionStorage.setItem('refresh_token', resp['refresh_token']);
-
-          this.auth.actualizarUsuario(this.registro).subscribe(resp => {
-            // console.log("AHORA SI SE ACTUALIZO USUARIO DESPUES DE VENCER EL TOKEN");
-            Swal.fire(
-              'Actualizado!',
-              'Datos correctamente actualizados!',
-              'success'
-            )
-            this.router.navigateByUrl('/usuarios');
-          }, (err) => {
-            // console.log(err);
-          }, () => {
-            Swal.close();
-            Swal.fire(
-              'Actualizado!',
-              'Datos correctamente actualizados!',
-              'success'
-            )
-            this.router.navigateByUrl('/usuarios');
-          });//TERMINA EL NUEVO REGISTRO DESPUES DE VENCER EL TOKEN
-        });//tERMINA REFRESACAR TOKEN
-      } else { //Termina if
-        // console.log(err.error.error.message);
-
+      if (resp.value) {
         Swal.fire({
-          icon: 'error',
-          title: 'Error al actualizar datos',
-          text: 'No esta autorizado para realizas cambios: ' + err.error.error
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor...'
         });
-      }
+        Swal.showLoading();
+        //No se puede actualizar el nombre de usuario en el Auth porque necesto el idToken del usuario y no se tiene el idToken desde otro usuario
+        //this.auth.modificarUsuarioAuth(this.idToken, this.registro).subscribe();
+        this.auth.actualizarUsuario(this.registro).subscribe(resp => {
 
-    }, () => {
-      Swal.close();
-      Swal.fire(
-        'Actualizado!',
-        'Datos correctamente actualizados!',
-        'success'
-      )
-      this.router.navigateByUrl('/usuarios');
-    }
-    );
+
+          Swal.fire(
+            'Actualizado!',
+            'Datos correctamente actualizados!',
+            'success'
+          )
+          this.router.navigateByUrl('/usuarios');
+        }, (err) => {
+          // console.log(err.error.error.message);
+
+          const tokenVencido = err.error.error;
+          // console.log(err);
+
+          if (tokenVencido === "Auth token is expired") {
+            // console.log("Entro a la comparativa de permiso denegado");
+            const refresh = sessionStorage.getItem('refresh_token');
+            this.auth.refrescarToken(refresh).subscribe(resp => {
+              // console.log(resp);
+              sessionStorage.setItem('token', resp['id_token']);
+              sessionStorage.setItem('refresh_token', resp['refresh_token']);
+
+              this.auth.actualizarUsuario(this.registro).subscribe(resp => {
+                // console.log("AHORA SI SE ACTUALIZO USUARIO DESPUES DE VENCER EL TOKEN");
+                Swal.fire(
+                  'Actualizado!',
+                  'Datos correctamente actualizados!',
+                  'success'
+                )
+                this.router.navigateByUrl('/usuarios');
+              }, (err) => {
+                // console.log(err);
+              }, () => {
+                Swal.close();
+                Swal.fire(
+                  'Actualizado!',
+                  'Datos correctamente actualizados!',
+                  'success'
+                )
+                this.router.navigateByUrl('/usuarios');
+              });//TERMINA EL NUEVO REGISTRO DESPUES DE VENCER EL TOKEN
+            });//tERMINA REFRESACAR TOKEN
+          } else { //Termina if
+            // console.log(err.error.error.message);
+
+            Swal.fire({
+              icon: 'error',
+              title: 'Error al actualizar datos',
+              text: 'No esta autorizado para realizas cambios: ' + err.error.error
+            });
+          }
+
+        }, () => {
+          Swal.close();
+          Swal.fire(
+            'Actualizado!',
+            'Datos correctamente actualizados!',
+            'success'
+          )
+          this.router.navigateByUrl('/usuarios');
+        }
+        );
+      }
+    })
+
+
   }//Termina el submit  
 
 
