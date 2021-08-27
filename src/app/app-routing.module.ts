@@ -33,6 +33,7 @@ const routes: Routes = [
   {path: 'cuentas', component: CuentasComponent,canActivate: [AuthGuard]},
   {path: 'comunicados' , component: ComunicadosComponent,canActivate: [AuthGuard]},
   {path: 'calendario' , component: CalendarioComponent},
+  {path: 'calendario/:id' , component: CalendarioComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'solicitud' , component: SolicitudesComponent},
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},

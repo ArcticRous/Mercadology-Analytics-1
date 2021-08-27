@@ -849,6 +849,19 @@ export class AuthService {
         map(this.crearArregloCalendario)
       );
   }
+  getCalendarioid(id:string){
+    return this.http.get(`${this.urlDatos}/calendario/${id}.json`)
+   
+  }
+  DeleteCalen(id: string) {
+    return this.http.delete(`${this.url}/calendario/${id}.json`);
+  }
+  UpdatCalendario(calendario: CalendarioModel) {
+    const CalendarioTemp = {
+      ...calendario
+    };
+    return this.http.put(`${this.url}/calendario/${calendario.id}.json`,CalendarioTemp);
+  }
 
   private crearArregloCalendario(calendarioObj: Object) {
     const calendarios: CalendarioModel[] = [];

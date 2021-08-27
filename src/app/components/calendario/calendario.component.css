@@ -1,5 +1,5 @@
 * {
-    color: #ffff;
+    color: #fff;
 }
 
 h2 {
@@ -23,8 +23,34 @@ b {
     margin-right: 3px;
 }
 
+.max {
+    height: auto;
+}
+
+.max2 {
+    min-height: 550px;
+}
+
 .modal-content {
-    background-color: red;
+    background-color: #FCC42C;
+}
+
+th.mat-header-cell,
+td.mat-cell,
+td.mat-footer-cell {
+    max-width: 30px;
+    word-wrap: break-word;
+}
+
+.date {
+    max-width: 10px !important;
+}
+
+th.mat-header-cell:first-of-type,
+td.mat-cell:first-of-type,
+td.mat-footer-cell:first-of-type {
+    width: 10%;
+    text-align: left;
 }
 
 .form-control {
@@ -42,7 +68,7 @@ b {
     width: 300px;
     line-height: 1.5;
     background: #f2c53e;
-    border-right: 1px solid #f2c53e9a;
+    border-right: 1px solid #f2c53e;
 }
 
 .demo-app-sidebar-section {
@@ -54,8 +80,26 @@ b {
     padding: 3em;
 }
 
+.mat-cell,
+.mat-footer-cell {
+    color: #FCC42C !important;
+}
+
+h2.fc.fc-toolbar-title {
+    color: #FCC42C !important;
+}
+
 .fc {
     /* the calendar root */
     max-width: 1100px;
     margin: 0 auto;
+}
+
+.close {
+    background-color: #646464;
+    color: #fff;
+}
+
+.cor {
+    background-color: #646464;
 }
