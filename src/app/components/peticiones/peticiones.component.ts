@@ -14,7 +14,8 @@ export class PeticionesComponent implements OnInit, AfterViewInit {
   
   solicitud: SolicitudModel[] = [];
   // Cliente2: ClienteModel[] = [{ids:"21" ,nomcli: "erick", domcli:"ero", dirip:"skks", estado:false}]
-  cargando = false;
+  cargando = true;
+  hayDatos = true;
   durationInSeconds = 2;
   rol: string;
 
@@ -26,27 +27,29 @@ export class PeticionesComponent implements OnInit, AfterViewInit {
 
   constructor(private AuthService: AuthService) {
     AuthService.leerToken();
+    sessionStorage.removeItem('local');
+    this.rol = sessionStorage.getItem('rol');
+    this.AuthService.getSolicitudes()
+      .subscribe(resp => {
+        this.solicitud = resp;
+        this.dataSource = new MatTableDataSource(this.solicitud);
+        // this.paginator._intl.itemsPerPageLabel="Elementos por página";
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        this.cargando = false;
+        // this.cargando = true;
+      }, error => {
+        console.log(error);
+        this.cargando = false;
+        this.hayDatos = false;
+      });
    } 
 
   ngOnInit(): void{
    
     // this.AuthService.getSolicitudes()
     //   .subscribe( resp => this.solicitud = resp);
-    sessionStorage.removeItem('local');
-    this.rol = sessionStorage.getItem('rol');
-    this.AuthService.getSolicitudes()
-      .subscribe(resp => {
-        this.solicitud = resp;
-        this.cargando = false;
-        this.dataSource = new MatTableDataSource(this.solicitud);
-        this.paginator._intl.itemsPerPageLabel="Elementos por página";
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-        this.cargando = true;
-      }, error => {
-        console.log(error);
-        this.cargando = false;
-      });
+    
   }
 
   ngAfterViewInit() {

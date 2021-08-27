@@ -4,16 +4,26 @@
         <h1 class="text-white col-12">Peticiones de diseño</h1>
     </div>
 
-    <div class="row" *ngIf="!this.cargando">
+    <div class="row mt-3" *ngIf="!this.hayDatos">
         <h3 class="text-center text-white">No hay datos aún</h3>
     </div>
+    <div class="row" *ngIf="this.cargando">
+        <div class="container mt-3 mb-3">
+            <h3 class="text-white text-center">Espere por favor...</h3>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 </div>
 
-<div class="container mt-2" *ngIf="this.cargando">
+<div class="container mt-2" *ngIf="this.hayDatos">
 
     <div class="mat-elevation-z8 table-responsive">
         <table mat-table [dataSource]="dataSource" matSort style="background-color: #242424; color: #fff;">
-
             <!-- Position Column -->
             <ng-container matColumnDef="#">
                 <th mat-header-cell *matHeaderCellDef style="color: black !important;"> # </th>
