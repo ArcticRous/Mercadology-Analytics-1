@@ -24,6 +24,7 @@ import { PeticionComponent } from './components/peticion/peticion.component';
 import { PeticionGuard } from './guards/peticion.guard';
 import { MinutaComponent } from './components/minuta/minuta.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
+import { MinutasComponent } from './components/minutas/minutas.component';
 
 
 const routes: Routes = [
@@ -40,6 +41,7 @@ const routes: Routes = [
   {path: 'minuta' , component: MinutaComponent,canActivate: [AuthGuard]},
   {path: 'minuta/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
   {path: 'minuta/view/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
+  {path: 'minutas' , component: MinutasComponent,canActivate: [AuthGuard]},
   {path: 'peticiones' , component: PeticionesComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'peticion/:id' , component: PeticionComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},

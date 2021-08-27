@@ -3,7 +3,14 @@
 
 <main class="container mt-3" style="margin-bottom: 125px;">
 
-    <h1 class="text-white">Minuta de reuniones</h1>
+    <div class="row mt-5">
+        <h1 class="text-white col-md-10">Minuta de reuniones</h1>
+        <div class="col-lg-2">
+            <button [routerLink]="['/minutas']" routerLinkActive="router-link-active" class="btn btn-danger col-lg-12">
+                <i class="bi bi-arrow-left-circle-fill"></i> Regresar
+            </button>
+        </div>
+    </div>
 
     <div *ngIf="this.spinner" class="container mt-3">
         <h3 class="text-white text-center">Espere por favor...</h3>
@@ -47,7 +54,7 @@
                 <div class="input-group">
 
                     <span class="input-group-text">Nombre </span>
-                    <input class="form-control" [formControl]="nuevoAsistente" placeholder="Agregar nuevo asistente"> 
+                    <input class="form-control" [formControl]="nuevoAsistente" placeholder="Agregar nuevo asistente">
                     <button class="btn btn-outline-primary ms-2" type="button" (click)="agregarAsistente()">
                         Agregar
                     </button>
@@ -65,7 +72,8 @@
                     <span class="input-group-text">Asistente N° {{i+1}}</span>
                     <input class="form-control" [formControlName]="i" [readonly]="this.booleanVer">
 
-                    <button *ngIf="!this.booleanVer" class="btn btn-outline-danger ms-2" type="button" (click)="borrarAsistente(i)">
+                    <button *ngIf="!this.booleanVer" class="btn btn-outline-danger ms-2" type="button"
+                        (click)="borrarAsistente(i)">
                         Eliminar
                     </button>
                 </div>
@@ -100,7 +108,8 @@
                     Agregar
                 </button>
             </div>
-            <span class="text-danger form-text" *ngIf="getErrores('pendientes')">Estos campos son obligatorios</span>
+            <span class="text-danger form-text" *ngIf="getErrores('pendientes')">Estos campos son
+                obligatorios</span>
             <!-- <span *ngIf="getErroresPendientes()" class="col-4 text-danger form-text">Estos campos son obligatorios</span> -->
         </div>
 
@@ -119,7 +128,8 @@
                     <input type="text" class="form-control ms-2" name="estimado" placeholder="Tiempo estimado"
                         formControlName="estimado" [readonly]="this.booleanVer">
 
-                    <button *ngIf="!this.booleanVer" class="btn btn-outline-danger ms-2" type="button" (click)="borrarPendiente(i)">
+                    <button *ngIf="!this.booleanVer" class="btn btn-outline-danger ms-2" type="button"
+                        (click)="borrarPendiente(i)">
                         Eliminar
                     </button>
                 </div>
@@ -160,33 +170,24 @@
         </div>
 
         <div *ngIf="!this.booleanVer && !this.booleanEditar" class="mt-2 row justify-content-evenly">
-            <button type="submit" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar</button>
-            <button type="button" (click)="guardar()" (click)="this.booleanGenerarPDF = true" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar y crear PDF</button>
+            <button type="submit" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i>
+                Guardar</button>
+            <button type="button" (click)="guardar()" (click)="this.booleanGenerarPDF = true"
+                class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar y crear PDF</button>
         </div>
 
         <div *ngIf="this.booleanEditar" class="mt-2 row justify-content-evenly">
-            <button type="button" (click)="editar()" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar</button>
-            <button type="button" (click)="editar()" (click)="this.booleanGenerarPDF = true" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar y crear PDF</button>
+            <button type="button" (click)="editar()" class="btn btn-primary btn-lg col-4 mb-3"><i
+                    class="bi bi-save"></i> Guardar</button>
+            <button type="button" (click)="editar()" (click)="this.booleanGenerarPDF = true"
+                class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar y crear PDF</button>
         </div>
 
         <div *ngIf="this.booleanVer" class="mt-2 row justify-content-center">
-            <button type="button" (click)="crearPDF(this.minutaModel)" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Generar PDF</button>
+            <button type="button" (click)="crearPDF(this.minutaModel)" class="btn btn-primary btn-lg col-4 mb-3"><i
+                    class="bi bi-save"></i> Generar PDF</button>
         </div>
     </form>
 
 </main>
-
-<!-- <h4 class="text-white">nuevoAsistente invalid</h4>
-<pre class="text-white">{{this.nuevoAsistente.invalid | json}} </pre>
-<br>
-<h4 class="text-white">Asistente Array</h4>
-<pre class="text-white">{{asistentesArr.invalid | json}} </pre>
-<br>
-<h4 class="text-white">Minutaaa</h4>
-<pre class="text-white">{{this.minutaForm.invalid | json}} </pre>
-
-<br>
-<h4 class="text-white">Minuta Form Value</h4>
-<pre class="text-white"> {{this.minutaForm.value | json}} </pre> -->
-
 <app-footer></app-footer>
