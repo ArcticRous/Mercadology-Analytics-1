@@ -102,14 +102,14 @@
             <div class="row">
                 <div class="col-12 mb-3" style="position: relative;"
                     [ngStyle]="this.abrirCerrar ? {'display': 'block'} : {'display':'none'}">
-                    <button type="button" class="btn-close btn-close-white mt-3 me-4" (click)="cerrarImagenes()"
+                    <button type="button" class="btn-close btn-close-white text-warning mt-2 me-4" (click)="cerrarImagenes()"
                         style="position: absolute; top: 0; right: 0; z-index: 10;" aria-label="Close"></button>
                     <div class="custom-dropzone" ngx-dropzone [accept]="'image/*'" (change)="onSelect($event)">
                         <ngx-dropzone-label>
                             <div>
                                 <h4 style="z-index: 0;" class="text-warning">Arrastre sus archivos para subirlos</h4>
                                 <i class="bi bi-cloud-upload-fill text-warning fs-2 "></i>
-                                <p class="form-text text-warning">Tamaño máximo recomendado por archivo: 3MB</p>
+                                <p class="form-text text-warning">Tamaño máximo por imágen: 1MB</p>
                             </div>
                         </ngx-dropzone-label>
                         <ngx-dropzone-image-preview class="imgPreview" ngProjectAs="ngx-dropzone-preview"

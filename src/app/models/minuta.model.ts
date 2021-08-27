@@ -1,4 +1,4 @@
-export interface MinutaModel{
+export class MinutaModel{
     id?: string;
     fecha: Date;
     hora: string;

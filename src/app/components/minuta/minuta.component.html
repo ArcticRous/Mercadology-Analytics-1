@@ -43,17 +43,18 @@
 
         <div class="row">
             <h2 class="text-white">Asistentes</h2>
-            <div class="col-12 mb-3">
+            <div *ngIf="!this.booleanVer" class="col-12 mb-3">
                 <div class="input-group">
 
                     <span class="input-group-text">Nombre </span>
-                    <input class="form-control" [formControl]="nuevoAsistente" placeholder="Agregar nuevo asistente">
+                    <input class="form-control" [formControl]="nuevoAsistente" placeholder="Agregar nuevo asistente"> 
                     <button class="btn btn-outline-primary ms-2" type="button" (click)="agregarAsistente()">
                         Agregar
                     </button>
                 </div>
-                <span *ngIf="!this.booleanNAsistente" class="text-danger form-text">Debe contener 3 o más
-                    caracteres</span>
+                <p *ngIf="!this.booleanNAsistente" class="text-danger form-text m-0">Debe contener 3 o más
+                    caracteres</p>
+                <p class="text-danger form-text m-0" *ngIf="getErrores('asistentes')">Este campo es obligatorio</p>
             </div>
         </div>
 
@@ -62,9 +63,9 @@
                 <div class="input-group mb-3" *ngFor="let asistente of asistentesArr.controls; let i = index">
 
                     <span class="input-group-text">Asistente N° {{i+1}}</span>
-                    <input class="form-control" [formControlName]="i">
+                    <input class="form-control" [formControlName]="i" [readonly]="this.booleanVer">
 
-                    <button class="btn btn-outline-danger ms-2" type="button" (click)="borrarAsistente(i)">
+                    <button *ngIf="!this.booleanVer" class="btn btn-outline-danger ms-2" type="button" (click)="borrarAsistente(i)">
                         Eliminar
                     </button>
                 </div>
@@ -84,7 +85,7 @@
 
         <div class="row mb-3">
             <h2 class="text-white">Pendientes y conclusiones de la reunión</h2>
-            <div class="input-group" [formGroup]="nuevoPendienteForm">
+            <div *ngIf="!this.booleanVer" class="input-group" [formGroup]="nuevoPendienteForm">
 
                 <input type="text" class="form-control" name="hecho" id="formHecho" placeholder="¿Qué se debe hacer?"
                     formControlName="hecho">
@@ -99,6 +100,7 @@
                     Agregar
                 </button>
             </div>
+            <span class="text-danger form-text" *ngIf="getErrores('pendientes')">Estos campos son obligatorios</span>
             <!-- <span *ngIf="getErroresPendientes()" class="col-4 text-danger form-text">Estos campos son obligatorios</span> -->
         </div>
 
@@ -106,18 +108,18 @@
             <div class="col-12" formArrayName="pendientes">
                 <div class="input-group mb-3" *ngFor="let pendiente of pendientesArr.controls; let i = index"
                     [formGroupName]="i">
-                    <!-- *ngFor="let asistente of pendientesArr.controls; let i = index" -->
+
                     <span class="input-group-text">{{i+1}} </span>
                     <input type="text" class="form-control" name="hecho" placeholder="¿Qué se debe hacer?"
-                        formControlName="hecho">
+                        formControlName="hecho" [readonly]="this.booleanVer">
 
                     <input type="text" class="form-control ms-2" name="responsable" placeholder="Responsble"
-                        formControlName="responsable">
+                        formControlName="responsable" [readonly]="this.booleanVer">
 
                     <input type="text" class="form-control ms-2" name="estimado" placeholder="Tiempo estimado"
-                        formControlName="estimado">
+                        formControlName="estimado" [readonly]="this.booleanVer">
 
-                    <button class="btn btn-outline-danger ms-2" type="button" (click)="borrarPendiente(i)">
+                    <button *ngIf="!this.booleanVer" class="btn btn-outline-danger ms-2" type="button" (click)="borrarPendiente(i)">
                         Eliminar
                     </button>
                 </div>
@@ -126,39 +128,49 @@
 
         <div class="row">
             <h2 class="text-white">Datos puntuales</h2>
-            <div class="col-4">
-                <div class="input-group mb-3">
+            <div class="col-4 mb-3">
+                <div class="input-group">
                     <span class="input-group-text">Próx. reunión</span>
                     <input type="datetime-local" class="form-control" name="proxReunion" id="formProxReunion"
                         formControlName="proxReunion">
-                    <span class="text-danger form-text" *ngIf="getErrores('proxReunion')">Debe proporcionar una
-                        fecha</span>
                 </div>
+                <span class="text-danger form-text" *ngIf="getErrores('proxReunion')">Debe proporcionar una
+                    fecha</span>
             </div>
 
-            <div class="col-4">
-                <div class="input-group mb-3">
+            <div class="col-4 mb-3">
+                <div class="input-group">
                     <span class="input-group-text">Elaboró</span>
                     <input type="text" class="form-control" name="elaboro" id="formElaboro" formControlName="elaboro"
                         placeholder="Nombre de quien elabora">
-                    <span class="text-danger form-text" *ngIf="getErrores('elaboro')">Debe contener 3 o más
-                        caracteres</span>
                 </div>
+                <span class="text-danger form-text" *ngIf="getErrores('elaboro')">Debe contener 3 o más
+                    caracteres</span>
             </div>
 
-            <div class="col-4">
-                <div class="input-group mb-3">
+            <div class="col-4 mb-3">
+                <div class="input-group">
                     <span class="input-group-text">Autorizó</span>
                     <input type="text" class="form-control" name="autorizo" formControlName="autorizo" id="formAutorizo"
                         placeholder="Nombre de quien autoriza">
-                    <span class="text-danger form-text" *ngIf="getErrores('autorizo')">Debe contener 3 o más
-                        caracteres</span>
                 </div>
+                <span class="text-danger form-text" *ngIf="getErrores('autorizo')">Debe contener 3 o más
+                    caracteres</span>
             </div>
         </div>
 
-        <div class="text-center mt-2">
-            <button type="submit" class="btn btn-primary btn-lg col-4"><i class="bi bi-save"></i> Guardar</button>
+        <div *ngIf="!this.booleanVer && !this.booleanEditar" class="mt-2 row justify-content-evenly">
+            <button type="submit" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar</button>
+            <button type="button" (click)="guardar()" (click)="this.booleanGenerarPDF = true" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar y crear PDF</button>
+        </div>
+
+        <div *ngIf="this.booleanEditar" class="mt-2 row justify-content-evenly">
+            <button type="button" (click)="editar()" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar</button>
+            <button type="button" (click)="editar()" (click)="this.booleanGenerarPDF = true" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Guardar y crear PDF</button>
+        </div>
+
+        <div *ngIf="this.booleanVer" class="mt-2 row justify-content-center">
+            <button type="button" (click)="crearPDF(this.minutaModel)" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i> Generar PDF</button>
         </div>
     </form>
 

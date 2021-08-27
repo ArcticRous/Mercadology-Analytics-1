@@ -38,6 +38,8 @@ const routes: Routes = [
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'minuta' , component: MinutaComponent,canActivate: [AuthGuard]},
+  {path: 'minuta/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
+  {path: 'minuta/view/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
   {path: 'peticiones' , component: PeticionesComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'peticion/:id' , component: PeticionComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},
