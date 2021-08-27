@@ -47,6 +47,7 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
+import { MinutasComponent } from './components/minutas/minutas.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -79,7 +80,8 @@ FullCalendarModule.registerPlugins([
     SolicitudesComponent,
     PeticionComponent,
     MinutaComponent,
-    CalendarioComponent
+    CalendarioComponent,
+    MinutasComponent
   ],
   imports: [
     MatTabsModule,
