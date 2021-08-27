@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, FormGroup } from '@angular/forms';
 import { ComunicadoModel } from '../../models/comunicado.model';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as CryptoJS from 'crypto-js'
 import { Clipboard } from '@angular/cdk/clipboard';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-comunicado-individual',
@@ -16,6 +17,11 @@ import { Clipboard } from '@angular/cdk/clipboard';
 export class ComunicadoIndividualComponent implements OnInit {
 
   comunicado: ComunicadoModel = new ComunicadoModel;
+
+  fileArchivo: any;
+  solicitudForm: FormGroup;
+  filesDropZone: File[] = [];
+  nomImg: any[] = [];
  
   mostrar: boolean = false;
   copiar: boolean = false;
@@ -33,7 +39,7 @@ export class ComunicadoIndividualComponent implements OnInit {
   mostrarQuien: boolean = false;
   
   constructor(private AuthS: AuthService,
-    private route: ActivatedRoute, private clipboard: Clipboard, private router: Router) { }
+    private route: ActivatedRoute, private clipboard: Clipboard, private router: Router, private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -147,6 +153,77 @@ export class ComunicadoIndividualComponent implements OnInit {
   //Guarda en el clipboard el texto del campo
   copyToClipboard(campo: string) {
     this.clipboard.copy(campo);
+  }
+  
+  showToastWarning(nombre: string, mensaje: string, titulo: string) {
+    this.toastr.warning(`El archivo "${nombre}" ${mensaje}`, `${titulo}`);
+  }
+
+  onSelect(event) {
+    if (this.filesDropZone.length > 0) {
+
+      for (const elemento of event.addedFiles) {
+
+        if (this.nomImg.includes(elemento.name)) {
+          this.showToastWarning(elemento.name, "ya ha sido adjuntado", 'Archivo repetido!');
+        } else if (elemento.size > 3145728) {
+          this.showToastWarning(elemento.name, "supera el límite permitido de 3MB", 'Archivo muy grande!');
+        } else {
+          this.filesDropZone.push(elemento);
+        }
+      }
+
+    } else {
+      for (const file of event.addedFiles) {
+        if (file.size > 3145728) {
+          this.showToastWarning(file.name, "supera el límite permitido de 3MB", 'Archivo muy grande!');
+        } else {
+          this.filesDropZone.push(file);
+        }
+      }
+
+    }
+
+    this.nomImg = this.filesDropZone.map(({ name }) => name)
+  }
+
+  onfileArchivo(event) {
+
+    //Guardamos los datos del archivo
+    const file = event.target.files[0];
+
+    if (file.size <= 3145728) {
+      /**Vemos que exista algo en el archivo */
+      if (event.target.files && event.target.files.length > 0) {
+        //Hacemos condiciones para aceptar solo archvios que contengan esas palabras. NOTA: Pueden ser más estrictas las condiciones
+        if (file.type.includes("pdf") || file.type.includes("word") || file.type.includes("zip") || file.type.includes('doc') || file.type.includes('docx')) {
+          //Leer fichero
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+
+          //Asigna el resultado de la funcon a reader onload
+          reader.onload = function load() {
+            this.fileMaterial = reader.result;
+          }.bind(this);
+
+          //Asignar datos de mi archivo a mi variable
+          this.fileArchivo = file;
+
+        } else {
+          this.solicitudForm.value.fileMaterial = null;
+
+          Swal.fire({
+            title: "Formato de archivo",
+            text: "Solo se aceptan formatos pdf, word o zip",
+            icon: "warning"
+          })
+        }
+      } else {
+        // console.log('No entro' + event.target.files + event.target.files.lenght);
+      }
+    } else {
+      this.showToastWarning(file.name, "pesa mas de 3MB, adjunte uno de menor peso", 'Archivo muy grande!');
+    }
   }
 
 
