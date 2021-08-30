@@ -14,6 +14,8 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SolicitudesComponent implements OnInit {
 
+  //Si Vercel no falla, quitar lo de solicitd correo 2
+
   //Para el control del formulario
   solicitudForm: FormGroup;
   //Modelo de Solicitud
@@ -93,6 +95,20 @@ export class SolicitudesComponent implements OnInit {
   }
 
   onSelect(event) {
+    // console.log(event.source._previewChildren);
+    console.log(event);
+
+    let hola = event.source._previewChildren
+    console.log(event.source._previewChildren);
+
+    let result = hola._results
+    console.log(result);
+
+
+
+    // console.log(hola);
+
+
     if (this.tamanoTotal + this.tamanoArchivo < 10000000) {
       if (this.filesDropZone.length > 0) {
 
@@ -130,6 +146,8 @@ export class SolicitudesComponent implements OnInit {
   }
 
   onRemove(event) {
+    console.log(event);
+
     this.tamanoTotal -= event.size;
     this.filesDropZone.splice(this.filesDropZone.indexOf(event), 1);
     this.nomImg = this.filesDropZone.map(({ name }) => name)
@@ -140,15 +158,26 @@ export class SolicitudesComponent implements OnInit {
   onfileArchivo(event) {
     //Guardamos los datos del archivo
     const file = event.target.files[0];
+    console.log(event);
+    console.log(file.size);
+
 
     if (file.size <= 3000000) {
       /**Vemos que exista algo en el archivo */
       if (event.target.files && event.target.files.length > 0) {
         //Hacemos condiciones para aceptar solo archvios que contengan esas palabras. NOTA: Pueden ser más estrictas las condiciones
-        if (file.type.includes("pdf") || file.type.includes("word") || file.type.includes("zip") || file.type.includes('doc') || file.type.includes('docx')) {
+        if (file.type.includes("pdf") || file.type.includes('image') || file.type.includes("word") || file.type.includes("zip") || file.type.includes('doc') || file.type.includes('docx')) {
           this.tamanoArchivo = file.size;
           //Asignar datos de mi archivo a mi variable
           this.fileArchivo = file;
+
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+
+          reader.onload = () => {
+            console.log(reader.result);
+          }
+          // .bind(this);
 
         } else {
           this.solicitudForm.value.fileMaterial = null;
