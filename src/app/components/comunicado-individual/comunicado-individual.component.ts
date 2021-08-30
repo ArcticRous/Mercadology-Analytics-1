@@ -70,7 +70,8 @@ export class ComunicadoIndividualComponent implements OnInit {
     if (form.invalid) {
       return;
     }
-
+    
+    
     Swal.fire({
       title: 'Espere',
       text: 'Guardando informacion',
