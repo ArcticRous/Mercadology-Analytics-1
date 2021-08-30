@@ -1,15 +1,10 @@
-import { DOCUMENT } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { Renderer2, Inject } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 
-// declare var gapi: any;
-// declare const ViewSelector2: any;
+declare const gapi: any;
 
 @Component({
   selector: 'app-generador-reportes',
-  // template: './reportes.component.html',//'<script [src]="iframe"></iframe>',
-  templateUrl: './generador-reportes.component.html', 
+  templateUrl: './generador-reportes.component.html',
   styleUrls: ['./generador-reportes.component.css']
 })
 export class GeneradorReportesComponent implements OnInit {
@@ -18,214 +13,198 @@ export class GeneradorReportesComponent implements OnInit {
   videoUrl: any;
   scriptViewSelector: any;
   scriptViewSeguro: any;
-  constructor(//private _renderer2: Renderer2,
-    // @Inject(DOCUMENT) private _document: Document,
-    // private sanitizer: DomSanitizer,
-    ) {
 
+  // VIEW_ID = '230218277';
+  VIEW_ID = '210355580';
 
+  constructor() {
+    // const _self = this;
+    // window['onSignIn'] = function (user) { _self.onSignIn(user); };
 
-
-
+    // window['onSignIn'] = (user) => this.ngZone.run(() => this.onSignIn(user))
   }
 
 
   ngOnInit(): void {
-    
+    // this.queryReports();
+    // (window as any).googleLogin = this.googleLogin
   }//Fin ngoninit
+
+  ngAfterViewInit() {
+    gapi.signin2.render('google-signin2', {
+      'scope': 'profile email',
+      'width': 800,
+      'height': 50,
+      'longtitle': true,
+      'onsuccess': param => this.onSignIn(param),
+      'onfailure': this.onFailure()
+    });
+  }
+
+  onSignIn(googleUser) {
+
+    // Useful data for your client-side scripts:
+    var profile = googleUser.getBasicProfile();
+    console.log("ID: " + profile.getId()); // Don't send this directly to your server!
+    console.log('Full Name: ' + profile.getName());
+    console.log('Given Name: ' + profile.getGivenName());
+    console.log('Family Name: ' + profile.getFamilyName());
+    console.log("Image URL: " + profile.getImageUrl());
+    console.log("Email: " + profile.getEmail());
+
+    // The ID token you need to pass to your backend:
+    var id_token = googleUser.getAuthResponse().id_token;
+    console.log("ID Token: " + id_token);
+    this.queryReports()
+  }
+
+  onFailure() {
+    console.log("Fallo Conexión");
+  }
+
+
+  // Query the API and print the results to the page.
+  queryReports() {
+
+    gapi.client.request({
+      path: '/v4/reports:batchGet',
+      root: 'https://analyticsreporting.googleapis.com/',
+      method: 'POST',
+      body: {
+        reportRequests: [
+          {
+            viewId: this.VIEW_ID,
+            dateRanges: [
+              {
+                startDate: "2021-07-01",
+                endDate: "2021-07-31"
+              }
+            ],
+            metrics: [
+              {
+                expression: 'ga:users',
+                alias: 'Usuarios'
+              }
+            ],
+            dimensions: [
+              {
+                name: "ga:date"
+              },
+              {
+                name: "ga:segment"
+              },
+              {
+                name: "ga:keyword"
+              },
+              {
+                name: "ga:medium"
+              },
+              {
+                name: "ga:source"
+              }
+            ],
+            segments: [{ "segmentId": "gaid::-5" }, { "segmentId": "gaid::-7" }],
+            orderBys: [
+              {
+                fieldName: "ga:date", sortOrder: "ASCENDING"
+              }
+            ]
+          }
+        ]
+      }
+    }).then(this.displayResults, console.error.bind(console))
+      .catch(console.log("Erick")
+      )
+
+
+    gapi.client.request({
+      path: '/v4/reports:batchGet',
+      root: 'https://analyticsreporting.googleapis.com/',
+      method: 'POST',
+      body: {
+        reportRequests: [
+          {
+            viewId: this.VIEW_ID,
+            dateRanges: [
+              {
+                startDate: "2021-07-01",
+                endDate: "2021-07-31"
+              }
+            ],
+            metrics: [
+              {
+                expression: 'ga:users',
+                alias: 'Usuarios'
+              }
+            ],
+            dimensions: [
+              {
+                name: "ga:date"
+              }
+            ],
+            orderBys: [
+              {
+                fieldName: "ga:date", sortOrder: "ASCENDING"
+              }
+            ]
+          }
+        ]
+      }
+    }).then(this.displayResults, console.error.bind(console))
+      .catch(console.log("Erick")
+      )
+
+
+    gapi.client.request({
+      path: '/v4/reports:batchGet',
+      root: 'https://analyticsreporting.googleapis.com/',
+      method: 'POST',
+      body: {
+        reportRequests: [
+          {
+            viewId: this.VIEW_ID,
+            dateRanges: [
+              {
+                startDate: "2021-07-01",
+                endDate: "2021-07-31"
+              }
+            ],
+            metrics: [
+              {
+                expression: 'ga:users',
+                alias: 'Usuarios'
+              }
+            ],
+            dimensions: [
+              {
+                name: "ga:pagePath"
+              }
+            ],
+            orderBys: [
+              {
+                fieldName: "ga:users", sortOrder: "DESCENDING"
+              }
+            ],
+          }
+        ]
+      }
+    }).then(this.displayResults, console.error.bind(console))
+      .catch(console.log("Erick")
+      )
+
+
+  }//Termina metodo de queryreports
+
+  displayResults(response) {
+    var formattedJson = JSON.stringify(response.result, null, 2);
+    console.log(response.result);
+
+    // console.log(formattedJson);
+  }
+
+
+
 
 
 }//Fin export
 
-
-
-
-
-    // (function (w, d, s, g, js, fs) {
-
-    //   g = w.gapi || ( w.gapi = {}); g.analytics = { q: [], ready: function (f) { this.q.push(f); } }; 
-    //   js = d.createElement(s); fs = d.getElementsByTagName(s)[0];
-    //   js.src = 'https://apis.google.com/js/platform.js';
-
-    //   fs.parentNode.insertBefore(js, fs); js.onload = function () { g.load('analytics'); };
-    // }(window, document, 'script'));
-
-
-
-  //   let elemento = this._document.getElementById('elementId');
-  // let script = this._renderer2.createElement('script');
-  // script.type = 'text/javascript'; //'application/javascript';
-  // script.src = 'https://ga-dev-tools.appspot.com/public/javascript/embed-api/components/view-selector2.js';
-  // this._renderer2.appendChild(elemento, script); 
-
-
-//     gapi.analytics.ready(function () {
-
-//       /**
-//        * Authorize the user immediately if the user has already granted access.
-//        * If no access has been created, render an authorize button inside the
-//        * element with the ID "embed-api-auth-container".
-//        */
-//       gapi.analytics.auth.authorize({
-//         container: 'embed-api-auth-container',
-//         clientid: '987910429607-i6qs3kfss7d9bg1trth4o6rtii014t08.apps.googleusercontent.com'
-//       });
-
-
-//       /**
-//        * Store a set of common DataChart config options since they're shared by
-//        * both of the charts we're about to make.
-//        */
-//       var commonConfig = {
-//         query: {
-//           metrics: 'ga:sessions',
-//           dimensions: 'ga:date'
-//         },
-//         chart: {
-//           type: 'LINE',
-//           options: {
-//             width: '100%'
-//           }
-//         }
-//       };
-
-
-//       /**
-//        * Query params representing the first chart's date range.
-//        */
-//       var dateRange1 = {
-//         'start-date': '14daysAgo',
-//         'end-date': '8daysAgo' 
-//       };
-
-
-//       /**
-//        * Create a new ViewSelector2 instance to be rendered inside of an
-//        * element with the id "view-selector-container".
-//        */
-//       var viewSelector = new gapi.analytics.ext.ViewSelector2({
-//         container: 'view-selector-container',
-//       }).execute();
-
-
-//       /**
-//        * Create a new DateRangeSelector instance to be rendered inside of an
-//        * element with the id "date-range-selector-1-container", set its date range
-//        * and then render it to the page.
-//        */
-//       var dateRangeSelector1 = new gapi.analytics.ext.DateRangeSelector({
-//         container: 'date-range-selector-1-container'
-//       })
-//         .set(dateRange1)
-//         .execute();
-
-
-//       /**
-//        * Create a new DataChart instance with the given query parameters
-//        * and Google chart options. It will be rendered inside an element
-//        * with the id "data-chart-1-container".
-//        */
-//       var dataChart1 = new gapi.analytics.googleCharts.DataChart(commonConfig)
-//         .set({ query: dateRange1 })
-//         .set({ chart: { container: 'data-chart-1-container' } });
-
-//       /**
-//        * Register a handler to run whenever the user changes the view.
-//        * The handler will update both dataCharts as well as updating the title
-//        * of the dashboard.
-//        */
-//       viewSelector.on('viewChange', function (data) {
-//         dataChart1.set({ query: { ids: data.ids } }).execute();
-
-//         var title = document.getElementById('view-name');
-//         console.log(title);
-//         title.textContent = data.property.name + ' (' + data.view.name + ')';
-//       });
-
-
-//       /**
-//        * Register a handler to run whenever the user changes the date range from
-//        * the first datepicker. The handler will update the first dataChart
-//        * instance as well as change the dashboard subtitle to reflect the range.
-//        */
-//       dateRangeSelector1.on('change', function (data) {
-//         dataChart1.set({ query: data }).execute();
-//         console.log("holaaaa");
-//         // Update the "from" dates text.
-//         var datefield = document.getElementById('from-dates');
-//         console.log(data);
-//         datefield.textContent = data['start-date'] + '&mdash;' + data['end-date'];
-//       });
-
-
-
-//     });        
-
-
-
-
-
-
-
-//  }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // gapi.analytics.ready(function() {
-
-    //   // Step 3: Authorize the user.
-
-    //   let CLIENT_ID = '987910429607-i6qs3kfss7d9bg1trth4o6rtii014t08.apps.googleusercontent.com';
-
-    //   gapi.analytics.auth.authorize({
-    //     container: 'auth-button',
-    //     clientid: CLIENT_ID,
-    //   });
-
-    //   // Step 4: Create the view selector.
-
-    //   let viewSelector = new gapi.analytics.ViewSelector({
-    //     container: 'view-selector'
-    //   });
-
-    //   // Step 5: Create the timeline chart.
-
-    //   let timeline = new gapi.analytics.googleCharts.DataChart({
-    //     reportType: 'ga',
-    //     query: {
-    //       'dimensions': 'ga:date',
-    //       'metrics': 'ga:sessions',
-    //       'start-date': '30daysAgo',
-    //       'end-date': 'yesterday',
-    //     },
-    //     chart: {
-    //       type: 'LINE',
-    //       container: 'timeline'
-    //     }
-    //   });
-
-    //   // Step 6: Hook up the components to work together.
-
-    //   gapi.analytics.auth.on('success', function(response) {
-    //     viewSelector.execute();
-    //   });
-
-    //   viewSelector.on('change', function(ids) {
-    //     var newIds = {
-    //       query: {
-    //         ids: ids
-    //       }
-    //     }
-    //     timeline.set(newIds).execute();
-    //   });
-    // });
