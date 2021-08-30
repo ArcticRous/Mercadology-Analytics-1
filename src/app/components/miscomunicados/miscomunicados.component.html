@@ -14,7 +14,7 @@
             </button>
         </div>
         <div class=" buscador mb-4 text-white col-lg-6">
-            <input class="style-buscador " matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+            <input class="form-control " matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
         </div>
     </div>
 
@@ -68,9 +68,6 @@
                 <!-- <td> {{element.ids}} </td> -->
                 <td mat-cell *matCellDef="let element; let i = index">
                     <div class="cont-op">
-                        <button class="btn btn-primary btn-sm" [routerLink]="['/comunicado', element.ids ]">
-                            <i class="bi bi-info-circle-fill"></i>
-                        </button>
 
                         <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/comunicado', element.ids ]">
                             <i class="bi bi-pencil-square"></i>

@@ -7,12 +7,14 @@
 
     <div style="width: 40%; float: left; " class="container mt-2">
         <div class="mat-elevation-z8 table-responsive">
-            <table mat-table [dataSource]="dataSource" matSort style="background-color: #242424; color: #fff; width: 100%;">
+            <table mat-table [dataSource]="dataSource" matSort
+                style="background-color: #242424; color: #fff; width: 100%;">
 
                 <!-- Position Column -->
                 <ng-container matColumnDef="#">
                     <th mat-header-cell *matHeaderCellDef style="color: black !important;"> # </th>
-                    <td mat-cell *matCellDef="let element; let i = index"> {{(i+1) + (paginator.pageIndex*paginator.pageSize)}}
+                    <td mat-cell *matCellDef="let element; let i = index"> {{(i+1) +
+                        (paginator.pageIndex*paginator.pageSize)}}
                     </td>
                 </ng-container>
 
@@ -24,7 +26,7 @@
 
                 <!-- Dominio Column -->
                 <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef style="color: black !important;"> date </th>
+                    <th mat-header-cell *matHeaderCellDef style="color: black !important;"> Fecha </th>
                     <td class="start" mat-cell *matCellDef="let element"> {{element.start}}</td>
                 </ng-container>
 
@@ -33,12 +35,14 @@
                     <!-- <td> {{element.ids}} </td> -->
                     <td mat-cell *matCellDef="let element; let i = index">
                         <div class="cont-op">
-                            <button class="btn btn-primary btn-sm" [routerLink]="['/calendario', element.id ]" (click)="clickFunction()">
+                            <button class="btn btn-primary btn-sm" [routerLink]="['/calendario', element.id ]"
+                                (click)="clickFunction()">
                                 <i class="bi bi-info-circle-fill"></i>
                             </button>
 
 
-                            <button class="btn btn-danger ms-3 btn-sm" (click)="borrarCaledario( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
+                            <button class="btn btn-danger ms-3 btn-sm"
+                                (click)="borrarCaledario( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
                         </div>
@@ -58,7 +62,8 @@
 
             <!-- showFirstLastButtons -->
         </div>
-        <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+        <mat-paginator style=" color: #242424;" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons>
+        </mat-paginator>
     </div>
 
 
@@ -87,7 +92,9 @@
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Event Title</label>
-                                    <input placeholder="Add Event Title" type="text" formControlName="title" class="titleinp form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                                    <input placeholder="Add Event Title" type="text" formControlName="title"
+                                        class="titleinp form-control"
+                                        [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
                                     <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
                                         <div *ngIf="f.title.errors.required">Title is required</div>
                                     </div>
@@ -124,14 +131,16 @@
                                 <div class="form-group">
                                     <label style="color: #242424;">titulo</label>
 
-                                    <input placeholder="Evento" type="text" formControlName="title" [(ngModel)]="calendarios.title" class="form-control" />
+                                    <input placeholder="Evento" type="text" formControlName="title"
+                                        [(ngModel)]="calendarios.title" class="form-control" />
 
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
                                     <label>Event Date:</label>
-                                    <input placeholder="fecha" type="date" formControlName="start" [(ngModel)]="calendarios.start" class="form-control" />
+                                    <input placeholder="fecha" type="date" formControlName="start"
+                                        [(ngModel)]="calendarios.start" class="form-control" />
 
                                 </div>
                             </div>
@@ -142,4 +151,5 @@
             </div>
         </div>
     </div>
-    <app-footer></app-footer>
+</div>
+<app-footer></app-footer>

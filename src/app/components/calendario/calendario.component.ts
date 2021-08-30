@@ -67,10 +67,58 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
     this.EditEventForm = new FormGroup({
       title: new FormControl(null, [Validators.required]),
       start: new FormControl(null, [Validators.required])
-
     })
+  }
+
+  ngOnInit(): void {
+
+    sessionStorage.removeItem('local');
+    this.cargando = true;
+    this.calendarios = new CalendarioModel();
+    forwardRef(() => Calendar);
+    this.AuthS.getCalendario()
+      .subscribe(resp => {
+        this.calendario = resp
+        this.cargando = false;
+        this.dataSource = new MatTableDataSource(this.calendario);
+        this.paginator._intl.itemsPerPageLabel = "Elementos por página";
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      }, error => {
+        console.log(error);
+        this.cargarCalendario()
+      }, () => {
+        this.cargarCalendario();
+      });
+
+    this.addEventForm = this.formBuilder.group({
+      title: ['', [Validators.required]]
+    });
 
   }
+
+  cargarCalendario() {
+    this.calendarOptions = {
+      headerToolbar: {
+        left: 'prev,next today',
+        center: 'title',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+      },
+      initialView: 'dayGridMonth',
+      // initialEvents: this.hola, // alternatively, use the `events` setting to fetch from a feed
+      weekends: true,
+      editable: true,
+      selectable: true,
+      selectMirror: true,
+      dayMaxEvents: true,
+      dateClick: this.handleDateClick.bind(this),
+      eventClick: this.handleEventClick.bind(this),
+      // eventsSet: this.handleEvents.bind(this),
+      events: this.calendario,
+      locale: esLocale
+    };
+  }
+
   onSubmit() {
     this.calendarios = new CalendarioModel();
     this.submitted = true;
@@ -125,62 +173,6 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
 
   }
 
-  ngOnInit(): void {
-
-    sessionStorage.removeItem('local');
-    this.cargando = true;
-    this.calendarios = new CalendarioModel();
-
-    forwardRef(() => Calendar);
-
-    this.AuthS.getCalendario()
-      .subscribe(resp => {
-        this.calendario = resp
-        this.cargando = false;
-
-        this.calendario = resp;
-
-        this.dataSource = new MatTableDataSource(this.calendario);
-        this.paginator._intl.itemsPerPageLabel = "Elementos por página";
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-      }, error => {
-        console.log(error);
-        this.cargarCalendario();
-      }, () => {
-        this.cargarCalendario();
-      })
-
-    // need for load calendar bundle first
-
-  }
-
-  cargarCalendario() {
-    this.calendarOptions = {
-
-      headerToolbar: {
-        left: 'prev,next today',
-        center: 'title',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-      },
-      initialView: 'dayGridMonth',
-      // initialEvents: this.hola, // alternatively, use the `events` setting to fetch from a feed
-      weekends: true,
-      editable: true,
-      selectable: true,
-      selectMirror: true,
-      dayMaxEvents: true,
-      dateClick: this.handleDateClick.bind(this),
-      eventClick: this.handleEventClick.bind(this),
-      // eventsSet: this.handleEvents.bind(this),
-      events: this.calendario,
-      locale: esLocale
-    };
-
-    this.addEventForm = this.formBuilder.group({
-      title: ['', [Validators.required]]
-    });
-  }
 
   handleCalendarToggle() {
     this.calendarVisible = !this.calendarVisible;
@@ -222,7 +214,9 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
       text: `Está seguro que desea borrar a ${clickInfo.event.title}`,
       icon: 'question',
       showConfirmButton: true,
-      showCancelButton: true
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Aceptar"
     }).then(resp => {
 
       if (resp.value) {
@@ -291,7 +285,9 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
       text: `Está seguro que desea borrar a ${calendario.title}`,
       icon: 'question',
       showConfirmButton: true,
-      showCancelButton: true
+      showCancelButton: true,
+      cancelButtonText: "Cancelar",
+      confirmButtonText: "Aceptar"
     }).then(resp => {
 
       if (resp.value) {
@@ -342,6 +338,8 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
       $("#myModalEdit").modal("hide");
 
       this.router.navigateByUrl('/calendario');
+
+
     })
 
   }

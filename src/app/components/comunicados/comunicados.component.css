@@ -1,67 +1,28 @@
-.img-cs {
-    width: 120px;
-    height: 120px;
-    border-radius: 200px;
-    margin: 0;
-}
-
-.table-responsive {
-    background: #FCC42C;
-    border: none;
-}
-
-.cont-table-cs {
-    background: #242424;
-    height: auto;
+label {
     font-family: "Poppins";
+    font-size: 15px;
 }
 
-.cont-cat {
-    width: 150px;
-}
-
-.contenedor-img-cs {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
-    width: 70px;
-    align-items: center;
-    margin: auto;
-}
-
-.cont-des {
-    background: #fff;
-    padding: 10px 20px;
-}
-
-.texto-titulo {
-    font-weight: 700;
-}
-
-.texto-descripcion {
-    text-align: justify;
-}
-
-.categoria {
-    margin: 0;
-    color: #fff;
-    width: 100%;
-}
-
-.texto-fecha {
-    text-decoration: underline;
-}
-
-th {
-    display: none;
-}
-
-tr,
-td {
-    margin: 20px 0;
-    border-bottom: 5px solid #242424;
+option {
+    font-family: "Poppins";
+    font-size: 15px;
 }
 
 table {
     width: 100%;
+    background-color: #242424;
+    font-family: "Poppins";
+    color: #fff;
+}
+
+td {
+    background-color: #242424;
+    font-family: "Poppins";
+    color: #fff;
+}
+
+th {
+    color: #242424;
+    font-weight: 700;
+    font-size: 15px;
 }

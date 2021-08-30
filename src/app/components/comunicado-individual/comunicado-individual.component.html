@@ -25,35 +25,46 @@
 
             <div class="row mb-3">
 
-                <div class="col-6 pe-4 ps-4 mb-3">
+                <div class="col-md-12 pe-4 ps-4 mb-3">
+
                     <div class="form-group row">
-                        <label>Título</label>
-                        <!--col-4-->
                         <input type="text" class="form-control" placeholder="Titulo de comunicado" [(ngModel)]="comunicado.titulo" name="titulo" required>
                     </div>
 
+                </div>
+
+                <div class="col-md-6 pe-4 ps-4 mb-3">
                     <div class="form-group row">
-                        <!---->
-                        <label>Descripcion</label>
-                        <!--comunicado: Correo-->
-                        <textarea type="input" rows="10" cols="100" class="form-control" [(ngModel)]="comunicado.descripcion" name="descripcion" placeholder="Descripcion" required></textarea>
+                        <input type="date" matInput [(ngModel)]="comunicado.fecha" name="fecha" class="fecha-input" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6 pe-4 ps-4 mb-3">
+                    <div class="form-group row">
+                        <select type="text" matInput [(ngModel)]="comunicado.quien" name="quien" id="quien" class="form-select w-100" required>
+                            <option value="General">General</option>
+                            <option value="Personal">Personal</option>
+                            <option value="Festividades">Festividades</option>
+                            <option value="Vacaciones">Vacaciones</option>
+                            <option value="Dudas">Dudas</option>
+                            <option value="Contrato y reglamento">Contrato y reglamento</option>    
+                        </select>
                     </div>
                 </div>
 
 
-                <div class="col-6 pe-4 ps-4 mb-3">
+                <div class="col-md-12 pe-4 ps-4 mb-3">
                     <div class="form-group row">
-                        <label>Fecha</label>
-                        <!--col-4-->
-                        <input type="date" matInput [(ngModel)]="comunicado.fecha" name="fecha" class="fecha-input" required>
+                        <textarea type="input" rows="10" cols="100" class="form-control" [(ngModel)]="comunicado.descripcion" name="descripcion" placeholder="Descripcion" required></textarea>
                     </div>
+                </div>
+
+                <div class="col-md-12 pe-4 ps-4 mb-3">
                     <div class="form-group row">
-                        <label>Categoría</label>
-                        <!--Hospedaje: Usuario-->
-                        <input type="text" value="Mercadology" class="form-control" [(ngModel)]="comunicado.quien" name="quien" placeholder="Categoría" required>
-
+                        <label for="formFile" class="form-label">Agregar archivo</label>
+                        <input class="form-control" type="file" id="formFile" formControlName="fileMaterial" (change)="onfileArchivo($event)" accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                        <p class="form-text text-white">Tamaño máximo 3MB</p>
                     </div>
-
                 </div>
 
             </div>

@@ -2,6 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ComunicadoModel } from "../../models/comunicado.model";
 
+
 import Swal from 'sweetalert2';
 
 import { MatPaginator } from '@angular/material/paginator';
@@ -17,16 +18,16 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 
 export class ComunicadosComponent implements OnInit, AfterViewInit {
-
+ 
   Comunicado: ComunicadoModel[] = [];
   
  //  comunicado: ComunicadoModel = new ComunicadoModel;
-   
+   catFilter = "General";
    cargando = false;
    durationInSeconds = 2;
    rol: string;
  
-   displayedColumns: string[] = ['#', 'titulo', 'descripcion', 'fecha', 'quien', 'ids'];
+   displayedColumns: string[] = ['titulo','descripcion','fecha','categoria'];
    dataSource: MatTableDataSource<ComunicadoModel>;
  
    @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -56,7 +57,7 @@ export class ComunicadosComponent implements OnInit, AfterViewInit {
        
  
    }//Termina ngOnInit
- 
+   
    ngAfterViewInit() {
  
    }
