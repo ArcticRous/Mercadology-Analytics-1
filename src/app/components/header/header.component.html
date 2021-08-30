@@ -1,8 +1,8 @@
 <nav *ngIf="this.local !== 'x'" class="navbar /*fixed-top*/ navbar-expand-lg navbar-dark /*bg-dark*/ navHome">
     <div class="container container-fluid">
         <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active">
-            <!-- <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active" style="font-size: 35px; margin-bottom: 20px; margin-top: 20px; font-weight: 700;"> -->
-            <!-- ErickCM -->
+            <!-- <a class="navbar-brand" [routerLink]="['/home']" routerLinkActive="router-link-active" style="font-size: 35px; margin-bottom: 20px; margin-top: 20px; font-weight: 700;">
+            ErickCM -->
             <img src="../../../assets/imagenes/login/logo-mercadology-blanco.png" alt="Logo mercadology" width="200" height="">
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,6 +34,7 @@
                         <li *ngIf="this.rol === '12345'"><a [routerLink]="['/usuarios']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-people-fill" style="margin-right: 5px;"></i>Usuarios</a></li>
                         <li><a [routerLink]="['/cuentas']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-person-lines-fill" style="margin-right: 5px;"></i>Cuentas</a></li>
                         <li><a [routerLink]="['/minutas']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-file-earmark-ruled-fill" style="margin-right: 5px;"></i>Minutas</a></li>
+                        <li><a [routerLink]="['/calendario']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-calendar-date" style="margin-right: 5px;"></i>Calendario</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
