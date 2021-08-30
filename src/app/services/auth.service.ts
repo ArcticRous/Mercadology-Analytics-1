@@ -20,9 +20,9 @@ export class AuthService {
   private key: string = `AIzaSyDmvkHWhK6TV-6K3KtF-Zui0D17hCuqzEk`;
   private realDatabase: string = 'https://mercadology-analytics-default-rtdb.firebaseio.com';
   public urlStorage = `https://firebasestorage.googleapis.com/v0/b/mercadology-analytics.appspot.com`;
-  private urlEnviarCorreo: string = `https://mercadologyemail.herokuapp.com`;
+  private urlEnviarCorreo: string = `https://mercadologyemail.vercel.app`;
   // private urlEnviarCorreo: string = `http://localhost:3000`;
-  private urlEnviarCorreo2: string = `https://mercadologyemail-2.herokuapp.com`;
+  private urlEnviarCorreo2: string = `https://mercadologyemail.herokuapp.com`;
 
   //Inicio Sesion Auth
   private apikey = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + this.key;
@@ -839,6 +839,20 @@ export class AuthService {
     return calendarios;
   }
 
+  getCalendarioid(id:string){
+    return this.http.get(`${this.urlDatos}/calendario/${id}.json`)
+   
+  }
+  DeleteCalen(id: string) {
+    return this.http.delete(`${this.url}/calendario/${id}.json`);
+  }
+  UpdatCalendario(calendario: CalendarioModel) {
+    const CalendarioTemp = {
+      ...calendario
+    };
+    return this.http.put(`${this.url}/calendario/${calendario.id}.json`,CalendarioTemp);
+  }
+
 
   //Minuta
   guardarMinuta(minuta: MinutaModel) {
@@ -882,9 +896,9 @@ export class AuthService {
     return minutas;
   }
 
-  obtenerMinuta(id: string){
+  obtenerMinuta(id: string) {
     console.log(id);
-    
+
     return this.http.get(`${this.urlDatos}/minuta/${id}.json`);
   }
 
