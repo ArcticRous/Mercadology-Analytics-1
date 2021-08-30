@@ -19,7 +19,7 @@ import { MatTableDataSource } from '@angular/material/table';
 export class ComunicadosComponent implements OnInit, AfterViewInit {
 
   Comunicado: ComunicadoModel[] = [];
- 
+  
  //  comunicado: ComunicadoModel = new ComunicadoModel;
    
    cargando = false;
@@ -59,6 +59,14 @@ export class ComunicadosComponent implements OnInit, AfterViewInit {
  
    ngAfterViewInit() {
  
+   }
+   onSelect(event){
+    const filterValue = (event.target as HTMLInputElement).value;
+     this.dataSource.filter = filterValue.trim().toLowerCase();
+ 
+     if (this.dataSource.paginator) {
+       this.dataSource.paginator.firstPage(); 
+     }
    }
  
    applyFilter(event: Event) {

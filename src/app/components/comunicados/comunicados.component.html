@@ -6,19 +6,26 @@
 </div>
 
 <div class="container mt-2">
-
-    <div class="col m-auto">
-        <form action="">
-            <label class="text-white" for="categoria">Selecciona una categoría</label>
-            <select name="" id="categoria" class="form-select w-25">
-                <option value="">General</option>
-                <option value="">Personal</option>
-                <option value="">Festividades</option>
-                <option value="">Vacaciones</option>
-                <option value="">Dudas</option>
-                <option value="">Contrato y reglamento</option>    
-            </select>
+ 
+    <div class="col-md-6">
+        <form action="" #f="ngForm">
+            <label class="text-white mb-2" for="categoria">Filtrar por categoría</label>
+            <div class="col d-flex justify-content-between">
+                <select name="quien" id="quien" class="form-select w-100" required (change)="onSelect($event)">
+                    <option value="comunicado" disabled selected hidden>Selecciona una categoría</option>
+                    <option value="General">General</option>
+                    <option value="Personal">Personal</option>
+                    <option value="Festividades">Festividades</option>
+                    <option value="Vacaciones">Vacaciones</option>
+                    <option value="Dudas">Dudas</option>
+                    <option value="Contrato y reglamento">Contrato y reglamento</option>    
+                </select>
+            </div>
         </form>
+        <div class="col-md-6">
+            <label class="text-white mb-2" for="filtro">Busqueda rapida</label>
+            <input class="form-control w-100" matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
+        </div>
     </div>
     <!--holaaa  -->
     <div class="table-responsive">
@@ -53,7 +60,15 @@
                 <td mat-cell *matCellDef="let element" class="cont-des">
                     <h5 class="texto-titulo">{{element.titulo}}</h5>
                     <p class="texto-descripcion">{{element.descripcion}}</p>
+                    <div *ngIf="element.archivo ">
+                        <img [src]="element.archivo[0]">
+                        <img [src]="element.archivo[1]">
+                        <img [src]="element.archivo[2]">
+                        <img [src]="element.archivo[3]">
+                    </div>
+
                     <span class="texto-fecha">Publicado el: {{element.fecha}}</span>
+                    
                 </td>
             </ng-container>
 
