@@ -48,11 +48,18 @@
                 </div>
             </div>
 
+            
             <div class="row">
-                    <picture *ngFor = "let img of this.peticiones.imagenes; let i = index" class="col-2">
-                        <img [src]=img class="w-100 imagenes img-thumbnail rounded" alt={{peticiones.cuenta}} style="height: 150px;">
-                    </picture>
+                <div class="col-12">
+                    <div class="overflow-auto d-flex d-inline-flex align-items-center">
+                        <picture *ngFor="let img of this.peticiones.imagenes; let i = index" class="col-2 me-2">
+                            <img [src]=img class="w-100 imagenes rounded border border-2 border-white" alt={{peticiones.cuenta}}
+                                style="max-height: 150px;">
+                        </picture>
+                    </div>
+                </div>
             </div>
+            
 
             <div class="row">
                 <div class="col-12">
@@ -71,7 +78,7 @@
             </div>
 
             <div class="row mb-2">
-                
+
 
                 <div class="col-4">
                     <div class="form-group">
@@ -110,7 +117,8 @@
                                     name="fileMaterial" disabled>
                             </div>
                             <div class="col-2 ps-0">
-                                <a href={{peticiones.fileMaterial}} class="btn btn-primary" target="_blank"><i class="bi bi-link">
+                                <a href={{peticiones.fileMaterial}} class="btn btn-primary" target="_blank"><i
+                                        class="bi bi-link">
                                     </i></a>
                             </div>
                         </div>
