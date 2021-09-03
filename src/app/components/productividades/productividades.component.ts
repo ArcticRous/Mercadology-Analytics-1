@@ -46,7 +46,8 @@ export class ProductividadesComponent implements OnInit {
   public barChartLegend = true;
 
   public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81], label: 'Mayo', }
+    { data: [65, 59, 80, 81], label: 'Mayo' },
+    { data: [65, 59, 80, 81], label: 'Mayo' }
   ];
 
 

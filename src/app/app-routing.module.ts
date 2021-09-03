@@ -27,6 +27,8 @@ import { CalendarioComponent } from './components/calendario/calendario.componen
 import { MinutasComponent } from './components/minutas/minutas.component';
 import { ProductividadesComponent } from './components/productividades/productividades.component';
 import { ProductividadComponent } from './components/productividad/productividad.component';
+import { BonoComponent } from './components/bono/bono.component';
+import { BonosComponent } from './components/bonos/bonos.component';
 
 
 const routes: Routes = [
@@ -54,6 +56,9 @@ const routes: Routes = [
   {path: 'productividad', component: ProductividadComponent, canActivate: [AuthGuard]},
   {path: 'productividad/view/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
   {path: 'productividad/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
+  {path: 'bonos', component: BonosComponent, canActivate: [AuthGuard]},
+  {path: 'bono/:id', component: BonoComponent, canActivate: [AuthGuard]},
+  {path: 'bono', component: BonoComponent, canActivate: [AuthGuard]},
   {path: 'usuarios', component: UsuariosComponent, canActivate: [AuthGuard, RolGuard]}, 
   {path: 'registro', component: RegistroComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'modificar/:id', component: ModificarComponent, canActivate: [AuthGuard, RolGuard]},

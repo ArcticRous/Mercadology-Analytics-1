@@ -45,6 +45,7 @@ import { PeticionComponent } from './components/peticion/peticion.component';
 import { MinutaComponent } from './components/minuta/minuta.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 
+
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
 import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
@@ -53,6 +54,8 @@ import listPlugin from '@fullcalendar/list';
 import { MinutasComponent } from './components/minutas/minutas.component';
 import { ProductividadComponent } from './components/productividad/productividad.component';
 import { ProductividadesComponent } from './components/productividades/productividades.component';
+import { BonosComponent } from './components/bonos/bonos.component';
+import { BonoComponent } from './components/bono/bono.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -88,7 +91,9 @@ FullCalendarModule.registerPlugins([
     CalendarioComponent,
     MinutasComponent,
     ProductividadComponent,
-    ProductividadesComponent
+    ProductividadesComponent,
+    BonosComponent,
+    BonoComponent
   ],
   imports: [
     MatTabsModule,

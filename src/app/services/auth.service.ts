@@ -10,6 +10,7 @@ import { AccesosModel } from '../models/accesos.model';
 import { ComunicadoModel } from '../models/comunicado.model';
 import { CalendarioModel } from '../models/calendario.model';
 import { ProductividadModel } from '../models/productividad.model';
+import { BonoModel } from '../models/bono.model';
 
 
 
@@ -980,5 +981,48 @@ export class AuthService {
  }
 
 //  FUNCIONES BONOS
+
+addBono( bono:BonoModel){
+  return this.http.post(`${this.url}/bono.json`, bono)
+  .pipe(
+    map( (resp:any) => {
+      bono.id = resp.name;
+        return bono;
+    })
+  )
+}
+
+updateBono(bono:BonoModel){
+  const bonoTemp = {
+    ...bono
+  };
+  delete bonoTemp.id;
+  return this.http.put(`${this.url}/bono/${bono.id}.json`, bonoTemp);
+}
+getBonoID( id:string){
+  return this.http.get(`${this.url}/bono/${id}.json`);
+}
+getBono(){
+  return this.http.get(`${this.url}/bono.json`)
+  .pipe(
+    map(resp=> this.arrBono(resp))
+  );
+}
+
+private arrBono( bonoObj: object){
+  const bonos: BonoModel[] = [];
+
+  console.log(bonoObj);
+  if( bonoObj === null){ return [];}
+
+  Object.keys( bonoObj).forEach( key => {
+    const bono: BonoModel = bonoObj[key];
+    bono.id = key;
+
+    bonos.push( bono);
+  });
+
+  return bonos;
+}
 
 }/**Cierra el export data**/
