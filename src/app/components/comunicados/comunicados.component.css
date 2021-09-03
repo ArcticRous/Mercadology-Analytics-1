@@ -26,3 +26,8 @@ th {
     font-weight: 700;
     font-size: 15px;
 }
+
+.opciones{        
+    width: 180px!important;
+    text-align: center;
+}

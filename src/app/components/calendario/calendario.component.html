@@ -3,30 +3,35 @@
 
 <div class="container mt-2 max">
 
-    <!-- comienza la tabla -->
+    <!-- termina la tabla -->
+    <div class="container max2">
+        <div class="row">
+            <div class="col-sm-12">
+                <full-calendar id="calendar" [options]="calendarOptions"></full-calendar>
+            </div>
+        </div>
+    </div>
 
-    <div style="width: 40%; float: left; " class="container mt-2">
+    <div class="container mt-2 crud">
         <div class="mat-elevation-z8 table-responsive">
-            <table mat-table [dataSource]="dataSource" matSort
-                style="background-color: #242424; color: #fff; width: 100%;">
+            <table mat-table [dataSource]="dataSource" matSort style="background-color: #242424; color: #fff; width: 100%;">
 
                 <!-- Position Column -->
-                <ng-container matColumnDef="#">
-                    <th mat-header-cell *matHeaderCellDef style="color: black !important;"> # </th>
-                    <td mat-cell *matCellDef="let element; let i = index"> {{(i+1) +
-                        (paginator.pageIndex*paginator.pageSize)}}
+                <ng-container id="idcon" matColumnDef="#">
+                    <th mat-header-cell *matHeaderCellDef> # </th>
+                    <td mat-cell *matCellDef="let element; let i = index"> {{(i+1) + (paginator.pageIndex*paginator.pageSize)}}
                     </td>
                 </ng-container>
 
                 <!-- Cliente Column -->
                 <ng-container matColumnDef="title">
-                    <th mat-header-cell *matHeaderCellDef style="color: black !important;">titulo</th>
+                    <th mat-header-cell *matHeaderCellDef>titulo</th>
                     <td mat-cell *matCellDef="let element">{{element.title}}</td>
                 </ng-container>
 
                 <!-- Dominio Column -->
                 <ng-container matColumnDef="date">
-                    <th mat-header-cell *matHeaderCellDef style="color: black !important;"> Fecha </th>
+                    <th mat-header-cell *matHeaderCellDef> date </th>
                     <td class="start" mat-cell *matCellDef="let element"> {{element.start}}</td>
                 </ng-container>
 
@@ -35,14 +40,17 @@
                     <!-- <td> {{element.ids}} </td> -->
                     <td mat-cell *matCellDef="let element; let i = index">
                         <div class="cont-op">
-                            <button class="btn btn-primary btn-sm" [routerLink]="['/calendario', element.id ]"
-                                (click)="clickFunction()">
+                            <button class="btn btn-secondary btn-sm do" [routerLink]="['/calendario', element.id ]">
                                 <i class="bi bi-info-circle-fill"></i>
                             </button>
 
+                            <button class="btn btn-primary btn-sm" (click)="clickFunction()">
 
-                            <button class="btn btn-danger ms-3 btn-sm"
-                                (click)="borrarCaledario( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+
+                            <button class="btn btn-danger ms-3 btn-sm un" (click)="borrarCaledario( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
                         </div>
@@ -62,20 +70,9 @@
 
             <!-- showFirstLastButtons -->
         </div>
-        <mat-paginator style=" color: #242424;" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons>
-        </mat-paginator>
+        <mat-paginator [pageSizeOptions]="[5, 6, 7]" showFirstLastButtons></mat-paginator>
     </div>
 
-
-
-    <!-- termina la tabla -->
-    <div class="container max2">
-        <div class="row">
-            <div class="col-sm-12">
-                <full-calendar [options]="calendarOptions"></full-calendar>
-            </div>
-        </div>
-    </div>
     <!--Modal PopUp with Add Event Form-->
     <div class="modal" id="myModal">
         <div class="modal-dialog">
@@ -91,23 +88,21 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Event Title</label>
-                                    <input placeholder="Add Event Title" type="text" formControlName="title"
-                                        class="titleinp form-control"
-                                        [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                                    <label>Titulo del Evento</label>
+                                    <input type="text" formControlName="title" class="titleinp form-control" [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
                                     <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
-                                        <div *ngIf="f.title.errors.required">Title is required</div>
+                                        <div *ngIf="f.title.errors.required">Titulo requerido</div>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Event Date:</label>
+                                    <label>Fecha del evento:</label>
                                     <div class="form-control eventstarttitle"></div>
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" id="btnmodal" class="btn btn-primary">Enviar</button>
                     </form>
                 </div>
             </div>
@@ -131,21 +126,19 @@
                                 <div class="form-group">
                                     <label style="color: #242424;">titulo</label>
 
-                                    <input placeholder="Evento" type="text" formControlName="title"
-                                        [(ngModel)]="calendarios.title" class="form-control" />
+                                    <input type="text" formControlName="title" [(ngModel)]="calendarios.title" class="form-control" />
 
                                 </div>
                             </div>
                             <div class="col-sm-12">
                                 <div class="form-group">
-                                    <label>Event Date:</label>
-                                    <input placeholder="fecha" type="date" formControlName="start"
-                                        [(ngModel)]="calendarios.start" class="form-control" />
+                                    <label>Fecha del evento:</label>
+                                    <input type="date" formControlName="start" [(ngModel)]="calendarios.start" class="form-control" />
 
                                 </div>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn cor">Submit</button>
+                        <button type="submit" id="btnmodal" class="btn btn cor">Enviar</button>
                     </form>
                 </div>
             </div>

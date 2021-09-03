@@ -63,15 +63,19 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
   get f() { return this.addEventForm.controls; }
 
   constructor(public AuthS: AuthService, private formBuilder: FormBuilder, private router: Router, private route: ActivatedRoute) {
+    AuthS.leerToken();
+    sessionStorage.removeItem('local');
+    this.rol = sessionStorage.getItem('rol');
     const id = this.route.snapshot.paramMap.get('id');
     this.EditEventForm = new FormGroup({
       title: new FormControl(null, [Validators.required]),
       start: new FormControl(null, [Validators.required])
     })
+   
   }
 
   ngOnInit(): void {
-
+    const id = this.route.snapshot.paramMap.get('id');
     sessionStorage.removeItem('local');
     this.cargando = true;
     this.calendarios = new CalendarioModel();
@@ -188,9 +192,11 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
     
     }*/
   clickFunction() {
+    
+    const id = this.route.snapshot.paramMap.get('id');
     $("#myModalEdit").modal("show");
 
-    const id = this.route.snapshot.paramMap.get('id');
+   
 
     console.log(id);
     this.AuthS.getCalendarioid(id)
@@ -246,7 +252,7 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
   handleDateClick(arg) {
     $("#myModal").modal("show");
     $(".modal-title, .eventstarttitle").text("");
-    $(".modal-title").text("Add Event at : " + arg.dateStr);
+    $(".modal-title").text("Agregar Evento el: " + arg.dateStr);
     $(".eventstarttitle").text(arg.dateStr);
     datte = arg.dateStr;
   }

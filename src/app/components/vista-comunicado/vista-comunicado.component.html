@@ -1,0 +1,98 @@
+<app-header></app-header>
+<div class="container mb-4">
+    <div class="row mt-5">
+        <h1 class="text-white col-10">{{this.comunicado.titulo}}</h1>
+        <div class="col-lg-2">
+            <button class="btn btn-danger col-lg-12" routerLink="/comunicados">
+                <i class="bi bi-arrow-left-circle-fill"></i>
+                Regresar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class=" animated fadeIn faster container contenedor">
+    <div class="col-12">
+
+        <div *ngIf="this.spinner" class="container mt-3">
+            <h3 class="text-white text-center">Espere por favor...</h3>
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <form *ngIf="!this.spinner" [formGroup]="comunicadoForm" class="text-white">
+
+            <div class="row mb-3">
+                <div class="col-md-12 pe-4 ps-4 mb-3">
+                    <div class="form-group row">
+                        <input type="text" class="form-control" placeholder="Titulo de comunicado"
+                            formControlName="titulo" name="titulo">
+                    </div>
+                </div>
+
+                <div class="col-md-6 pe-4 ps-4 mb-3">
+                    <div class="form-group row">
+                        <input type="date" formControlName="fecha" name="fecha" class="fecha-input" >
+                    </div>
+                </div>
+
+                <div class="col-md-6 pe-4 ps-4 mb-3">
+                    <div class="form-group row">
+                        <select formControlName="quien" name="quien" id="quien" class="form-select w-100"
+                            aria-label=".form-select-md example">
+                            <option selected>General</option>
+                            <option>Personal</option>
+                            <option>Festividades</option>
+                            <option>Vacaciones</option>
+                            <option>Dudas</option>
+                            <option>Contrato y reglamento</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-12 pe-4 ps-4 mb-3">
+                    <div class="form-group row">
+                        <textarea type="input" rows="10" cols="100" class="form-control" formControlName="descripcion"
+                            name="descripcion" placeholder="Descripción"></textarea>
+                    </div>
+                </div>
+
+
+                <div *ngIf="this.comunicado.imagenes.length > 0" class="col-md-12 mb-3">
+                    <div class="overflow-auto d-flex d-inline-flex align-items-center w-100" style="height: 180px;">
+                        <picture *ngFor="let img of this.comunicado.imagenes; let i = index"
+                            class="col-2 me-2 mt-2 position-relative">
+                            <img [src]=img class="w-100 imagenes rounded border border-4 border-white"
+                                alt={{this.comunicado.titulo}} style="max-height: 150px">
+                        </picture>
+                    </div>
+                </div>
+
+                <div *ngIf="booleanTieneFile == true" class="row mb-2">
+                    <div class="col-10 pe-0">
+                        <input type="text" class="form-control" name="archivoAuxiliar" id="formArchivoAuxiliar"
+                            formControlName="archivo">
+                    </div>
+                    <div class="col-2">
+                        <a href={{comunicado.archivo}} class="btn btn-primary" target="_blank"><i class="bi bi-link">
+                            </i></a>
+                    </div>
+                </div>
+
+
+            </div>
+            <!-- <hr> -->
+
+        </form>
+
+
+    </div>
+</div>
+
+
+
+<app-footer></app-footer>

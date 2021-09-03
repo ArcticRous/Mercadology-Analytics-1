@@ -88,6 +88,18 @@
                 </td>
             </ng-container>
 
+            <ng-container matColumnDef="ids">
+                <th mat-header-cell *matHeaderCellDef style="text-align: center; color: black !important;"> Opciones
+                </th>
+                <!-- <td> {{element.ids}} </td> -->
+                <td mat-cell *matCellDef="let element; let i = index" class="opciones" style="padding:0">
+                    <button class="btn btn-primary btn-sm" [routerLink]="['/comunicado/view', element.ids ]">
+                        <!-- <i class="bi bi-info-circle-fill"></i> -->
+                        Ver info...
+                    </button>
+                </td>
+            </ng-container>
+
 
             <tr mat-header-row *matHeaderRowDef="displayedColumns" class="bg-light"></tr>
             <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
