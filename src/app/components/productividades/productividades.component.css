@@ -1,0 +1,28 @@
+label {
+    font-family: "Poppins";
+    font-size: 15px;
+}
+
+option {
+    font-family: "Poppins";
+    font-size: 15px;
+}
+
+table {
+    width: 100%;
+    background-color: #242424;
+    font-family: "Poppins";
+    color: #fff;
+}
+
+td {
+    background-color: #242424;
+    font-family: "Poppins";
+    color: #fff;
+}
+
+th {
+    color: #242424;
+    font-weight: 700;
+    font-size: 15px;
+}

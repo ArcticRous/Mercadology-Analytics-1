@@ -9,6 +9,8 @@ import { ClienteModel } from '../models/cliente.model';
 import { AccesosModel } from '../models/accesos.model';
 import { ComunicadoModel } from '../models/comunicado.model';
 import { CalendarioModel } from '../models/calendario.model';
+import { ProductividadModel } from '../models/productividad.model';
+import { BonoModel } from '../models/bono.model';
 
 
 
@@ -930,6 +932,99 @@ export class AuthService {
   eliminarMinuta(id: string, token: string) {
     return this.http.delete(`${this.urlDatos}/minuta/${id}.json` + this.auth + token);
   }
+  
+  // FUNCIONES PRODUCTIVIDAD
 
+  addPro( productividad:ProductividadModel){
+    return this.http.post(`${this.url}/productividad.json`, productividad)
+    .pipe(
+      map( (resp:any) => {
+          productividad.id = resp.name;
+          return productividad;
+      })
+    )
+  }
+
+  updatePro(productividad:ProductividadModel){
+    const proTemp = {
+      ...productividad
+    };
+    delete proTemp.id;
+    return this.http.put(`${this.url}/productividad/${productividad.id}.json`, proTemp);
+  }
+
+  getPro(){
+    return this.http.get(`${this.url}/productividad.json`)
+    .pipe(
+      map(resp=> this.arrPro(resp))
+    );
+  }
+  getProID( id:string){
+    return this.http.get(`${this.url}/productividad/${id}.json`);
+  }
+ private arrPro( proObj: object){
+    const productividades: ProductividadModel[] = [];
+
+    console.log(proObj);
+    if( proObj === null){ return [];}
+
+    Object.keys( proObj).forEach( key => {
+      const productividad: ProductividadModel = proObj[key];
+      productividad.id = key;
+
+      productividades.push( productividad);
+    });
+
+    return productividades;
+ }
+
+ deletePro(id: string){
+   return this.http.delete(`${this.url}/productividad/${id}.json`);
+ }
+
+//  FUNCIONES BONOS
+
+addBono( bono:BonoModel){
+  return this.http.post(`${this.url}/bono.json`, bono)
+  .pipe(
+    map( (resp:any) => {
+      bono.id = resp.name;
+        return bono;
+    })
+  )
+}
+
+updateBono(bono:BonoModel){
+  const bonoTemp = {
+    ...bono
+  };
+  delete bonoTemp.id;
+  return this.http.put(`${this.url}/bono/${bono.id}.json`, bonoTemp);
+}
+getBonoID( id:string){
+  return this.http.get(`${this.url}/bono/${id}.json`);
+}
+getBono(){
+  return this.http.get(`${this.url}/bono.json`)
+  .pipe(
+    map(resp=> this.arrBono(resp))
+  );
+}
+
+private arrBono( bonoObj: object){
+  const bonos: BonoModel[] = [];
+
+  console.log(bonoObj);
+  if( bonoObj === null){ return [];}
+
+  Object.keys( bonoObj).forEach( key => {
+    const bono: BonoModel = bonoObj[key];
+    bono.id = key;
+
+    bonos.push( bono);
+  });
+
+  return bonos;
+}
 
 }/**Cierra el export data**/
