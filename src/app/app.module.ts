@@ -16,6 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatSelectModule } from '@angular/material/select';
+import { ChartsModule } from 'ng2-charts';
 
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ToastrModule } from 'ngx-toastr';
@@ -50,6 +51,8 @@ import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { MinutasComponent } from './components/minutas/minutas.component';
+import { ProductividadComponent } from './components/productividad/productividad.component';
+import { ProductividadesComponent } from './components/productividades/productividades.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -83,7 +86,9 @@ FullCalendarModule.registerPlugins([
     PeticionComponent,
     MinutaComponent,
     CalendarioComponent,
-    MinutasComponent
+    MinutasComponent,
+    ProductividadComponent,
+    ProductividadesComponent
   ],
   imports: [
     MatTabsModule,
@@ -101,6 +106,7 @@ FullCalendarModule.registerPlugins([
     MatSelectModule,
     MatSnackBarModule,
     MatDatepickerModule, 
+    ChartsModule,
     // MatNativeDateModule,
     MatMomentDateModule,
     FullCalendarModule,

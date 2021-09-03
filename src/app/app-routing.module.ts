@@ -25,6 +25,8 @@ import { PeticionGuard } from './guards/peticion.guard';
 import { MinutaComponent } from './components/minuta/minuta.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { MinutasComponent } from './components/minutas/minutas.component';
+import { ProductividadesComponent } from './components/productividades/productividades.component';
+import { ProductividadComponent } from './components/productividad/productividad.component';
 
 
 const routes: Routes = [
@@ -48,6 +50,10 @@ const routes: Routes = [
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'mostrar/:ids' , component: MostrarComponent,canActivate: [AuthGuard]},
   {path: 'generadorReportes', component: GeneradorReportesComponent, canActivate: [AuthGuard]},
+  {path: 'productividades', component: ProductividadesComponent, canActivate: [AuthGuard]},
+  {path: 'productividad', component: ProductividadComponent, canActivate: [AuthGuard]},
+  {path: 'productividad/view/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
+  {path: 'productividad/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
   {path: 'usuarios', component: UsuariosComponent, canActivate: [AuthGuard, RolGuard]}, 
   {path: 'registro', component: RegistroComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'modificar/:id', component: ModificarComponent, canActivate: [AuthGuard, RolGuard]},
