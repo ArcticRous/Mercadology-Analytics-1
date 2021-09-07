@@ -158,7 +158,7 @@ export class MinutaComponent implements OnInit {
     this.nuevoPendienteForm = this.fb.group({
       hecho: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(10)]],
       responsable: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(3)]],
-      estimado: [{ value: '', disabled: true }, Validators.required]
+      estimado: [{ value: '', disabled: true }, Validators.required, Validators.minLength(3)]
     })
   }
 
@@ -183,6 +183,10 @@ export class MinutaComponent implements OnInit {
 
   getErrores(campo: string) {
     return this.minutaForm.controls[campo].errors && this.minutaForm.controls[campo].touched;
+  }
+
+  getErroresPendientes(campo: string){
+    return this.nuevoPendienteForm.controls[campo].errors && this.nuevoPendienteForm.controls[campo].touched;
   }
 
   get asistentesArr() {

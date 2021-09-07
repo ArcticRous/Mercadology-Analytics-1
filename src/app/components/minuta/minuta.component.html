@@ -100,7 +100,7 @@
                     formControlName="hecho">
 
                 <input type="text" class="form-control ms-2" name="responsable" id="formHResponsable"
-                    placeholder="Responsble" formControlName="responsable">
+                    placeholder="Responsable" formControlName="responsable">
 
                 <input type="text" class="form-control ms-2" name="estimado" id="formEstimado"
                     placeholder="Tiempo estimado" formControlName="estimado">
@@ -109,9 +109,11 @@
                     Agregar
                 </button>
             </div>
+                <span *ngIf="getErroresPendientes('hecho')" class="text-danger form-text w-100" >Debe contener mínimo 10 caracteres</span>
+                <span *ngIf="getErroresPendientes('responsable')" class="text-danger form-text w-100" >Responsable debe contener mínimo 3 caracteres</span>
+                <span *ngIf="getErroresPendientes('estimado')" class="text-danger form-text w-100" >El tiempo estimado debe contener mínimo 3 caracteres</span>
             <span class="text-danger form-text" *ngIf="getErrores('pendientes')">Estos campos son
                 obligatorios</span>
-            <!-- <span *ngIf="getErroresPendientes()" class="col-4 text-danger form-text">Estos campos son obligatorios</span> -->
         </div>
 
         <div class="row">
