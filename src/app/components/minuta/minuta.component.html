@@ -32,11 +32,12 @@
                 </div>
             </div>
 
-            <div class="col-4">
-                <div class="input-group mb-3">
+            <div class="col-4 mb-3">
+                <div class="input-group">
                     <span class="input-group-text" id="basic-hora">Hora</span>
-                    <input type="time" class="form-control" name="hora" id="formHora" formControlName="hora">
+                    <input type="time" class="form-control" name="hora" id="formHora" min="09:00" max="17:59" formControlName="hora">
                 </div>
+                <p class="text-danger form-text m-0" *ngIf="getErrores('hora')">Solo se permite de 9 hrs a 17:59 hrs</p>
             </div>
 
             <div class="col-4">

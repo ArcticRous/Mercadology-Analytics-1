@@ -25,7 +25,13 @@ import { PeticionGuard } from './guards/peticion.guard';
 import { MinutaComponent } from './components/minuta/minuta.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
 import { MinutasComponent } from './components/minutas/minutas.component';
-
+import { ProductividadesComponent } from './components/productividades/productividades.component';
+import { ProductividadComponent } from './components/productividad/productividad.component';
+import { BonoComponent } from './components/bono/bono.component';
+import { BonosComponent } from './components/bonos/bonos.component';
+import { CalendarGuard } from './guards/calendario.guard';
+import { ShowcalendarioComponent } from './components/calendario/showcalendario/showcalendario.component';
+import { VistaComunicadoComponent } from './components/vista-comunicado/vista-comunicado.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -33,11 +39,13 @@ const routes: Routes = [
   {path: 'accesos' , component: AccesosComponent,canActivate: [AuthGuard]},
   {path: 'cuentas', component: CuentasComponent,canActivate: [AuthGuard]},
   {path: 'comunicados' , component: ComunicadosComponent,canActivate: [AuthGuard]},
-  {path: 'calendario' , component: CalendarioComponent},
-  {path: 'calendario/:id' , component: CalendarioComponent,canActivate: [AuthGuard, ComunicadoGuard]},
+  {path: 'eventos' , component: ShowcalendarioComponent},
+  {path: 'calendario' , component: CalendarioComponent,canActivate: [AuthGuard, CalendarGuard]},
+  {path: 'calendario/:id' , component: CalendarioComponent,canActivate: [AuthGuard, CalendarGuard]},
   {path: 'solicitud' , component: SolicitudesComponent},
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
+  {path: 'comunicado/view/:id' , component: VistaComunicadoComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'minuta' , component: MinutaComponent,canActivate: [AuthGuard]},
   {path: 'minuta/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
@@ -48,6 +56,13 @@ const routes: Routes = [
   {path: 'cuenta/:ids', component: CuentaComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'mostrar/:ids' , component: MostrarComponent,canActivate: [AuthGuard]},
   {path: 'generadorReportes', component: GeneradorReportesComponent, canActivate: [AuthGuard]},
+  {path: 'productividades', component: ProductividadesComponent, canActivate: [AuthGuard]},
+  {path: 'productividad', component: ProductividadComponent, canActivate: [AuthGuard]},
+  {path: 'productividad/view/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
+  {path: 'productividad/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
+  {path: 'bonos', component: BonosComponent, canActivate: [AuthGuard]},
+  {path: 'bono/:id', component: BonoComponent, canActivate: [AuthGuard]},
+  {path: 'bono', component: BonoComponent, canActivate: [AuthGuard]},
   {path: 'usuarios', component: UsuariosComponent, canActivate: [AuthGuard, RolGuard]}, 
   {path: 'registro', component: RegistroComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'modificar/:id', component: ModificarComponent, canActivate: [AuthGuard, RolGuard]},

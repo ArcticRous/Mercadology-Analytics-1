@@ -16,6 +16,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatSelectModule } from '@angular/material/select';
+import { ChartsModule } from 'ng2-charts';
 
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ToastrModule } from 'ngx-toastr';
@@ -43,6 +44,8 @@ import { SolicitudesComponent } from './components/solicitudes/solicitudes.compo
 import { PeticionComponent } from './components/peticion/peticion.component';
 import { MinutaComponent } from './components/minuta/minuta.component';
 import { CalendarioComponent } from './components/calendario/calendario.component';
+import { ShowcalendarioComponent } from './components/calendario/showcalendario/showcalendario.component';
+import { VistaComunicadoComponent } from './components/vista-comunicado/vista-comunicado.component';
 
 import { FullCalendarModule } from '@fullcalendar/angular'; // must go before plugins
 import dayGridPlugin from '@fullcalendar/daygrid'; // a plugin!
@@ -50,6 +53,10 @@ import interactionPlugin from '@fullcalendar/interaction'; // a plugin!
 import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { MinutasComponent } from './components/minutas/minutas.component';
+import { ProductividadComponent } from './components/productividad/productividad.component';
+import { ProductividadesComponent } from './components/productividades/productividades.component';
+import { BonosComponent } from './components/bonos/bonos.component';
+import { BonoComponent } from './components/bono/bono.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -83,7 +90,13 @@ FullCalendarModule.registerPlugins([
     PeticionComponent,
     MinutaComponent,
     CalendarioComponent,
-    MinutasComponent
+    MinutasComponent,
+    ProductividadComponent,
+    ProductividadesComponent,
+    BonosComponent,
+    BonoComponent,
+    VistaComunicadoComponent,
+    ShowcalendarioComponent
   ],
   imports: [
     MatTabsModule,
@@ -101,6 +114,7 @@ FullCalendarModule.registerPlugins([
     MatSelectModule,
     MatSnackBarModule,
     MatDatepickerModule, 
+    ChartsModule,
     // MatNativeDateModule,
     MatMomentDateModule,
     FullCalendarModule,

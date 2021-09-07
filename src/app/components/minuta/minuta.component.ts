@@ -82,49 +82,21 @@ export class MinutaComponent implements OnInit {
   ngOnInit(): void { }
 
   inicializar() {
-    let date = new Date();
-    this.anio = date.getFullYear()
-    this.mes = (date.getMonth() + 1)
-    this.dia = date.getDate();
+    var date = new Date();
+    this.fechaDefecto = date.toLocaleDateString(undefined, { year: 'numeric' }) + '-' + date.toLocaleDateString(undefined, { month: '2-digit' }) + '-' + date.toLocaleDateString(undefined, { day: '2-digit' })
+    this.horaDefecto = date.toLocaleTimeString('it-IT').substring(0,5)
 
-    this.hora = date.getHours();
-    this.minuto = date.getMinutes();
-    this.horaDefecto = `${this.hora}:${this.minuto}`
-    this.fechaDefecto = `${this.anio}-${this.mes}-${this.dia}`
-
-    if (this.hora < 10) {
-      this.horaDefecto = `0${this.hora}:${this.minuto}`
-      if (this.minuto < 10) {
-        this.horaDefecto = `0${this.hora}:0${this.minuto}`
-      }
-    } else if (this.minuto < 10) {
-      this.horaDefecto = `${this.hora}:0${this.minuto}`
-      if (this.hora < 10) {
-        this.horaDefecto = `0${this.hora}:0${this.minuto}`
-      }
-    }
-
-    if (this.mes < 10) {
-      this.fechaDefecto = `${this.anio}-0${this.mes}-${this.dia}`
-      if (this.dia < 10) {
-        this.fechaDefecto = `${this.anio}-0${this.mes}-0${this.dia}`
-      }
-    } else if (this.dia < 10) {
-      this.fechaDefecto = `${this.anio}-${this.mes}-0${this.dia}`
-      if (this.mes < 10) {
-        this.fechaDefecto = `${this.anio}-0${this.mes}-0${this.dia}`
-      }
-    }
-
+    const proxReunionDefecto = `${this.fechaDefecto}T${this.horaDefecto}`
+    console.log(proxReunionDefecto);
 
     this.minutaForm = this.fb.group({
       fecha: [this.fechaDefecto, [Validators.required]],
-      hora: [this.horaDefecto, [Validators.required]],
+      hora: [this.horaDefecto, [Validators.required, Validators.min(9), Validators.max(17)]],
       numReunion: [this.numReunionDefecto, []],
       asistentes: this.fb.array([], [Validators.required]),
       objetivo: [, [Validators.required, Validators.minLength(10)]],
       pendientes: this.fb.array([], [Validators.required]),
-      proxReunion: [, [Validators.required]],
+      proxReunion: [proxReunionDefecto, [Validators.required]],
       elaboro: [, Validators.required],
       autorizo: [, Validators.required]
     })

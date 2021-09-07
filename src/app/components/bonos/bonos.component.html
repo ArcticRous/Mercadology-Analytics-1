@@ -1,0 +1,53 @@
+<app-header></app-header>
+<div class="container encabezado">
+    <div class="row mt-4">
+        <h1 class="col-12 text-white ">Bonos del personal</h1>
+    </div>
+</div>
+
+<div class="container mt-2">
+    <div class="row" style="justify-content: space-between;">
+        <div class="col-md-6 mb-4">
+            <button [routerLink]="['/bono/-Mify_yAsRqjuuwWB5pE']" class="btn btn-primary col-lg-12">
+                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Definir bonos
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <table class="table">
+            <thead class="table">
+                <th>Desempeño y productividad</th>
+                <th>Bono Team</th>
+                <th>Total</th>
+                <th>Bono jefe MKT & Operaciones (si llegan a la meta) </th>
+                <th>Total</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let bono of bonos; let i = index">
+                    <td>86% - 90%</td>
+                    <td>${{bono.BTeam}}</td>
+                    <td>${{bono.BTeam * 14}}</td>
+                    <td>${{bono.BMO}}</td>
+                    <td>${{(bono.BTeam*14)+ bono.BMO}}</td>
+                </tr>
+                <tr *ngFor="let bono of bonos; let i = index">
+                    <td>91% - 95%</td>
+                    <td>${{bono.BTeam * 2}}</td>
+                    <td>${{(bono.BTeam * 2) * 14}}</td>
+                    <td>${{bono.BMO * 2}}</td>
+                    <td>${{((bono.BTeam * 2)*14)+ (bono.BMO*2)}}</td>
+                </tr>
+                <tr *ngFor="let bono of bonos; let i = index">
+                    <td>96% - 100%</td>
+                    <td>${{bono.BTeam * 4}}</td>
+                    <td>${{(bono.BTeam * 4) * 14}}</td>
+                    <td>${{bono.BMO * 3}}</td>
+                    <td>${{((bono.BTeam * 4)*14)+ (bono.BMO*3)}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<app-footer></app-footer>

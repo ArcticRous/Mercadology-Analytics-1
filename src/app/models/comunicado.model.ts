@@ -1,10 +1,10 @@
 export class ComunicadoModel{
-    ids:string;
+    ids?:string;
     titulo:string;
     fecha:string;
     descripcion:string;
     quien:string;
-
-    archivo:any;
+    imagenes?: any;
+    archivo?:any;
     
 }

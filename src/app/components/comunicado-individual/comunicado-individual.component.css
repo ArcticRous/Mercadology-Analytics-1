@@ -1,7 +1,3 @@
-#upt {
-    background: rgb(29, 160, 29) !important;
-}
-
 .cont-general {
     display: flex;
     margin: auto;
@@ -16,4 +12,48 @@
 .fecha-input {
     height: 40px;
     border-radius: 7px;
+}
+
+.custom-dropzone {
+    background-color: transparent;
+    border: 4px dashed #FCC42C;
+    height: 210px!important;
+}
+  
+.custom-dropzone.ngx-dz-hovered {
+    border: 5px solid #FCC42C;
+}
+
+ngx-dropzone-image-preview ngx-dropzone-label{
+    color: white!important;
+    font-size: 14px;
+    bottom: 0;
+    margin-bottom: -15px!important;
+    overflow: hidden;
+    max-height: 20px;
+    max-width: 100%;
+}
+
+.imagenes{
+    object-fit: cover;
+}
+
+.boton-eliminar{
+    color: #f86e77;
+}
+
+.boton-eliminar:hover > i{
+    color: #dc3545;
+}
+
+picture > span{
+    visibility: hidden;
+}
+
+picture:hover > span{
+    visibility: visible;
+}
+
+picture > span > i{
+    margin-right: -10px;
 }

@@ -1,7 +1,3 @@
-* {
-    color: #fff;
-}
-
 h2 {
     margin: 0;
     font-size: 16px;
@@ -23,22 +19,53 @@ b {
     margin-right: 3px;
 }
 
+#calendar .icon-ok-sign {
+    position: absolute;
+    margin-left: 38px;
+    margin-top: -42px;
+}
+
+full-calendar>#calendar .fc-header-toolbar .fc-toolbar {
+    height: 30px;
+    border-right: solid 2px #DC9E0F;
+    background: #DC9E0F;
+    text-align: center;
+    width: 50px;
+    line-height: 30px;
+}
+
+.crud {
+    margin-top: 150px !important;
+    width: 45%;
+    float: left
+}
+
 .max {
-    height: auto;
+    height: 700px;
 }
 
 .max2 {
     min-height: 550px;
+    width: 55%;
+    float: left;
+}
+
+.un {
+    margin-left: 0.5rem!important;
+}
+
+.do {
+    margin-right: 0.5rem!important;
 }
 
 .modal-content {
-    background-color: #FCC42C;
+    background-color: #fff;
 }
 
 th.mat-header-cell,
 td.mat-cell,
 td.mat-footer-cell {
-    max-width: 30px;
+    max-width: 15px;
     word-wrap: break-word;
 }
 
@@ -96,10 +123,47 @@ h2.fc.fc-toolbar-title {
 }
 
 .close {
-    background-color: #646464;
+    background-color: #DC9E0F;
     color: #fff;
 }
 
 .cor {
     background-color: #646464;
+}
+
+#btnmodal {
+    background: #DC9E0F !important;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        background-color: lightblue;
+    }
+    .crud {
+        margin-top: 0px !important;
+        width: 100%;
+        float: right;
+        padding-top: 100px;
+        padding-bottom: 150px;
+    }
+    .max2 {
+        min-height: 550px;
+        width: 100%;
+        float: left;
+    }
+    #calendar {
+        height: 155%;
+    }
+    .ms-3 {
+        margin-left: 10px !important;
+    }
+    #idcon {
+        display: none;
+    }
+    th.mat-header-cell,
+    td.mat-cell,
+    td.mat-footer-cell {
+        max-width: 13px;
+        word-wrap: break-word;
+    }
 }
