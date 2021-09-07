@@ -11,68 +11,58 @@ import { MatTableDataSource } from '@angular/material/table';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
-  
+
   Comunicado: ComunicadoModel[] = [];
- 
+
   //  comunicado: ComunicadoModel = new ComunicadoModel;
-    
-    cargando = false;
-    durationInSeconds = 2;
-    rol: string;
-  
-    displayedColumns: string[] = ['#', 'titulo', 'descripcion', 'fecha', 'quien', 'ids'];
-    dataSource: MatTableDataSource<ComunicadoModel>;
-  
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild(MatSort) sort: MatSort;
+  catFilter = "General";
+  cargando = false;
+  durationInSeconds = 2;
+  rol: string;
+
+  displayedColumns: string[] = ['titulo', 'descripcion', 'fecha', 'categoria', 'ids'];
+  dataSource: MatTableDataSource<ComunicadoModel>;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
   constructor(private Auth: AuthService) {
     Auth.leerToken();
-     
   }
-    
+
   ngOnInit(): void {
     sessionStorage.removeItem('local');
     this.rol = sessionStorage.getItem('rol');
     this.cargando = true;
-    this.Auth.getComun("")
+    this.Auth.getComun("publico")
       .subscribe(resp => {
         this.Comunicado = resp
         this.cargando = false;
         this.dataSource = new MatTableDataSource(this.Comunicado);
-        this.paginator._intl.itemsPerPageLabel="Elementos por página";
+        this.paginator._intl.itemsPerPageLabel = "Elementos por página";
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });
-      
-
   }//Termina ngOnInit
-  onSelect(event){
+
+  onSelect(event) {
     const filterValue = (event.target as HTMLInputElement).value;
-     this.dataSource.filter = filterValue.trim().toLowerCase();
- 
-     if (this.dataSource.paginator) {
-       this.dataSource.paginator.firstPage();
-       
-     }
-    
-   }
-   applyFilter(event: Event) {
-   
-     
+    this.dataSource.filter = filterValue.trim().toLowerCase();
+
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
+
+  applyFilter(event: Event) {
     const filterValue = (event.target as HTMLInputElement).value;
-     this.dataSource.filter = filterValue.trim().toLowerCase();
- 
-     if (this.dataSource.paginator) {
-       this.dataSource.paginator.firstPage();
-       
-     }
-   }
- 
- 
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
- 
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+    }
+  }
 
-  
-  
 
- }
+
+}
