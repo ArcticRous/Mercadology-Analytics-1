@@ -12,8 +12,6 @@ import { CalendarioModel } from '../models/calendario.model';
 import { ProductividadModel } from '../models/productividad.model';
 import { BonoModel } from '../models/bono.model';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -21,8 +19,6 @@ export class AuthService {
   //Se utiliza como variable local para obtener el rol y usar los guards para el routeo de páginas
   regreso;
   
-  
-
   private key: string = `AIzaSyDmvkHWhK6TV-6K3KtF-Zui0D17hCuqzEk`;
   private realDatabase: string = 'https://mercadology-analytics-default-rtdb.firebaseio.com';
   public urlStorage = `https://firebasestorage.googleapis.com/v0/b/mercadology-analytics.appspot.com`;
@@ -439,6 +435,7 @@ export class AuthService {
 
   //Tipo se refiere a si se va a kostrar en comunicados general (donde se visualizan) o si es donde se eliminan, agregan o editan comunicados
   getComun(tipo: string) {
+console.log(tipo);
 
     if (tipo == "privado") {
       return this.http.get(`${this.url}/comunicados.json`)
@@ -472,13 +469,9 @@ export class AuthService {
       Comunicado.push(comunicado);
     });
 
+
     let date = new Date();
-    let mes = date.getMonth() + 1;
-    let meses;
-    if (mes < 10) {
-      meses = `0${date.getMonth() + 1}`;
-    }
-    let hoy = `${date.getFullYear()}-${meses}-${date.getDate()}`;
+    let hoy = date.toLocaleDateString(undefined, { year: 'numeric' }) + '-' + date.toLocaleDateString(undefined, { month: '2-digit' }) + '-' + date.toLocaleDateString(undefined, { day: '2-digit' })
 
     return Comunicado.filter((({ fecha }) => fecha <= hoy)).sort((a, b) => {
       return new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
