@@ -19,13 +19,19 @@ export class VistaComunicadoComponent implements OnInit {
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
     this.id = this.route.snapshot.paramMap.get('id');
+    console.log(this.id);
+    
     this.auth.getComunicado(this.id)
       .subscribe((resp: ComunicadoModel) => {
         this.comunicado = resp;
         this.comunicado.ids = this.id;
+        console.log(resp);
+        // this.spinner = false;
       }, error => {
         console.log(error);
       }, () => {
+        
+        console.log(this.spinner);
         this.spinner = false;
         this.inicializar(this.comunicado)
       });
@@ -44,9 +50,9 @@ export class VistaComunicadoComponent implements OnInit {
       descripcion: [{ value: comunicado.descripcion, disabled: true }],
       quien: [{ value: comunicado.quien, disabled: true }],
       imagenes: [,],
-      archivo: [{value: comunicado.archivo, disabled: true}],
+      archivo: [comunicado.archivo,],
     })
-
+    this.spinner = false;
     if (comunicado.archivo) {
       this.booleanTieneFile = true
     }
