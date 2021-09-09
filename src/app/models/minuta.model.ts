@@ -3,6 +3,7 @@ export class MinutaModel{
     fecha: Date;
     hora: string;
     numReunion: number;
+    cuenta: string;
     asistentes: Object;
     objetivo: string;
     pendientes: Object;
