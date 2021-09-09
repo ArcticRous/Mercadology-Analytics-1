@@ -64,11 +64,11 @@
 
 <!--  -->
                 <div *ngIf="this.comunicado.imagenes.length > 0" class="col-md-12 mb-3">
-                    <div class="overflow-auto d-flex d-inline-flex align-items-center w-100" style="height: 180px;">
+                    <div class="overflow-auto d-flex d-inline-flex align-items-center w-100" style="height: 350px;">
                         <picture *ngFor="let img of this.comunicado.imagenes; let i = index"
-                            class="col-2 me-2 mt-2 position-relative">
+                            class="col-4 me-2 mt-2 position-relative">
                             <img [src]=img class="w-100 imagenes rounded border border-4 border-white"
-                                alt={{this.comunicado.titulo}} style="max-height: 150px">
+                                alt={{this.comunicado.titulo}} style="max-height: 320px">
                         </picture>
                     </div>
                 </div>
