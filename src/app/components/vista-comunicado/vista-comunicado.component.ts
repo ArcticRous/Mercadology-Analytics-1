@@ -1,5 +1,5 @@
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ComunicadoModel } from 'src/app/models/comunicado.model';
 import { ActivatedRoute } from '@angular/router';
@@ -16,10 +16,13 @@ export class VistaComunicadoComponent implements OnInit {
   spinner: boolean = true;
   booleanTieneFile: boolean = false;
   id: any;
+  screenHeight:any;
+  screenWidth:any;
 
   constructor(private auth: AuthService, private route: ActivatedRoute, private fb: FormBuilder) {
     this.id = this.route.snapshot.paramMap.get('id');
     console.log(this.id);
+    this.getScreenSize();
     
     this.auth.getComunicado(this.id)
       .subscribe((resp: ComunicadoModel) => {
@@ -38,6 +41,13 @@ export class VistaComunicadoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+  }
+
+  @HostListener('window:resize', ['$event'])
+  getScreenSize(event?) {
+        this.screenHeight = window.innerHeight;
+        this.screenWidth = window.innerWidth;
+        console.log(this.screenHeight, this.screenWidth);
   }
 
 
