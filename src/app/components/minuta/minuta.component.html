@@ -50,8 +50,33 @@
         </div>
 
         <div class="row">
-            <h2 class="text-white">Asistentes</h2>
-            <div *ngIf="!this.booleanVer" class="col-12 mb-3">
+            <div [ngClass]="{'col-4 mb-3': !this.booleanVer && !this.booleanEditar, 'col-12 mb-3': this.booleanVer, 'col-4 mb-3': this.booleanEditar}">
+                <h2 class="text-white">Cuenta</h2>
+                <select class="form-select form-select-md mb-3" id="formCuenta" name="cuenta"
+                     formControlName="cuenta" aria-label=".form-select-md example">
+                    <option selected>Cinthya García</option>
+                    <option>Dos Arroyos</option>
+                    <option>Endocéntrica</option>
+                    <option>Emplois</option>
+                    <option>Euroventyc</option>
+                    <option>Global Staffing</option>
+                    <option>KOM</option>
+                    <option>Lupita Chaidez</option>
+                    <option>Namaco</option>
+                    <option>Nomenex</option>
+                    <option>Noticias Querétaro</option>
+                    <option>Marmo</option>
+                    <option>Olivera Logistics</option>
+                    <option>Palconsulting</option>
+                    <option>Paola Soto</option>
+                    <option>PureWater</option>
+                    <option>Rohe</option>
+                    <option>Viva Casas</option>
+                </select>
+            </div>
+
+            <div *ngIf="!this.booleanVer" class="col-8 mb-3">
+                <h2 class="text-white">Asistentes</h2>
                 <div class="input-group">
 
                     <span class="input-group-text">Nombre </span>

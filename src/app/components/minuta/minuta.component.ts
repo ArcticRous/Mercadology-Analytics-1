@@ -84,7 +84,7 @@ export class MinutaComponent implements OnInit {
   inicializar() {
     var date = new Date();
     this.fechaDefecto = date.toLocaleDateString(undefined, { year: 'numeric' }) + '-' + date.toLocaleDateString(undefined, { month: '2-digit' }) + '-' + date.toLocaleDateString(undefined, { day: '2-digit' })
-    this.horaDefecto = date.toLocaleTimeString('it-IT').substring(0,5)
+    this.horaDefecto = date.toLocaleTimeString('it-IT').substring(0, 5)
 
     const proxReunionDefecto = `${this.fechaDefecto}T${this.horaDefecto}`
     console.log(proxReunionDefecto);
@@ -93,6 +93,7 @@ export class MinutaComponent implements OnInit {
       fecha: [this.fechaDefecto, [Validators.required]],
       hora: [this.horaDefecto, [Validators.required, Validators.min(9), Validators.max(17)]],
       numReunion: [this.numReunionDefecto, []],
+      cuenta: ['Cinthya García', [Validators.required]],
       asistentes: this.fb.array([], [Validators.required]),
       objetivo: [, [Validators.required, Validators.minLength(10)]],
       pendientes: this.fb.array([], [Validators.required]),
@@ -113,11 +114,12 @@ export class MinutaComponent implements OnInit {
 
 
   inicializarEditar(minuta: MinutaModel) {
-
+    console.log(minuta);
     this.minutaForm = this.fb.group({
       fecha: [minuta.fecha, [Validators.required]],
       hora: [minuta.hora, [Validators.required]],
       numReunion: [minuta.numReunion, [Validators.required]],
+      cuenta: [minuta.cuenta, []],
       asistentes: this.fb.array([], [Validators.required]),
       objetivo: [minuta.objetivo, [Validators.required, Validators.minLength(10)]],
       pendientes: this.fb.array([], [Validators.required]),
@@ -138,11 +140,13 @@ export class MinutaComponent implements OnInit {
   }
 
   inicializarVer(minuta: MinutaModel) {
+console.log(minuta);
 
     this.minutaForm = this.fb.group({
       fecha: [{ value: minuta.fecha, disabled: true }, [Validators.required]],
       hora: [{ value: minuta.hora, disabled: true }, [Validators.required]],
       numReunion: [{ value: minuta.numReunion, disabled: true }, [Validators.required]],
+      cuenta: [{ value: minuta.cuenta, disabled: true }, []],
       asistentes: this.fb.array([], [Validators.required]),
       objetivo: [{ value: minuta.objetivo, disabled: true }, [Validators.required, Validators.minLength(10)]],
       pendientes: this.fb.array([], [Validators.required]),
@@ -185,7 +189,7 @@ export class MinutaComponent implements OnInit {
     return this.minutaForm.controls[campo].errors && this.minutaForm.controls[campo].touched;
   }
 
-  getErroresPendientes(campo: string){
+  getErroresPendientes(campo: string) {
     return this.nuevoPendienteForm.controls[campo].errors && this.nuevoPendienteForm.controls[campo].touched;
   }
 
@@ -243,9 +247,14 @@ export class MinutaComponent implements OnInit {
   guardar() {
 
     if (this.minutaForm.invalid) {
+      console.log(this.minutaForm.value);
+      
       this.minutaForm.markAllAsTouched(); this.booleanNPendiente = false; return;
     }
-
+    
+    console.log(this.minutaForm.value);
+    return;
+    
     Swal.fire({
       icon: 'question',
       title: "¿Los datos son correctos?",
@@ -284,6 +293,7 @@ export class MinutaComponent implements OnInit {
           this.minutaForm.reset(({
             fecha: this.fechaDefecto,
             hora: this.horaDefecto,
+            cuenta: 'Cinthya García',
             numReunion: this.numReunionDefecto + 1
           }))
           this.asistentesArr.reset();
@@ -331,6 +341,7 @@ export class MinutaComponent implements OnInit {
           this.minutaForm.reset(({
             fecha: this.fechaDefecto,
             hora: this.horaDefecto,
+            cuenta: 'Cinthya García',
             numReunion: this.numReunionDefecto + 1
           }))
           this.asistentesArr.reset();
@@ -449,6 +460,8 @@ export class MinutaComponent implements OnInit {
     pdf.header(new Txt(`mercadology`).alignment('center').bold().fontSize(35).margin([0, 15, 0, 0]).color('#FCC42C').end);
     pdf.footer(new Txt(`mercadology`).alignment('center').bold().fontSize(35).margin([0, 15, 0, 0]).color('#FCC42C').end);
 
+    pdf.add(new Txt(`Cuenta: ${data.cuenta}`).bold().alignment('left').end)
+
     pdf.add(new Table([
       [
         new Cell(new Txt('1. DATOS GENERALES').bold().alignment('left').end).colSpan(6).end, '', '', '', '', '',
@@ -520,7 +533,7 @@ export class MinutaComponent implements OnInit {
         new Txt(data.elaboro).alignment('center').end, new Txt(data.autorizo).alignment('center').end
       ],
       [
-        new Txt('ELABORÓ (NOMBRE Y FIRMA').bold().alignment('center').end, new Txt('AUTORIZÓ (NOMBRE Y FIRMA').bold().alignment('center').end
+        new Txt('ELABORÓ (NOMBRE Y FIRMA)').bold().alignment('center').end, new Txt('AUTORIZÓ (NOMBRE Y FIRMA)').bold().alignment('center').end
       ]
     ]).margin([80, 0, 80, 0]).widths(['auto', 'auto']).alignment('center').layout({
       fillColor: (rowIndex: number, node: any, columnIndex: number) => {
