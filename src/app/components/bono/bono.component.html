@@ -16,24 +16,36 @@
 <div class="container mt-2">
     <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white">
 
-        <div style="display: none;" class="form-group">
+        <!-- <div style="display: none;" class="form-group">
             <label>ID</label>
             <input style="width: 10% !important;" type="text" class="form-control" placeholder="ID" [(ngModel)]="bono.id" name="id" disabled="disabled">
             <small class="form-text text-muted">Este campo es autogenerado</small>
-        </div>
+        </div> -->
 
         <div class="row">
-            <div class="col-md-4 pe-4 ps-4 mb-3">
-                <label for="" class="text-white mb-2">Bono Team</label>
-                <div class="input-group input-group-sm mb-3">
-                    <input [(ngModel)]="bono.BTeam" name="BTeam" id="BTeam" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
-                    <span class="input-group-text" id="inputGroup-sizing-sm">MXN</span>
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Nombre</label>
+                <div class="form-group mb-3">
+                    <input [(ngModel)]="bono.nombre" name="nombre" id="nombreBono" type="text" class="form-control" >
                 </div>
             </div>
-            <div class="col-md-4 pe-4 ps-4 mb-3">
-                <label for="" class="text-white mb-2">Bono Jefe de MKT & Operaciones</label>
-                <div class="input-group input-group-sm mb-3">
-                    <input [(ngModel)]="bono.BMO" name="BMO" id="BMO" type="number" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-sm">
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Porcentaje</label>
+                <div class="input-group mb-3">
+                    <input [(ngModel)]="bono.porcentaje" name="porcentaje" id="porcentajeBono" type="number" class="form-control" >
+                    <span class="input-group-text" id="inputGroup-sizing-sm">%</span>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Departamento</label>
+                <div class="form-group mb-3">
+                    <input [(ngModel)]="bono.depto" name="depto" id="deptoBono" type="text" class="form-control">
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Cantidad $</label>
+                <div class="input-group mb-3">
+                    <input [(ngModel)]="bono.cantidad" name="cantidad" id="cantidadBono" type="number" class="form-control">
                     <span class="input-group-text" id="inputGroup-sizing-sm">MXN</span>
                 </div>
             </div>

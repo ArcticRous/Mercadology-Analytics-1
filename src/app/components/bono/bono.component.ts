@@ -13,10 +13,10 @@ import { RouterLinkActive, ActivatedRoute } from '@angular/router';
 })
 export class BonoComponent implements OnInit {
   bono: BonoModel = new BonoModel();
-  temporalPro: Object = {
-    'BTeam': "",
-    'BMO': "",
-  };
+  // temporalPro: Object = {
+  //   'BTeam': "",
+  //   'BMO': "",
+  // };
   constructor( private AuthService: AuthService,
     private route: ActivatedRoute) { }
 
@@ -25,11 +25,11 @@ export class BonoComponent implements OnInit {
   if ( id !== 'add'){
     this.AuthService.getBonoID(id)
     .subscribe( (resp: BonoModel) =>{
-
-          this.temporalPro['BTeam'] = resp.BTeam;
-          this.temporalPro['BMO'] = resp.BMO;
-          
+          // this.temporalPro['BTeam'] = resp.BTeam;
+          // this.temporalPro['BMO'] = resp.BMO;   
       this.bono = resp;
+      console.log(this.bono);
+      
       this.bono.id = id;
     })
   }
