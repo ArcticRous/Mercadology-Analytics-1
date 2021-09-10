@@ -20,17 +20,19 @@ export class HomeComponent implements OnInit {
   durationInSeconds = 2;
   rol: string;
 
-  displayedColumns: string[] = ['titulo', 'descripcion', 'fecha', 'categoria', 'ids'];
+  displayedColumns: string[] = ['comunicado','ids'];
   dataSource: MatTableDataSource<ComunicadoModel>;
 
-  @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatPaginator, { static: false }) paginator: MatPaginator;
+  @ViewChild(MatSort, { static: false }) sort: MatSort;
 
   constructor(private Auth: AuthService) {
     Auth.leerToken();
   }
 
   ngOnInit(): void {
+
+    
     sessionStorage.removeItem('local');
     this.rol = sessionStorage.getItem('rol');
     this.cargando = true;
@@ -39,7 +41,7 @@ export class HomeComponent implements OnInit {
         this.Comunicado = resp
         this.cargando = false;
         this.dataSource = new MatTableDataSource(this.Comunicado);
-        this.paginator._intl.itemsPerPageLabel = "Elementos por página";
+        this.paginator._intl.itemsPerPageLabel = "comunicados por página";
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
       });
