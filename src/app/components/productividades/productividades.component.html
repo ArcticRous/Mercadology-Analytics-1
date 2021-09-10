@@ -98,7 +98,7 @@
             <mat-paginator style="color: #242424;" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
         </div>
         <div class="col-md-12 mt-3">
-            <div style="display: block" class="bg-white">
+            <div *ngIf="this.cargando==false" style="display: block" class="bg-white">
                 <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
             </canvas>
             </div>

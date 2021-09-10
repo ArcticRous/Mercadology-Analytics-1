@@ -14,55 +14,72 @@ import { AuthService } from '../../services/auth.service';
   styleUrls: ['./productividades.component.css']
 })
 export class ProductividadesComponent implements OnInit {
-  
+
   productividad: ProductividadModel[] = [];
 
   catFilter = "General";
-   cargando = false;
-   durationInSeconds = 2;
-   rol: string;
- 
-   displayedColumns: string[] = ['usuario','productividad','fecha','id'];
-   dataSource: MatTableDataSource<ProductividadModel>;
- 
-   @ViewChild(MatPaginator) paginator: MatPaginator;
-   @ViewChild(MatSort) sort: MatSort;
-  
+  cargando = true;
+  durationInSeconds = 2;
+  rol: string;
+
+  displayedColumns: string[] = ['usuario', 'productividad', 'fecha', 'id'];
+  dataSource: MatTableDataSource<ProductividadModel>;
+
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatSort) sort: MatSort;
+
 
   public barChartOptions: ChartOptions = {
     responsive: true,
     // We use these empty structures as placeholders for dynamic theming.
-    scales: { xAxes: [{}], yAxes: [{}] },
-    plugins: {
-      datalabels: {
-        anchor: 'end',
-        align: 'end',
-      }
-    }
+    // scales: { xAxes: [{}], yAxes: [{}] },
+    // plugins: {
+    //   datalabels: {
+    //     anchor: 'end',
+    //     align: 'end',
+    //   }
+    // }
   };
 
-  public barChartLabels: Label[] = ['Jesus', 'Omar', 'Erick', 'Alan'];
+  public barChartLabels: Label[] = ['Enero', 'Febrero', 'Marzo', 'Abril'];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
 
-  public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81], label: 'Mayo' },
-    { data: [65, 59, 80, 81], label: 'Mayo' }
-  ];
+  public barChartData: ChartDataSets[] = [];
+
+  arrayMes: string[] = [];
+  arrayNombre: string[] = [];
+  arrayProductividad: any[] = [];
 
 
-  constructor( private AuthService:AuthService) { }
-
-  ngOnInit(): void {
+  constructor(private AuthService: AuthService) { 
     this.AuthService.getPro()
-      .subscribe( data => {
+      .subscribe(data => {
         console.log(data);
         this.productividad = data;
+
+        data.map((datos, index) => {
+          this.barChartData.push({data: [datos.productividad], label: datos.usuario})
+        })
+
+        console.log(this.barChartData);
+
         this.dataSource = new MatTableDataSource(this.productividad);
-         this.paginator._intl.itemsPerPageLabel="Elementos por página";
-         this.dataSource.paginator = this.paginator;
-         this.dataSource.sort = this.sort;
-    });
+        this.paginator._intl.itemsPerPageLabel = "Elementos por página";
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+
+      }, error => {
+        console.log(error);
+      }, () => {
+        this.cargando = false
+      });
+  }
+
+  ngOnInit(): void {
+
+    // this.randomize()
+    
   }
 
   // events
@@ -76,14 +93,15 @@ export class ProductividadesComponent implements OnInit {
 
   public randomize(): void {
     // Only Change 3 values
-    this.barChartData[0].data = [
+    this.barChartData[3].data = [
       Math.round(Math.random() * 100),
-      59,
+      40,
       80,
       (Math.random() * 100),
-      56,
+      60,
       (Math.random() * 100),
-      40 ];
+      50
+    ];
   }
 
 
@@ -94,21 +112,21 @@ export class ProductividadesComponent implements OnInit {
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
-      
+
     }
   }
-  onSelect(event){
+  onSelect(event) {
     const filterValue = (event.target as HTMLInputElement).value;
-     this.dataSource.filter = filterValue.trim().toLowerCase();
- 
-     if (this.dataSource.paginator) {
-       this.dataSource.paginator.firstPage();
-       
-     }
-    
-   }
+    this.dataSource.filter = filterValue.trim().toLowerCase();
 
-   eliminarPro(productividad: ProductividadModel, i: number) {
+    if (this.dataSource.paginator) {
+      this.dataSource.paginator.firstPage();
+
+    }
+
+  }
+
+  eliminarPro(productividad: ProductividadModel, i: number) {
     Swal.fire({
       title: `¿Esta seguro que desea borrar la productividad?`,
       text: `Se eliminara la productividad y todos sus datos`,

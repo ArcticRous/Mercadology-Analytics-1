@@ -18,15 +18,13 @@ import { BonoModel } from '../models/bono.model';
 export class AuthService {
   //Se utiliza como variable local para obtener el rol y usar los guards para el routeo de páginas
   regreso;
-  
-  
 
   private key: string = `AIzaSyDmvkHWhK6TV-6K3KtF-Zui0D17hCuqzEk`;
   private realDatabase: string = 'https://mercadology-analytics-default-rtdb.firebaseio.com';
   public urlStorage = `https://firebasestorage.googleapis.com/v0/b/mercadology-analytics.appspot.com`;
   private urlEnviarCorreo: string = `https://mercadologyemail.vercel.app`;
   private urlEnviarCorreo2: string = `https://mercadologyemail.herokuapp.com`;
-    // private urlEnviarCorreo: string = `http://localhost:3000`;
+  // private urlEnviarCorreo: string = `http://localhost:3000`;
 
   //Inicio Sesion Auth
   private apikey = 'https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=' + this.key;
@@ -413,7 +411,7 @@ export class AuthService {
   getComunicado(ids: string) {
     return this.http.get(`${this.url}/comunicados/${ids}.json`);
   }
-  
+
   // getfiltradoCon (filtro:string){
   //   return this.http.get(`${this.url}/comunicados.json`)
   //   .pipe(
@@ -437,7 +435,7 @@ export class AuthService {
 
   //Tipo se refiere a si se va a kostrar en comunicados general (donde se visualizan) o si es donde se eliminan, agregan o editan comunicados
   getComun(tipo: string) {
-console.log(tipo);
+    console.log(tipo);
 
     if (tipo == "privado") {
       return this.http.get(`${this.url}/comunicados.json`)
@@ -848,9 +846,9 @@ console.log(tipo);
         map(this.crearArregloCalendario)
       );
   }
-  getCalendarioid(id:string){
+  getCalendarioid(id: string) {
     return this.http.get(`${this.urlDatos}/calendario/${id}.json`)
-   
+
   }
   DeleteCalen(id: string) {
     return this.http.delete(`${this.url}/calendario/${id}.json`);
@@ -859,7 +857,7 @@ console.log(tipo);
     const CalendarioTemp = {
       ...calendario
     };
-    return this.http.put(`${this.url}/calendario/${calendario.id}.json`,CalendarioTemp);
+    return this.http.put(`${this.url}/calendario/${calendario.id}.json`, CalendarioTemp);
   }
 
   private crearArregloCalendario(calendarioObj: Object) {
@@ -927,20 +925,20 @@ console.log(tipo);
   eliminarMinuta(id: string, token: string) {
     return this.http.delete(`${this.urlDatos}/minuta/${id}.json` + this.auth + token);
   }
-  
+
   // FUNCIONES PRODUCTIVIDAD
 
-  addPro( productividad:ProductividadModel){
+  addPro(productividad: ProductividadModel) {
     return this.http.post(`${this.url}/productividad.json`, productividad)
-    .pipe(
-      map( (resp:any) => {
+      .pipe(
+        map((resp: any) => {
           productividad.id = resp.name;
           return productividad;
-      })
-    )
+        })
+      )
   }
 
-  updatePro(productividad:ProductividadModel){
+  updatePro(productividad: ProductividadModel) {
     const proTemp = {
       ...productividad
     };
@@ -948,78 +946,78 @@ console.log(tipo);
     return this.http.put(`${this.url}/productividad/${productividad.id}.json`, proTemp);
   }
 
-  getPro(){
+  getPro() {
     return this.http.get(`${this.url}/productividad.json`)
-    .pipe(
-      map(resp=> this.arrPro(resp))
-    );
+      .pipe(
+        map(resp => this.arrPro(resp))
+      );
   }
-  getProID( id:string){
+  getProID(id: string) {
     return this.http.get(`${this.url}/productividad/${id}.json`);
   }
- private arrPro( proObj: object){
+  private arrPro(proObj: object) {
     const productividades: ProductividadModel[] = [];
 
     console.log(proObj);
-    if( proObj === null){ return [];}
+    if (proObj === null) { return []; }
 
-    Object.keys( proObj).forEach( key => {
+    Object.keys(proObj).forEach(key => {
       const productividad: ProductividadModel = proObj[key];
       productividad.id = key;
 
-      productividades.push( productividad);
+      productividades.push(productividad);
     });
 
     return productividades;
- }
+  }
 
- deletePro(id: string){
-   return this.http.delete(`${this.url}/productividad/${id}.json`);
- }
+  deletePro(id: string) {
+    return this.http.delete(`${this.url}/productividad/${id}.json`);
+  }
 
-//  FUNCIONES BONOS
+  //  FUNCIONES BONOS
 
-addBono( bono:BonoModel){
-  return this.http.post(`${this.url}/bono.json`, bono)
-  .pipe(
-    map( (resp:any) => {
-      bono.id = resp.name;
-        return bono;
-    })
-  )
-}
+  addBono(bono: BonoModel) {
+    return this.http.post(`${this.url}/bono.json`, bono)
+      .pipe(
+        map((resp: any) => {
+          bono.id = resp.name;
+          return bono;
+        })
+      )
+  }
 
-updateBono(bono:BonoModel){
-  const bonoTemp = {
-    ...bono
-  };
-  delete bonoTemp.id;
-  return this.http.put(`${this.url}/bono/${bono.id}.json`, bonoTemp);
-}
-getBonoID( id:string){
-  return this.http.get(`${this.url}/bono/${id}.json`);
-}
-getBono(){
-  return this.http.get(`${this.url}/bono.json`)
-  .pipe(
-    map(resp=> this.arrBono(resp))
-  );
-}
+  updateBono(bono: BonoModel) {
+    const bonoTemp = {
+      ...bono
+    };
+    delete bonoTemp.id;
+    return this.http.put(`${this.url}/bono/${bono.id}.json`, bonoTemp);
+  }
+  getBonoID(id: string) {
+    return this.http.get(`${this.url}/bono/${id}.json`);
+  }
+  getBono() {
+    return this.http.get(`${this.url}/bono.json`)
+      .pipe(
+        map(resp => this.arrBono(resp))
+      );
+  }
 
-private arrBono( bonoObj: object){
-  const bonos: BonoModel[] = [];
+  private arrBono(bonoObj: object) {
+    const bonos: BonoModel[] = [];
 
-  console.log(bonoObj);
-  if( bonoObj === null){ return [];}
+    console.log(bonoObj);
+    if (bonoObj === null) { return []; }
 
-  Object.keys( bonoObj).forEach( key => {
-    const bono: BonoModel = bonoObj[key];
-    bono.id = key;
+    Object.keys(bonoObj).forEach(key => {
+      const bono: BonoModel = bonoObj[key];
+      bono.id = key;
 
-    bonos.push( bono);
-  });
+      bonos.push(bono);
+    });
 
-  return bonos;
-}
+    return bonos;
+  }
 
 }/**Cierra el export data**/
