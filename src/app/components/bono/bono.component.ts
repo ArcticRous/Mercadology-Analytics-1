@@ -13,32 +13,35 @@ import { RouterLinkActive, ActivatedRoute } from '@angular/router';
 })
 export class BonoComponent implements OnInit {
   bono: BonoModel = new BonoModel();
-  // temporalPro: Object = {
-  //   'BTeam': "",
-  //   'BMO': "",
-  // };
-  constructor( private AuthService: AuthService,
+  cargando: boolean = true;
+  porcentajes: string[] = ["86-90", "91-95", "96-100"];
+  departamentos: string[] = ["Marketing", "Sistemas", "Diseño", "RRHH", "Operaciones"]
+  constructor(private AuthService: AuthService,
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
-  if ( id !== 'add'){
-    this.AuthService.getBonoID(id)
-    .subscribe( (resp: BonoModel) =>{
-          // this.temporalPro['BTeam'] = resp.BTeam;
-          // this.temporalPro['BMO'] = resp.BMO;   
-      this.bono = resp;
-      console.log(this.bono);
-      
-      this.bono.id = id;
-    })
-  }
-  }
-  
+    if (id !== 'add') {
+      this.AuthService.getBonoID(id)
+        .subscribe((resp: BonoModel) => {
+          this.bono = resp;
+          console.log(this.bono);
 
-  guardar(form: NgForm){
+          this.bono.id = id;
+        }, error => {
+
+        }, () => {
+          this.cargando = false;
+        })
+    }
+
+    
+  }
+
+  guardar(form: NgForm) {
     console.log(form);
     console.log(this.bono);
+    if (form.invalid) { return }
 
     Swal.fire({
       title: 'Espere',
@@ -49,13 +52,13 @@ export class BonoComponent implements OnInit {
 
     let peticion: Observable<any>;
 
-    if(this.bono.id){
+    if (this.bono.id) {
       peticion = this.AuthService.updateBono(this.bono);
-    }else{
+    } else {
       peticion = this.AuthService.addBono(this.bono);
     }
 
-    peticion.subscribe( resp => {
+    peticion.subscribe(resp => {
       Swal.fire({
         title: 'Bonos asignados',
         text: 'Se han definido tus bonos',

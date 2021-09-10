@@ -6,48 +6,64 @@
         </div>
         <div class="col-md-4">
             <button class="btn btn-danger col-lg-12" routerLink="/bonos">
-             <i class="bi bi-arrow-left-circle-fill"></i>
-             Regresar
-          </button>
+                <i class="bi bi-arrow-left-circle-fill"></i>
+                Regresar
+            </button>
         </div>
     </div>
 </div>
 
 <div class="container mt-2">
-    <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white">
+    <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white" novalidate="">
 
         <!-- <div style="display: none;" class="form-group">
             <label>ID</label>
             <input style="width: 10% !important;" type="text" class="form-control" placeholder="ID" [(ngModel)]="bono.id" name="id" disabled="disabled">
             <small class="form-text text-muted">Este campo es autogenerado</small>
         </div> -->
-
         <div class="row">
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Nombre</label>
-                <div class="form-group mb-3">
-                    <input [(ngModel)]="bono.nombre" name="nombre" id="nombreBono" type="text" class="form-control" >
+                <div class="form-group ">
+                    <input #nombre="ngModel" [(ngModel)]="bono.nombre" name="nombreBono" id="nombre" type="text"
+                        class="form-control" required minlength="5">
                 </div>
+                <span *ngIf="nombre.invalid && nombre.touched" class="text-danger form-text">Se requiere minimo 5
+                    caracteres</span>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Porcentaje</label>
-                <div class="input-group mb-3">
-                    <input [(ngModel)]="bono.porcentaje" name="porcentaje" id="porcentajeBono" type="number" class="form-control" >
-                    <span class="input-group-text" id="inputGroup-sizing-sm">%</span>
+                <div class="input-group ">
+                    <select class="form-select form-select-md" id="porcentajeBono" name="porcentaje"
+                        #porcentaje="ngModel" [(ngModel)]="bono.porcentaje" aria-label=".form-select-md example"
+                        required>
+                        <option [value]="item" *ngFor="let item of porcentajes">{{item}}</option>
+                    </select>
                 </div>
+                <span *ngIf="porcentaje.invalid && porcentaje.touched" class="text-danger form-text">Este campo es
+                    requerido</span>
             </div>
+
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Departamento</label>
-                <div class="form-group mb-3">
-                    <input [(ngModel)]="bono.depto" name="depto" id="deptoBono" type="text" class="form-control">
+                <div class="form-group ">
+                    <select class="form-select form-select-md " id="deptoBono" name="depto" #depto="ngModel"
+                        [(ngModel)]="bono.depto" aria-label=".form-select-md example" required>
+                        <option [value]="item" *ngFor="let item of departamentos">{{item}}</option>
+                    </select>
                 </div>
+                <span *ngIf="depto.invalid && depto.touched" class="text-danger form-text">Este campo es
+                    requerido</span>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Cantidad $</label>
-                <div class="input-group mb-3">
-                    <input [(ngModel)]="bono.cantidad" name="cantidad" id="cantidadBono" type="number" class="form-control">
+                <div class="input-group ">
+                    <input #cantidad="ngModel" [(ngModel)]="bono.cantidad" name="cantidad" id="cantidadBono"
+                        type="number" class="form-control" minlength="3" required>
                     <span class="input-group-text" id="inputGroup-sizing-sm">MXN</span>
                 </div>
+                <span *ngIf="cantidad.invalid && cantidad.touched" class="text-danger form-text">Se requiere minimo
+                    3 caracteres</span>
             </div>
         </div>
 
@@ -56,9 +72,9 @@
         <div class="row" style="display: flex; justify-content:center;">
             <div class="form-group text-center col-md-4">
                 <button type="submit" id="upt" class="btn btn-primary btn-lg w-100">
-              <i class="bi bi-save "></i>
-           Definir Bonos
-           </button>
+                    <i class="bi bi-save "></i>
+                    Definir Bonos
+                </button>
 
 
             </div>
