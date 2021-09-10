@@ -7,42 +7,35 @@
 
 <div class="container mt-2">
     <div class="row" style="justify-content: space-between;">
-        <div class="col-md-6 mb-4">
-            <button [routerLink]="['/bono/-Mify_yAsRqjuuwWB5pE']" class="btn btn-primary col-lg-12">
+        <div class="col-md-4 mb-4">
+            <button [routerLink]="['/bono/add']" class="btn btn-primary col-lg-12">
                 <i class="bi bi-cloud-arrow-up-fill me-1"></i> Definir bonos
             </button>
         </div>
     </div>
-    <div class="row">
+    <div class="row table-responsive">
         <table class="table">
             <thead class="table">
+                <th>Departamento</th>
                 <th>Desempeño y productividad</th>
                 <th>Bono Team</th>
-                <th>Total</th>
-                <th>Bono jefe MKT & Operaciones (si llegan a la meta) </th>
-                <th>Total</th>
+                <th>Opciones</th>
             </thead>
             <tbody>
                 <tr *ngFor="let bono of bonos; let i = index">
-                    <td>86% - 90%</td>
-                    <td>${{bono.BTeam}}</td>
-                    <td>${{bono.BTeam * 14}}</td>
-                    <td>${{bono.BMO}}</td>
-                    <td>${{(bono.BTeam*14)+ bono.BMO}}</td>
-                </tr>
-                <tr *ngFor="let bono of bonos; let i = index">
-                    <td>91% - 95%</td>
-                    <td>${{bono.BTeam * 2}}</td>
-                    <td>${{(bono.BTeam * 2) * 14}}</td>
-                    <td>${{bono.BMO * 2}}</td>
-                    <td>${{((bono.BTeam * 2)*14)+ (bono.BMO*2)}}</td>
-                </tr>
-                <tr *ngFor="let bono of bonos; let i = index">
-                    <td>96% - 100%</td>
-                    <td>${{bono.BTeam * 4}}</td>
-                    <td>${{(bono.BTeam * 4) * 14}}</td>
-                    <td>${{bono.BMO * 3}}</td>
-                    <td>${{((bono.BTeam * 4)*14)+ (bono.BMO*3)}}</td>
+                    <td>{{bono.depto}}</td>
+                    <td>{{bono.porcentaje}}%</td>
+                    <td>{{bono.cantidad | currency: 'MXN'}}</td>
+                    <td>
+                        <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/bono', bono.id ]">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+    
+                        <button class="btn btn-danger ms-3 btn-sm"
+                            (click)="eliminarBono(bono)">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </table>
