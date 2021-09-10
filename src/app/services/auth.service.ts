@@ -1020,4 +1020,8 @@ export class AuthService {
     return bonos;
   }
 
+  deleteBono(id: string) {
+    return this.http.delete(`${this.url}/bono/${id}.json`);
+  }
+
 }/**Cierra el export data**/
