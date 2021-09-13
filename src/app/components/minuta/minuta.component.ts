@@ -37,6 +37,7 @@ export class MinutaComponent implements OnInit {
 
   booleanEditar: boolean = false;
   booleanVer: boolean = false;
+  booleanAgregar: boolean = false;
 
   //Boleano para aprecer una alerta si esta mal el campo asistente
   booleanNAsistente: boolean = true;
@@ -54,18 +55,19 @@ export class MinutaComponent implements OnInit {
     }
 
     if (view == 'view' && this.id) {
-
       this.booleanVer = true;
       this.booleanEditar = false;
-      // console.log(this.route.snapshot.url[1].path);
+      this.booleanAgregar = false;
       this.peticionAuthMinuta(this.id);
     } else if (this.id && view != 'view') {
       this.booleanVer = false;
       this.booleanEditar = true;
+      this.booleanAgregar = false;
       this.minutaModel.id = this.id;
       this.peticionAuthMinuta(this.id);
     } else {
       this.booleanVer = false;
+      this.booleanAgregar = true;
       this.booleanEditar = false;
       this.auth.obtenerMinutas().subscribe(resp => {
         this.numReunionDefecto = 1000 + resp.length + 1;
@@ -253,7 +255,6 @@ console.log(minuta);
     }
     
     console.log(this.minutaForm.value);
-    return;
     
     Swal.fire({
       icon: 'question',
@@ -460,7 +461,7 @@ console.log(minuta);
     pdf.header(new Txt(`mercadology`).alignment('center').bold().fontSize(35).margin([0, 15, 0, 0]).color('#FCC42C').end);
     pdf.footer(new Txt(`mercadology`).alignment('center').bold().fontSize(35).margin([0, 15, 0, 0]).color('#FCC42C').end);
 
-    pdf.add(new Txt(`Cuenta: ${data.cuenta}`).bold().alignment('left').end)
+    pdf.add(new Txt(`Cuenta: ${data.cuenta}`).bold().alignment('left').fontSize(20).margin([0,0,25,0]).end)
 
     pdf.add(new Table([
       [
