@@ -1,0 +1,22 @@
+<app-header></app-header>
+
+
+<div class="container">
+    <h1 class="text-white mt-3">Productividad {{this.nombreUsuario}}</h1>
+</div>
+
+<div *ngIf="!this.hayDatos" class="container">
+    <h2 class="text-center text-white">No hay datos de productividad</h2>
+</div>
+
+<div class="container d-flex justify-content-center">
+    <div class="col-md-10 mt-4">
+        <div *ngIf="this.cargando==false" style="display: block" class="bg-white">
+            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+        </canvas>
+        </div>
+    </div>
+</div>
+
+
+<app-footer></app-footer>
