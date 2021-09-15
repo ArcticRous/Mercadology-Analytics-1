@@ -22,6 +22,13 @@ export class ProductividadesComponent implements OnInit {
   durationInSeconds = 2;
   rol: string;
 
+  dateProductividad = new Date()
+
+  mesProductividad: any = this.dateProductividad.getMonth()-1;
+  anioProductividad: any = '2021'
+
+  meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
   displayedColumns: string[] = ['usuario', 'productividad', 'fecha', 'id'];
   dataSource: MatTableDataSource<ProductividadModel>;
 
@@ -41,7 +48,7 @@ export class ProductividadesComponent implements OnInit {
     // }
   };
 
-  public barChartLabels: Label[] = ['Enero', 'Febrero', 'Marzo', 'Abril'];
+  public barChartLabels: Label[] = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sept', 'Oct', 'Nov', 'Dic'];
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
 
@@ -51,27 +58,167 @@ export class ProductividadesComponent implements OnInit {
   arrayNombre: string[] = [];
   arrayProductividad: any[] = [];
 
+  ejemplo = {
+    2021: {
+      id: {
+        nombre: 'Erick',
+        mes: {
+          6: {
+            productividad: 90,
+            estatus: 'pendiente'
+          },
+          5: {
+            productividad: 95,
+            estatus: 'pendiente'
+          }
+        }
+      },
+      id2: {
+        nombre: 'Erick2',
+        mes: {
+          enero: {
+            productividad: 80,
+            estatus: 'pendiente'
+          },
+          febrero: {
+            productividad: 96,
+            estatus: 'pendiente'
+          },
+          mayo: {
+            productividad: 93,
+            estatus: 'pendiente'
+          },
+          junio: {
+            productividad: 91,
+            estatus: 'pendiente'
+          },
+          julio: {
+            productividad: 92,
+            estatus: 'pendiente'
+          },
+          agosto: {
+            productividad: 90,
+            estatus: 'pendiente'
+          },
+          septiembre: {
+            productividad: 90,
+            estatus: 'pendiente'
+          },
+          octubre: {
+            productividad: 100,
+            estatus: 'pendiente'
+          },
+          noviembre: {
+            productividad: 100,
+            estatus: 'pendiente'
+          },
+          diciembre: {
+            productividad: 97,
+            estatus: 'pendiente'
+          }
+        }
+      }
+    }
+  }
 
-  constructor(private AuthService: AuthService) { 
+
+  constructor(private AuthService: AuthService) {
+
+    console.log(this.ejemplo);
+    console.log(Object.keys(this.ejemplo[2021].id.mes));
+    console.log(Object.values(this.ejemplo[2021].id.mes));
+    let nuevo=[]
+    let c = 0
+    for (const iterator of Object.values(this.ejemplo[2021].id.mes)) {
+      
+      let hola = Object.keys(this.ejemplo[2021].id.mes)
+      console.log(hola[c]);
+
+      console.log(iterator.productividad);
+      nuevo[Number(hola[c])] = iterator.productividad
+      c++
+    }
+
+    // array.map(({productividad}) => {
+    //   console.log(productividad);
+    // })
+
+    
     this.AuthService.getPro()
       .subscribe(data => {
         console.log(data);
-        this.productividad = data;
+         console.log(this.productividad);
+
+         let productividad = []
+         let obj = {
+           id: '',
+           usuario: '',
+           productividad: '',
+           mes: ''
+         }
+
+         data.map(datos => {
+           console.log(datos);
+           console.log(datos[this.anioProductividad]);
+          obj = {
+            id: datos['id'],
+            usuario: datos[this.anioProductividad].usuario, 
+            productividad: datos[this.anioProductividad].productividad[this.mesProductividad],
+            mes: this.meses[this.mesProductividad]
+          }
+          console.log(this.meses[this.mesProductividad]);
+          
+          productividad.push(obj)
+          console.log(productividad);
+         })
+
+         this.productividad = productividad
+         console.log(this.productividad);
+         
+         
+        // data.map((usuario) => {
+        //   console.log(usuario.mes);
+
+        //   if(Object.keys(meses).includes(usuario.mes)){
+        //     console.log(Object.values(meses));
+        //     console.log(usuario.mes);            
+        //     usuario.mes = meses[usuario.mes][usuario.mes]
+        //     // console.log(mes);
+        //   }
+          
+        //   // if (Object.values(meses).includes(mes)) {
+        //   //   console.log(Object.keys(mes));
+        //   //   keyMes = Object.keys(mes)[0]
+        //   // }
+        // });
+        // let arr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let arr = []
+        arr[4] = 90
+        arr[2] = 80
+        arr.forEach(element => {
+          console.log(element);
+        });
+        console.log(arr);
+        
 
         data.map((datos, index) => {
-          this.barChartData.push({data: [datos.productividad], label: datos.usuario})
+          // this.barChartData.push({ data: [datos.productividad], label: datos.usuario })
         })
+        this.barChartData.push({data: arr, label: 'Erick'})
+        this.barChartData.push({data: nuevo, label: 'ECM'})
 
         console.log(this.barChartData);
+
+        
+
+      }, error => {
+        console.log(error);
+      }, () => {
 
         this.dataSource = new MatTableDataSource(this.productividad);
         this.paginator._intl.itemsPerPageLabel = "Elementos por página";
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-
-      }, error => {
-        console.log(error);
-      }, () => {
         this.cargando = false
       });
   }
@@ -79,7 +226,7 @@ export class ProductividadesComponent implements OnInit {
   ngOnInit(): void {
 
     // this.randomize()
-    
+
   }
 
   // events
@@ -118,18 +265,22 @@ export class ProductividadesComponent implements OnInit {
   onSelect(event) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+    
+    // console.log(this.meses[filterValue]);
+    // this.dataSource.filter = this.meses[filterValue]
 
     if (this.dataSource.paginator) {
       this.dataSource.paginator.firstPage();
-
     }
 
   }
 
   eliminarPro(productividad: ProductividadModel, i: number) {
+    console.log(productividad);
+    
     Swal.fire({
       title: `¿Esta seguro que desea borrar la productividad?`,
-      text: `Se eliminara la productividad y todos sus datos`,
+      text: `Se eliminara la productividad y todos su historial de datos`,
       icon: 'question',
       showConfirmButton: true,
       showCancelButton: true,
