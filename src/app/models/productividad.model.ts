@@ -1,6 +1,7 @@
 export class ProductividadModel{
     id?:string;
+    anio?:any;
     usuario: string;
-    mes:string;
-    productividad:number;
+    productividad=[];
+    mes?:string
 }
