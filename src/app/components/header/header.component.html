@@ -33,6 +33,7 @@
                         <li><a [routerLink]="['/minutas']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-file-earmark-ruled-fill" style="margin-right: 5px;"></i>Minutas</a></li>
                         <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/calendario']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-calendar-date" style="margin-right: 5px;"></i>Calendario</a></li>
                         <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/MisComun']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-chat-dots" style="margin-right: 5px;"></i>Comunicado</a></li>
+                        <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/productividades']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-file-bar-graph" style="margin-right: 5px;"></i>Productividades</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">
@@ -42,6 +43,7 @@
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         <li><a [routerLink]="['/perfil', this.id]" routerLinkActive="router-link-active" (click)="guardarLocal('propio')" class="dropdown-item" aria-current="page"><i class="bi bi-file-person" style="margin-right: 5px;"></i>Perfil</a></li>
                         <li><a [routerLink]="['/accesos']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-text-indent-left" style="margin-right: 5px;"></i>Accesos</a></li>
+                        <li><a [routerLink]="['/productividad/usuario', this.id]" routerLinkActive="router-link-active" (click)="guardarLocal('propio')" class="dropdown-item" aria-current="page"><i class="bi bi-graph-up" style="margin-right: 5px;"></i>Productividad</a></li>
                     </ul>
                 </li>
 
