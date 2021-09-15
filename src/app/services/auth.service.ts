@@ -928,6 +928,10 @@ export class AuthService {
 
   // FUNCIONES PRODUCTIVIDAD
 
+  agregarProductividad(productividad: ProductividadModel, ruta: string) {
+    return this.http.put(`${this.url}/productividad/${ruta}.json`, productividad)
+  }
+
   addPro(productividad: ProductividadModel) {
     return this.http.post(`${this.url}/productividad.json`, productividad)
       .pipe(
@@ -964,7 +968,7 @@ export class AuthService {
     Object.keys(proObj).forEach(key => {
       const productividad: ProductividadModel = proObj[key];
       productividad.id = key;
-
+      
       productividades.push(productividad);
     });
 
