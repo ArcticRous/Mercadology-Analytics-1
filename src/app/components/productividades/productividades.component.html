@@ -16,7 +16,7 @@
     <div class="row mb-5">
         <div class="col-md-6">
             <form action="" #f="ngForm">
-                <label class="text-white mb-2" for="categoria">Filtrar por mes</label>
+                <!-- <label class="text-white mb-2" for="categoria">Filtrar por mes</label> -->
                 <div class="col d-flex justify-content-between">
                     <!-- <select name="quien" id="quien" class="form-select w-100" required (change)="onSelect($event)">
                         <option value="comunicado" disabled selected hidden>Selecciona un mes</option>
@@ -32,8 +32,23 @@
                         <option value="Octubre">Octubre</option>
                         <option value="Noviembre">Noviembre</option>
                         <option value="Diciembre">Diciembre</option>
+                        
                     </select> -->
-                    <input (change)="onSelect($event)" type="date" class="form-control">
+                    <!-- <select name="" id="" (change)="onSelect($event)">
+                        <option value="0">Enero</option>
+                        <option value="1">Febrero</option>
+                        <option value="2">Marzo</option>
+                        <option value="3">Abril</option>
+                        <option value="4">Mayo</option>
+                        <option value="5">Junio</option>
+                        <option value="6">Julio</option>
+                        <option value="7">Agosto</option>
+                        <option value="8">Septiembre</option>
+                        <option value="9">Octubre</option>
+                        <option value="10">Noviembre</option>
+                        <option value="11">Diciembre</option>
+                    </select> -->
+                    <!-- <input (change)="onSelect($event)" type="date" class="form-control"> -->
                 </div>
             </form>
         </div>
@@ -43,7 +58,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div  class="row">
         <div class="col-md-12">
             <div class="mat-elevation-z8 table-responsive">
                 <table mat-table [dataSource]="dataSource" matSort class="cont-table-mc">
@@ -59,7 +74,8 @@
                     <ng-container matColumnDef="productividad">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header> Productividad </th>
                         <td mat-cell *matCellDef="let element">
-                            <p>{{element.productividad}} %</p>
+                            <p>{{element.productividad}}%</p>
+                            <!-- <p>{{element[this.anioProductividad].productividad[this.mesProductividad]}}%</p> -->
                         </td>
                     </ng-container>
 
@@ -74,9 +90,9 @@
                     <ng-container matColumnDef="id">
                         <th mat-header-cell *matHeaderCellDef mat-sort-header>Opciones</th>
                         <td mat-cell *matCellDef="let element">
-                            <button class="btn btn-success mx-2" [routerLink]="['/productividad', element.id ]">
+                            <!-- <button class="btn btn-success mx-2" [routerLink]="['/productividad', element.id ]">
                                 <i class="bi bi-pencil-square"></i>
-                            </button>
+                            </button> -->
                             <button class="btn btn-danger" (click)="eliminarPro( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
                                 <i class="bi bi-trash-fill"></i>
                             </button>
@@ -97,12 +113,12 @@
             </div>
             <mat-paginator style="color: #242424;" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
         </div>
-        <div class="col-md-12 mt-3">
+        <!-- <div class="col-md-12 mt-3">
             <div *ngIf="this.cargando==false" style="display: block" class="bg-white">
                 <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
             </canvas>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <!-- Tabla -->
