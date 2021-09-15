@@ -32,6 +32,7 @@ import { BonosComponent } from './components/bonos/bonos.component';
 import { CalendarGuard } from './guards/calendario.guard';
 import { ShowcalendarioComponent } from './components/calendario/showcalendario/showcalendario.component';
 import { VistaComunicadoComponent } from './components/vista-comunicado/vista-comunicado.component';
+import { ProductividadUsuarioComponent } from './components/productividad-usuario/productividad-usuario.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -44,12 +45,12 @@ const routes: Routes = [
   {path: 'calendario/:id' , component: CalendarioComponent,canActivate: [AuthGuard, CalendarGuard]},
   {path: 'solicitud' , component: SolicitudesComponent},
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
-  {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'comunicado/view/:id' , component: VistaComunicadoComponent,canActivate: [AuthGuard, ComunicadoGuard]},
+  {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'minuta' , component: MinutaComponent,canActivate: [AuthGuard]},
-  {path: 'minuta/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
   {path: 'minuta/view/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
+  {path: 'minuta/:id' , component: MinutaComponent,canActivate: [AuthGuard]},
   {path: 'minutas' , component: MinutasComponent,canActivate: [AuthGuard]},
   {path: 'peticiones' , component: PeticionesComponent,canActivate: [AuthGuard, PeticionGuard]},
   {path: 'peticion/:id' , component: PeticionComponent,canActivate: [AuthGuard, PeticionGuard]},
@@ -59,6 +60,7 @@ const routes: Routes = [
   {path: 'productividades', component: ProductividadesComponent, canActivate: [AuthGuard]},
   {path: 'productividad', component: ProductividadComponent, canActivate: [AuthGuard]},
   {path: 'productividad/view/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
+  {path: 'productividad/usuario/:id', component: ProductividadUsuarioComponent},
   {path: 'productividad/:id', component: ProductividadComponent, canActivate: [AuthGuard]},
   {path: 'bonos', component: BonosComponent, canActivate: [AuthGuard]},
   {path: 'bono/:id', component: BonoComponent, canActivate: [AuthGuard]},
