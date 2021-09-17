@@ -18,8 +18,10 @@ export class MiscomunicadosComponent implements OnInit, AfterViewInit {
 
   Comunicado: ComunicadoModel[] = [];
   // Comunicado2: ComunicadoModel[] = [{ids:"21" ,nomcli: "erick", domcli:"ero", dirip:"skks", estado:false}]
-  cargando = false;
+  cargando = true;
   durationInSeconds = 2;
+  booleanHayDatos: boolean = true;
+  mostrarTabla: boolean = false;
   
   rol: string;
 
@@ -29,7 +31,6 @@ export class MiscomunicadosComponent implements OnInit, AfterViewInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-
   constructor(private AuthS: AuthService) {
     AuthS.leerToken();
   }
@@ -37,15 +38,31 @@ export class MiscomunicadosComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     sessionStorage.removeItem('local');
     this.rol = sessionStorage.getItem('rol');
-    this.cargando = true;
+    // this.cargando = true;
     this.AuthS.getComun("privado")
       .subscribe(resp => {
-        this.Comunicado = resp;
+        console.log(resp);
+        if(resp.length > 0){
+          this.Comunicado = resp;
+          
+          this.booleanHayDatos = true;
+          this.cargando = false;
+          this.dataSource = new MatTableDataSource(this.Comunicado);
+          this.paginator._intl.itemsPerPageLabel="Elementos por página";
+          this.dataSource.paginator = this.paginator;
+          this.dataSource.sort = this.sort;
+
+        }else{
+          this.cargando = false;
+          this.booleanHayDatos = false;
+        }
+        
+      }, error => {
+        console.log(error);
+        this.booleanHayDatos = false;
         this.cargando = false;
-        this.dataSource = new MatTableDataSource(this.Comunicado);
-        this.paginator._intl.itemsPerPageLabel="Elementos por página";
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
+      }, () => {
+        
       });
 
   }//Termina ngOnInit
