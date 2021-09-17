@@ -23,20 +23,20 @@
         </div> -->
         <div class="row">
             <div class="col-md-3 mb-3">
-                <label for="" class="text-white mb-2">Nombre</label>
+                <label for="" class="text-white mb-2">Nombre Bono</label>
                 <div class="form-group ">
-                    <input #nombre="ngModel" [(ngModel)]="bono.nombre" name="nombreBono" id="nombre" type="text"
-                        class="form-control" required minlength="5">
+                    <!-- <input #nombre="ngModel" [(ngModel)]="bono.nombre" name="nombreBono" id="nombre" type="text" class="form-control" required minlength="5"> -->
                 </div>
-                <span *ngIf="nombre.invalid && nombre.touched" class="text-danger form-text">Se requiere minimo 5
-                    caracteres</span>
+                <select class="form-select form-select-md" id="nombreBono" name="nombreBono" #porcentaje="ngModel" [(ngModel)]="bono.nombre" aria-label=".form-select-md example" required>
+                    <option [value]="item" *ngFor="let item of nombreBono">{{item}}</option>
+                </select>
+                <!-- <span *ngIf="nombre.invalid && nombre.touched" class="text-danger form-text">Se requiere minimo 5
+                    caracteres</span> -->
             </div>
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Porcentaje</label>
                 <div class="input-group ">
-                    <select class="form-select form-select-md" id="porcentajeBono" name="porcentaje"
-                        #porcentaje="ngModel" [(ngModel)]="bono.porcentaje" aria-label=".form-select-md example"
-                        required>
+                    <select class="form-select form-select-md" id="porcentajeBono" name="porcentaje" #porcentaje="ngModel" [(ngModel)]="bono.porcentaje" aria-label=".form-select-md example" required>
                         <option [value]="item" *ngFor="let item of porcentajes">{{item}}</option>
                     </select>
                 </div>
@@ -47,8 +47,7 @@
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Departamento</label>
                 <div class="form-group ">
-                    <select class="form-select form-select-md " id="deptoBono" name="depto" #depto="ngModel"
-                        [(ngModel)]="bono.depto" aria-label=".form-select-md example" required>
+                    <select class="form-select form-select-md " id="deptoBono" name="depto" #depto="ngModel" [(ngModel)]="bono.depto" aria-label=".form-select-md example" required>
                         <option [value]="item" *ngFor="let item of departamentos">{{item}}</option>
                     </select>
                 </div>
@@ -58,8 +57,7 @@
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Cantidad $</label>
                 <div class="input-group ">
-                    <input #cantidad="ngModel" [(ngModel)]="bono.cantidad" name="cantidad" id="cantidadBono"
-                        type="number" class="form-control" minlength="3" required>
+                    <input #cantidad="ngModel" [(ngModel)]="bono.cantidad" name="cantidad" id="cantidadBono" type="number" class="form-control" minlength="3" required>
                     <span class="input-group-text" id="inputGroup-sizing-sm">MXN</span>
                 </div>
                 <span *ngIf="cantidad.invalid && cantidad.touched" class="text-danger form-text">Se requiere minimo

@@ -29,6 +29,8 @@ import { ProductividadesComponent } from './components/productividades/productiv
 import { ProductividadComponent } from './components/productividad/productividad.component';
 import { BonoComponent } from './components/bono/bono.component';
 import { BonosComponent } from './components/bonos/bonos.component';
+import { StatusBonoComponent } from './components/status-bono/status-bono.component';
+import { StatusBonosComponent } from './components/status-bonos/status-bonos.component';
 import { CalendarGuard } from './guards/calendario.guard';
 import { ShowcalendarioComponent } from './components/calendario/showcalendario/showcalendario.component';
 import { VistaComunicadoComponent } from './components/vista-comunicado/vista-comunicado.component';
@@ -65,6 +67,9 @@ const routes: Routes = [
   {path: 'bonos', component: BonosComponent, canActivate: [AuthGuard]},
   {path: 'bono/:id', component: BonoComponent, canActivate: [AuthGuard]},
   {path: 'bono', component: BonoComponent, canActivate: [AuthGuard]},
+  {path: 'status-bonos', component: StatusBonosComponent, canActivate: [AuthGuard]},
+  {path: 'status-bono/:id', component: StatusBonoComponent, canActivate: [AuthGuard]},
+  {path: 'status-bono', component: StatusBonoComponent, canActivate: [AuthGuard]},
   {path: 'usuarios', component: UsuariosComponent, canActivate: [AuthGuard, RolGuard]}, 
   {path: 'registro', component: RegistroComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'modificar/:id', component: ModificarComponent, canActivate: [AuthGuard, RolGuard]},
