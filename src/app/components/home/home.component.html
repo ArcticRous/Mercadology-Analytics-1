@@ -8,25 +8,22 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
                 <td mat-cell *matCellDef="let element" id="comuniicado">
                     <h5 class="tit">{{element.titulo}}</h5>
-                    <p>Asunto: {{element.quien}}</p>
+                    <p class="asunt"><strong>Asunto:</strong> {{element.quien}}</p>
 
-                    <p style="width: 100; position: relative; z-index: 1000;">{{element.descripcion}} </p>
+                    <p style="width: 100; position: relative; z-index: 1000;" class="descp">{{element.descripcion}} </p>
                     <div class="col-md-12 mb-3">
                         <div class="overflow-auto d-flex d-inline-flex align-items-center w-100">
-                            <picture *ngFor="let img of element.imagenes; let i=i ndex "
-                                class="col-2 me-2 mt-2 position-relative ">
+                            <picture *ngFor="let img of element.imagenes; let i=i ndex " class="col-2 me-2 mt-2 position-relative ">
 
-                                <img [src]=img class="w-100 imagenes rounded border border-4 border-white "
-                                    alt={{element.titulo}} style="max-height: 150px ">
+                                <img [src]=img class="w-100 imagenes rounded border border-4 border-white " alt={{element.titulo}} style="max-height: 150px ">
 
                             </picture>
                         </div>
                     </div>
-                    <p class="comun" *ngIf="element.archivo"><i class="bi bi-file-earmark-check-fill"></i><a
-                            style="margin-left: 1%;" target="_blank" href="{{element.archivo}}">Ver archivo</a></p>
+                    <p class="comun" *ngIf="element.archivo"><i class="bi bi-file-earmark-check-fill"></i><a class="arch" style="margin-left: 1%;" target="_blank" href="{{element.archivo}}">Ver archivo</a></p>
 
 
-                    <p class="date">Fecha de publicación: {{element.fecha}}</p>
+                    <p class="date"><strong>Fecha de publicación:</strong> {{element.fecha}}</p>
 
                     <button id="btncomun" class="btn btn-sm " [routerLink]="[ '/comunicado/view', element.ids ] ">
                         Ver info...
@@ -40,8 +37,7 @@
                 <td class="mat-cell " colspan="4 ">No hay datos de acuerdo a la búsqueda "{{input.value}} "</td>
             </tr>
         </table>
-        <mat-paginator style="font-size: 0px; color: #242424; background: transparent; color: #FCC42C ; "
-            [pageSizeOptions]="[1] " showFirstLastButtons></mat-paginator>
+        <mat-paginator style="font-size: 0px; color: #242424; background: transparent; color: #FCC42C ; " [pageSizeOptions]="[1] " showFirstLastButtons></mat-paginator>
 
     </div>
 

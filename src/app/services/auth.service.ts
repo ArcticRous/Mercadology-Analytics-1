@@ -11,6 +11,7 @@ import { ComunicadoModel } from '../models/comunicado.model';
 import { CalendarioModel } from '../models/calendario.model';
 import { ProductividadModel } from '../models/productividad.model';
 import { BonoModel } from '../models/bono.model';
+import { StatusBonoModel } from '../models/statusBono.model';
 
 @Injectable({
   providedIn: 'root'
@@ -1027,6 +1028,55 @@ export class AuthService {
 
   deleteBono(id: string) {
     return this.http.delete(`${this.url}/bono/${id}.json`);
+  }
+
+  // STATUS BONOS
+
+  addStatusBono(bono: StatusBonoModel) {
+    return this.http.post(`${this.url}/statusbono.json`, bono)
+      .pipe(
+        map((resp: any) => {
+          bono.id = resp.name;
+          return bono;
+        })
+      )
+  }
+
+  updateStatusBono(bono: StatusBonoModel) {
+    const bonoTemp = {
+      ...bono
+    };
+    delete bonoTemp.id;
+    return this.http.put(`${this.url}/statusbono/${bono.id}.json`, bonoTemp);
+  }
+  getStatusBonoID(id: string) {
+    return this.http.get(`${this.url}/statusbono/${id}.json`);
+  }
+  getStatusBono() {
+    return this.http.get(`${this.url}/statusbono.json`)
+      .pipe(
+        map(resp => this.arrStatusBono(resp))
+      );
+  }
+
+  private arrStatusBono(bonoObj: object) {
+    const bonos: StatusBonoModel[] = [];
+
+    console.log(bonoObj);
+    if (bonoObj === null) { return []; }
+
+    Object.keys(bonoObj).forEach(key => {
+      const bono: StatusBonoModel = bonoObj[key];
+      bono.id = key;
+
+      bonos.push(bono);
+    });
+
+    return bonos;
+  }
+
+  deleteStatusBono(id: string) {
+    return this.http.delete(`${this.url}/statusbono/${id}.json`);
   }
 
 }/**Cierra el export data**/

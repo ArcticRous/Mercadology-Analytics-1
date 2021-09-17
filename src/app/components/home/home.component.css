@@ -1,3 +1,7 @@
+#headerta {
+    margin: auto;
+}
+
 .right {
     width: 60%;
     margin-left: 45%;
@@ -18,20 +22,40 @@ tr.mat-header-row {
     margin-bottom: 20px !important;
     background: #FCC42C !important;
     float: right;
+    padding: 5px 40px;
+    font-weight: 700;
+    font-size: 20px;
 }
 
 .comun {
     font-size: 12px;
-    text-decoration: underline;
     line-height: 0em;
 }
 
 .tit {
     padding-top: 10px;
+    font-size: 30px;
+}
+
+.asunt {
+    font-size: 18px;
+}
+
+.descp {
+    font-size: 15px;
+}
+
+.arch {
+    color: red;
+}
+
+.arch:link {
+    text-decoration: none!important;
 }
 
 .date {
     float: right;
+    border-bottom: .5px solid #000;
 }
 
 .mat-paginator-range-label {

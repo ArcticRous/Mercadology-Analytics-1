@@ -13,6 +13,9 @@
                 <li class="nav-item">
                     <a [routerLink]="['/eventos']" routerLinkActive="router-link-active" class="nav-link" aria-current="page"><i class="bi bi-calendar-date" style="margin-right: 5px;"></i>Eventos</a>
                 </li>
+                <li class="nav-item">
+                    <a [routerLink]="['/status-bonos']" routerLinkActive="router-link-active" class="nav-link" aria-current="page"><i class="bi bi-cash" style="margin-right: 5px;"></i>Bonos</a>
+                </li>
                 <li class="nav-item" *ngIf="(this.rol === '234567' && this.depto === 'Diseño' && this.puesto == 'Manager') || this.rol === '12345'">
                     <a [routerLink]="['/peticiones']" routerLinkActive="router-link-active" class="nav-link" aria-current="page"><i class="bi bi-file-earmark-text" style="margin-right: 5px;"></i>Peticiones</a>
                 </li>
@@ -34,6 +37,7 @@
                         <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/calendario']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-calendar-date" style="margin-right: 5px;"></i>Calendario</a></li>
                         <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/MisComun']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-chat-dots" style="margin-right: 5px;"></i>Comunicado</a></li>
                         <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/productividades']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-file-bar-graph" style="margin-right: 5px;"></i>Productividades</a></li>
+                        <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/bonos']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-cash" style="margin-right: 5px;"></i>Bonos</a></li>
                     </ul>
                 </li>
                 <li class="nav-item dropdown">

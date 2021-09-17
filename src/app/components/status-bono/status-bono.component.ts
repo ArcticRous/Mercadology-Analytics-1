@@ -1,30 +1,32 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { RouterLinkActive, ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { NgForm } from '@angular/forms';
-import { BonoModel } from '../../models/bono.model';
 import Swal from 'sweetalert2';
 import { Observable } from 'rxjs';
-import { RouterLinkActive, ActivatedRoute } from '@angular/router';
+import { StatusBonoModel } from '../../models/statusBono.model';
 
 @Component({
-  selector: 'app-bono',
-  templateUrl: './bono.component.html',
-  styleUrls: ['./bono.component.css']
+  selector: 'app-status-bono',
+  templateUrl: './status-bono.component.html',
+  styleUrls: ['./status-bono.component.css']
 })
-export class BonoComponent implements OnInit {
-  bono: BonoModel = new BonoModel();
+export class StatusBonoComponent implements OnInit {
+  bono: StatusBonoModel = new StatusBonoModel();
   cargando: boolean = true;
-  porcentajes: string[] = ["86-90", "91-95", "96-100"];
-  departamentos: string[] = ["Marketing", "Sistemas", "Diseño", "RRHH", "Operaciones"];
-  nombreBono: string[] = ["Productividad", "Objetivos","Sastifacción"]
+  selectOptions: any;
+  TipoBono: any;
+  meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+
+
   constructor(private AuthService: AuthService,
     private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
     if (id !== 'add') {
-      this.AuthService.getBonoID(id)
-        .subscribe((resp: BonoModel) => {
+      this.AuthService.getStatusBonoID(id)
+        .subscribe((resp: StatusBonoModel) => {
           this.bono = resp;
           console.log(this.bono);
 
@@ -36,8 +38,22 @@ export class BonoComponent implements OnInit {
         })
     }
 
-    
+    this.AuthService.getUsuarios().subscribe(next => {
+      this.selectOptions = next
+    }, error => {
+      console.log(error);
+    })
+
+
+    this.AuthService.getBono().subscribe(resp => {
+      this.TipoBono = resp
+    }, error => {
+      console.log(error);
+    })
+
+
   }
+
 
   guardar(form: NgForm) {
     console.log(form);
@@ -54,9 +70,9 @@ export class BonoComponent implements OnInit {
     let peticion: Observable<any>;
 
     if (this.bono.id) {
-      peticion = this.AuthService.updateBono(this.bono);
+      peticion = this.AuthService.updateStatusBono(this.bono);
     } else {
-      peticion = this.AuthService.addBono(this.bono);
+      peticion = this.AuthService.addStatusBono(this.bono);
     }
 
     peticion.subscribe(resp => {
@@ -67,4 +83,7 @@ export class BonoComponent implements OnInit {
       });
     })
   }
+
+
+
 }

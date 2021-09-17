@@ -1,0 +1,70 @@
+<app-header>
+</app-header>
+<div class="container encabezado">
+    <div class="row mt-4 mb-5">
+        <div class="col-md-8">
+            <h1 class="col-12 text-white col-10 ">Asignando Bono</h1>
+        </div>
+        <div class="col-md-4">
+            <button class="btn btn-danger col-lg-12" routerLink="/bonos">
+                <i class="bi bi-arrow-left-circle-fill"></i>
+                Regresar
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-2">
+
+    <form (ngSubmit)="guardar( f )" #f="ngForm" class="formulario text-white" novalidate="">
+        <!-- <div style="display: none;" class="form-group">
+            <label>ID</label>
+            <input style="width: 10% !important;" type="text" class="form-control" placeholder="ID" [(ngModel)]="bono.id" name="id" disabled="disabled">
+            <small class="form-text text-muted">Este campo es autogenerado</small>
+        </div> -->
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label for="nombreBono" class="mb-2">Asignar a:</label>
+                <select [(ngModel)]="bono.nombre" name="nombreBono" id="nombreBono" class="form-select">
+                    <option [value]="item.nombre" *ngFor="let item of this.selectOptions">{{item.nombre}} {{item.apellido}}</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="tipoBono" class="mb-2">Bono:</label>
+                <select [(ngModel)]="bono.bono" name="tipoBono" id="tipoBono" class="form-select">
+                    <option [value]="item.nombre" *ngFor="let item of this.TipoBono">{{item.nombre}}</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="mesBono" class="mb-2">Mes:</label>
+                <select [(ngModel)]="bono.mes" name="mesBono" id="mesBono" class="form-select">
+                    <option [value]="item" *ngFor="let item of this.meses">{{item}}</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="entregarBono" class="mb-2">Entregado:</label>
+                <select [(ngModel)]="bono.entregado" name="entregarBono" id="entregarBono" class="form-select">
+                    <option value="Si">Entregado</option>
+                    <option value="No">No entregado</option>
+                </select>
+            </div>
+        </div>
+
+
+        <hr>
+        <div class="row" style="display: flex; justify-content:center;">
+            <div class="form-group text-center col-md-4">
+                <button type="submit" id="upt" class="btn btn-primary btn-lg w-100">
+                    <i class="bi bi-save "></i>
+                    Definir Bonos
+                </button>
+
+
+            </div>
+        </div>
+    </form>
+</div>
+
+
+
+<app-footer></app-footer>

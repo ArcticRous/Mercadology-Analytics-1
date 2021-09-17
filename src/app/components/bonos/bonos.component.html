@@ -1,7 +1,7 @@
 <app-header></app-header>
 <div class="container encabezado">
     <div class="row mt-4">
-        <h1 class="col-12 text-white ">Bonos del personal</h1>
+        <h1 class="col-12 text-white ">Bonos</h1>
     </div>
 </div>
 
@@ -9,30 +9,74 @@
     <div class="row" style="justify-content: space-between;">
         <div class="col-md-4 mb-4">
             <button [routerLink]="['/bono/add']" class="btn btn-primary col-lg-12">
-                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Definir bonos
+                <i class="bi bi-cloud-arrow-up-fill me-1"></i> Crear bono
+            </button>
+        </div>
+        <div class="col-md-4 mb-4">
+            <button [routerLink]="['/status-bono/add']" class="btn btn-danger col-lg-12">
+                <i class="bi bi-pencil-fill"></i> Definir Bono
             </button>
         </div>
     </div>
     <div class="row table-responsive">
+        <div class="row mt-4">
+            <h2 class="col-12 text-white ">Tipos de bonos</h2>
+        </div>
         <table class="table mb-0">
             <thead class="table">
+                <th>Nombre Bono</th>
                 <th>Departamento</th>
                 <th>Desempeño y productividad</th>
-                <th>Bono Team</th>
+                <th>Cantidad</th>
                 <th>Opciones</th>
             </thead>
             <tbody>
                 <tr *ngFor="let bono of bonos; let i = index">
+                    <td>{{bono.nombre}}</td>
                     <td>{{bono.depto}}</td>
-                    <td>{{bono.porcentaje}}%</td>
-                    <td>{{bono.cantidad | currency: 'MXN'}}</td>
-                    <td class="d-flex justify-content-center">
+                    <td>{{bono.porcentaje}} %</td>
+                    <td>${{bono.cantidad}} MXN</td>
+                    <td class="">
                         <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/bono', bono.id ]">
                             <i class="bi bi-pencil-square"></i>
                         </button>
-    
-                        <button class="btn btn-danger ms-3 btn-sm"
-                            (click)="eliminarBono(bono)">
+
+                        <button class="btn btn-danger ms-3 btn-sm" (click)="eliminarBono(bono)">
+                            <i class="bi bi-trash-fill"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="row table-responsive mt-4">
+        <div class="row">
+            <h2 class="col-12 text-white ">Bonos asignados</h2>
+        </div>
+        <table class="table mb-0">
+            <thead class="table">
+                <th>Nombre</th>
+                <th>Bono</th>
+                <th>Mes</th>
+                <th>Estatus</th>
+                <th>Opciones</th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let bono of bonoStatus; let i = index">
+                    <td>{{bono.nombre}}</td>
+                    <td>{{bono.bono}}</td>
+                    <td>{{bono.mes}}</td>
+                    <td>
+                        <button *ngIf="bono.entregado === 'Si'" class="btn btn-success">Entregado</button>
+                        <button *ngIf="bono.entregado === 'No'" class="btn btn-danger">No Entregado</button>
+                    </td>
+                    <td class="">
+                        <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/status-bono', bono.id ]">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+
+                        <button class="btn btn-danger ms-3 btn-sm" (click)="eliminarStatusBono(bono, bono.id)">
                             <i class="bi bi-trash-fill"></i>
                         </button>
                     </td>

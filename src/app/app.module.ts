@@ -58,6 +58,8 @@ import { ProductividadesComponent } from './components/productividades/productiv
 import { BonosComponent } from './components/bonos/bonos.component';
 import { BonoComponent } from './components/bono/bono.component';
 import { ProductividadUsuarioComponent } from './components/productividad-usuario/productividad-usuario.component';
+import { StatusBonoComponent } from './components/status-bono/status-bono.component';
+import { StatusBonosComponent } from './components/status-bonos/status-bonos.component';
 
 FullCalendarModule.registerPlugins([
   dayGridPlugin,
@@ -98,7 +100,9 @@ FullCalendarModule.registerPlugins([
     BonoComponent,
     VistaComunicadoComponent,
     ShowcalendarioComponent,
-    ProductividadUsuarioComponent
+    ProductividadUsuarioComponent,
+    StatusBonoComponent,
+    StatusBonosComponent
   ],
   imports: [
     MatTabsModule,

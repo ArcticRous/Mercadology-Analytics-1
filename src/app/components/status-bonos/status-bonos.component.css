@@ -1,0 +1,33 @@
+table {
+    width: 100%;
+    border: 1px solid #fff;
+}
+
+.btn {
+    cursor: auto;
+}
+
+th {
+    background: #242424;
+    color: #fff;
+    font-size: 18px;
+}
+
+td {
+    border-bottom: 1px solid #242424;
+    color: #000;
+}
+
+thead th {
+    padding: 20px;
+}
+
+tbody {
+    background: #fff;
+}
+
+.mg-t {
+    width: 98%;
+    margin: auto;
+    border: 1px solid #fff;
+}
