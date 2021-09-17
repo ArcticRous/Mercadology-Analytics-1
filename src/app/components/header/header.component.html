@@ -19,7 +19,7 @@
                 <li class="nav-item" *ngIf="(this.rol === '234567' && this.depto === 'Diseño' && this.puesto == 'Manager') || this.rol === '12345'">
                     <a [routerLink]="['/peticiones']" routerLinkActive="router-link-active" class="nav-link" aria-current="page"><i class="bi bi-file-earmark-text" style="margin-right: 5px;"></i>Peticiones</a>
                 </li>
-                <li class="nav-item">
+                <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'" class="nav-item">
                     <!-- <a routerLinkActive="router-link-active" class="nav-link" href="https://gestion.mercadology.mx/MercadologyAnalytics.html" aria-current="page">SEO</a> -->
                     <a routerLinkActive="router-link-active" class="nav-link" href="/MercadologyAnalytics.html" aria-current="page"><i class="bi bi-bar-chart-line" style="margin-right: 5px;"></i>SEO</a>
                 </li>
@@ -32,7 +32,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
                         <li *ngIf="this.rol === '12345'"><a [routerLink]="['/usuarios']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-people-fill" style="margin-right: 5px;"></i>Usuarios</a></li>
-                        <li><a [routerLink]="['/cuentas']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-person-lines-fill" style="margin-right: 5px;"></i>Cuentas</a></li>
+                        <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/cuentas']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-person-lines-fill" style="margin-right: 5px;"></i>Cuentas</a></li>
                         <li><a [routerLink]="['/minutas']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-file-earmark-ruled-fill" style="margin-right: 5px;"></i>Minutas</a></li>
                         <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/calendario']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-calendar-date" style="margin-right: 5px;"></i>Calendario</a></li>
                         <li *ngIf="this.rol === '12345' || this.puesto == 'Manager' || this.puesto == 'Director'"><a [routerLink]="['/MisComun']" routerLinkActive="router-link-active" class="dropdown-item" aria-current="page"><i class="bi bi-chat-dots" style="margin-right: 5px;"></i>Comunicado</a></li>
