@@ -828,10 +828,10 @@ export class AuthService {
     return solicitudes;
   }
 
-  saveCalendario(calendario: CalendarioModel) {
+  saveCalendario(calendario: CalendarioModel, token: string) {
     console.log(calendario);
 
-    return this.http.post(`${this.url}/calendario.json`, calendario)
+    return this.http.post(`${this.url}/calendario.json` + this.auth + token, calendario)
       .pipe(
         map((resp: any) => {
           console.log(resp);
@@ -851,14 +851,15 @@ export class AuthService {
     return this.http.get(`${this.urlDatos}/calendario/${id}.json`)
 
   }
-  DeleteCalen(id: string) {
-    return this.http.delete(`${this.url}/calendario/${id}.json`);
+  DeleteCalen(id: string, token: string) {
+    return this.http.delete(`${this.url}/calendario/${id}.json` + this.auth + token);
   }
-  UpdatCalendario(calendario: CalendarioModel) {
+  UpdatCalendario(calendario: CalendarioModel, token: string) {
     const CalendarioTemp = {
       ...calendario
     };
-    return this.http.put(`${this.url}/calendario/${calendario.id}.json`, CalendarioTemp);
+    delete CalendarioTemp.id
+    return this.http.put(`${this.url}/calendario/${calendario.id}.json` + this.auth + token, CalendarioTemp);
   }
 
   private crearArregloCalendario(calendarioObj: Object) {

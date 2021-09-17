@@ -13,12 +13,24 @@
                 <i class="bi bi-cloud-arrow-up-fill me-1"></i> Agregar
             </button>
         </div>
-        <div class=" buscador mb-4 text-white col-lg-6">
+
+        <div *ngIf="this.cargando" class="text-center">
+            <p class="text-white fs-4">Cargando...</p>
+            <div class="spinner-border text-warning" role="status">
+                <span class="visually-hidden">Cargando...</span>
+              </div>
+        </div>
+
+        <div *ngIf="this.booleanHayDatos" class=" buscador mb-4 text-white col-lg-6">
             <input class="form-control " matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
         </div>
     </div>
 
-    <div class="mat-elevation-z8 table-responsive">
+    <div *ngIf="!this.booleanHayDatos" class="row">
+        <h3 class="text-center text-white">No hay datos</h3>
+    </div>
+    
+    <div *ngIf="this.booleanHayDatos" class="mat-elevation-z8 table-responsive">
         <table mat-table [dataSource]="dataSource" matSort class="cont-table-mc">
 
             <!-- Position Column -->
@@ -92,7 +104,7 @@
         </table>
         <!-- showFirstLastButtons -->
     </div>
-    <mat-paginator [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
+    <mat-paginator *ngIf="this.booleanHayDatos" [pageSizeOptions]="[10, 25, 50, 100]" showFirstLastButtons></mat-paginator>
 </div>
 
 <app-footer></app-footer>

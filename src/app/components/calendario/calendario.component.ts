@@ -71,7 +71,7 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
       title: new FormControl(null, [Validators.required]),
       start: new FormControl(null, [Validators.required])
     })
-   
+
   }
 
   ngOnInit(): void {
@@ -82,6 +82,8 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
     forwardRef(() => Calendar);
     this.AuthS.getCalendario()
       .subscribe(resp => {
+        console.log(resp);
+
         this.calendario = resp
         this.cargando = false;
         this.dataSource = new MatTableDataSource(this.calendario);
@@ -136,42 +138,42 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
       // Initialize Params Object
       this.calendarios.title = this.addEventForm.value.title;
       this.calendarios.start = datte;
-
+      const token = sessionStorage.getItem('token')
 
       // Begin assig
 
-      this.AuthS.saveCalendario(this.calendarios).subscribe(resp => {
-        Swal.fire(
-          'Guardado',
-          'Fecha guardada correctamente',
-          'success'
-        )
-        console.log("pasa hasta aqui");
+      this.AuthS.saveCalendario(this.calendarios, token).subscribe(resp => {
+        // Swal.fire(
+        //   'Guardado',
+        //   'Fecha guardada correctamente',
+        //   'success'
+        // )
+        // console.log("pasa hasta aqui");
 
 
         this.router.navigateByUrl('/calendario');
         $("#myModal").modal("hide");
 
       }, (error) => {
-        Swal.fire({
-          title: 'No se pudo Guardar el',
-          text: `Mensaje para mercadology`,
-          icon: 'error'
-        })
+        // Swal.fire({
+        //   title: 'No se pudo Guardar el',
+        //   text: `Mensaje para mercadology`,
+        //   icon: 'error'
+        // })
         console.log(error);
+        this.guardarPorTokenVencido(error, this.calendario)
 
       }, () => {
+
+        this.router.navigateByUrl('/calendario');
+        window.location.reload();
+        $("#myModal").modal("hide");
+
         Swal.fire(
           'Guardado',
           'Fecha guardada correctamente',
           'success'
         )
-        console.log("pasa hasta aqui");
-
-
-        this.router.navigateByUrl('/calendario');
-        window.location.reload();
-        $("#myModal").modal("hide");
       })
     }
 
@@ -192,11 +194,11 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
     
     }*/
   clickFunction() {
-    
+
     const id = this.route.snapshot.paramMap.get('id');
     $("#myModalEdit").modal("show");
 
-   
+
 
     console.log(id);
     this.AuthS.getCalendarioid(id)
@@ -214,6 +216,7 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
   }
 
   handleEventClick(clickInfo: EventClickArg) {
+console.log(clickInfo);
 
     Swal.fire({
       title: '¿Está seguro?',
@@ -227,18 +230,22 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
 
       if (resp.value) {
         // this.Cliente.splice(i, 1);
-        this.AuthS.DeleteCalen(clickInfo.event.id).subscribe(resp => {
+        const token = sessionStorage.getItem('token')
+        this.AuthS.DeleteCalen(clickInfo.event.id, token).subscribe(resp => {
+          clickInfo.event.remove();
+          console.log(resp);
+          this.cargarCalendario()
+
           Swal.fire({
             title: 'Eliminado',
             text: 'Se eliminaron correctamente los datos de: ' + clickInfo.event.title,
             icon: 'success',
           });
-          clickInfo.event.remove();
-          console.log(resp);
-          this.router.navigateByUrl('/calendario');
-          window.location.reload();
+
         }, (err) => {
           console.log(err);
+          this.borrarPorTokenVencido(err, clickInfo.event.id)
+          
         }); //LO COMENTO EN
 
       }
@@ -298,17 +305,19 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
 
       if (resp.value) {
         // this.Cliente.splice(i, 1);
-        this.AuthS.DeleteCalen(calendario.id).subscribe(resp => {
+        const token = sessionStorage.getItem('token')
+        this.AuthS.DeleteCalen(calendario.id, token).subscribe(resp => {
+
+          this.cargarCalendario()
           Swal.fire({
             title: 'Eliminado',
             text: 'Se eliminaron correctamente los datos de: ' + calendario.title,
             icon: 'success',
           });
-          console.log(resp);
-          this.router.navigateByUrl('/calendario');
-          window.location.reload();
+
         }, (err) => {
           console.log(err);
+          this.borrarPorTokenVencido(err, calendario.id)
         }); //LO COMENTO EN PRUEBAS
 
         // console.log(this.dataSource.data.indexOf(cliente));
@@ -328,6 +337,7 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
   actualizar(form: NgForm) {
 
     if (form.invalid) { return; }
+console.log(form);
 
     Swal.fire({
       allowOutsideClick: false,
@@ -335,7 +345,12 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
       text: 'Espere por favor...'
     });
     Swal.showLoading();
-    this.AuthS.UpdatCalendario(this.calendarios).subscribe(resp => {
+
+
+    const token = sessionStorage.getItem('token')
+    this.AuthS.UpdatCalendario(this.calendarios, token).subscribe(resp => {
+      console.log(resp);
+      
       Swal.fire(
         'Actualizado!',
         'Datos correctamente actualizados!',
@@ -346,8 +361,127 @@ export class CalendarioComponent implements OnInit, AfterViewInit {
       this.router.navigateByUrl('/calendario');
 
 
+    }, error => {
+      Swal.close()
+      this.editarPorTokenVencido(error, this.calendarios)
+      console.log(error);
+
     })
+    
 
   }
+
+
+  guardarPorTokenVencido(err: any, calendario: any): any {
+    const tokenVencido = err.error.error;
+
+    if (tokenVencido === "Auth token is expired") {
+      const refresh = sessionStorage.getItem('refresh_token');
+      this.AuthS.refrescarToken(refresh).subscribe(resp => {
+
+        sessionStorage.setItem('token', resp['id_token']);
+        sessionStorage.setItem('refresh_token', resp['refresh_token']);
+        const token = resp['id_token']
+
+        this.AuthS.saveCalendario(calendario, token).subscribe(resp => {
+          Swal.fire({
+            title: 'Guardado',
+            text: 'Se registraron correctamente los datos',
+            icon: 'success',
+          });
+
+        }, (err) => {
+          console.log(err);
+          Swal.fire({
+            title: '¡Error!',
+            text: 'Se produjo un error para guardar datos, vuelva a iniciar sesión',
+            icon: 'error',
+          });
+
+        }, () => {
+          this.router.navigateByUrl('/calendario');
+          window.location.reload();
+          $("#myModal").modal("hide");
+        })
+      });
+    } else {//Termina if
+      Swal.fire({
+        title: '¡Error!',
+        text: 'Se produjo un error para guardar datos, vuelva a iniciar sesión',
+        icon: 'error',
+      });
+    }
+
+  }
+
+
+  borrarPorTokenVencido(err: any, calendario: string): any {
+    const tokenVencido = err.error.error;
+
+    if (tokenVencido === "Auth token is expired") {
+      // console.log("Entro a la comparativa de permiso denegado");
+      const refresh = sessionStorage.getItem('refresh_token');
+      this.AuthS.refrescarToken(refresh).subscribe(resp => {
+        sessionStorage.setItem('token', resp['id_token']);
+        sessionStorage.setItem('refresh_token', resp['refresh_token']);
+        const token = resp['id_token']
+        this.AuthS.DeleteCalen(calendario, token).subscribe(resp => {
+          this.cargarCalendario()
+          Swal.fire({
+            title: 'Eliminado',
+            text: 'Se eliminaron correctamente los datos',
+            icon: 'success',
+          });
+        }, error => {
+          console.log("error");
+          
+        }, () => {
+
+        });
+      });//tERMINA REFRESACAR TOKEN
+    }//Termina if
+  }
+
+
+  editarPorTokenVencido(err: any, calendario: any): any {
+    const tokenVencido = err.error.error;
+    console.log(tokenVencido);
+    
+
+    if (tokenVencido === "Auth token is expired") {
+      const refresh = sessionStorage.getItem('refresh_token');
+      this.AuthS.refrescarToken(refresh).subscribe(resp => {
+
+        sessionStorage.setItem('token', resp['id_token']);
+        sessionStorage.setItem('refresh_token', resp['refresh_token']);
+        const token = resp['id_token'];
+
+        this.AuthS.UpdatCalendario(calendario, token).subscribe(resp => {
+          Swal.fire({
+            title: 'Guardado',
+            text: 'Se edtitaron correctamente los datos',
+            icon: 'success',
+          });
+
+        }, (err) => {
+          // console.log(err);
+          Swal.fire({
+            title: '¡Error!',
+            text: 'Se produjo un error para editar los datos, vuelva a iniciar sesión',
+            icon: 'error',
+          });
+
+        })
+      });
+    } else {//Termina if
+      Swal.fire({
+        title: '¡Error!',
+        text: 'Se produjo un error para editar los datos, vuelva a iniciar sesión',
+        icon: 'error',
+      });
+    }
+
+  }
+
 
 }
