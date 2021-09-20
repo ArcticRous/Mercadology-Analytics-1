@@ -1,3 +1,15 @@
 :disabled{
     background-color: white;
 }
+
+@media(max-width:768px){
+    .col-4{
+        width: 50%;
+    }
+}
+
+@media(max-width:412px){
+    .col-4{
+        width: 100%;
+    }
+}
