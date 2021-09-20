@@ -19,6 +19,12 @@ td {
     background-color: #242424;
     font-family: "Poppins";
     color: #fff;
+    padding: 0 10px;
+    margin: 0 5px;
+}
+
+td p {
+    padding: 5px;
 }
 
 th {
