@@ -20,7 +20,7 @@ export class StatusBonosComponent implements OnInit, AfterViewInit {
   rol: string;
   cargando = false;
 
-  displayedColumns: string[] = ['nombre', 'bono', 'mes', 'entregado'];
+  displayedColumns: string[] = ['nombre', 'bono', 'mes', 'entregado','comentario'];
   dataSource: MatTableDataSource<StatusBonoModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
