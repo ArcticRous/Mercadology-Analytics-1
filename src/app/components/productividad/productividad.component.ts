@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductividadModel } from '../../models/productividad.model';
 import Swal from 'sweetalert2';
-import { Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 @Component({
   selector: 'app-productividad',
@@ -21,27 +19,29 @@ export class ProductividadComponent implements OnInit {
 
   date = new Date();
   anio = 0
-  anioArray = []
 
   constructor(private AuthService: AuthService,
     private route: ActivatedRoute, private fb: FormBuilder) {
-    if (this.date.getMonth() == 0) {
-      this.anioArray.push(this.date.getFullYear() - 1);
-      this.anioArray.push(this.date.getFullYear());
-    }
+    // if (this.date.getMonth() == 0) {
+    //   this.anioArray.push(this.date.getFullYear() - 1);
+    //   this.anioArray.push(this.date.getFullYear());
+    // }
     this.anio = this.date.getFullYear();
   }
 
   ngOnInit(): void {
-
-    const id = this.route.snapshot.paramMap.get('id');
+    const queryParams = this.route.queryParams['_value'];
 
     this.AuthService.getUsuarios().subscribe(next => {
       this.selectOptions = next
     }, error => {
       console.log(error);
     }, () => {
+      if (queryParams.id) {
+        this.inicializarEditar(queryParams)
+      } else {
         this.inicializar()
+      }
     })
 
   }
@@ -56,9 +56,19 @@ export class ProductividadComponent implements OnInit {
     this.cargando = false;
   }
 
+  inicializarEditar(data: Object) {
+    this.productividadForm = this.fb.group({
+      usuario: [data['id'], [Validators.required]],
+      productividad: [data['productividad'], [Validators.required, Validators.min(0), Validators.max(100)]],
+      mes: [data['mes'], [Validators.required]],
+      anio: [data['anio'], [Validators.required]]
+    });
+    this.cargando = false;
+  }
+
   guardar() {
 
-    if(this.productividadForm.invalid){return}
+    if (this.productividadForm.invalid) { return }
 
     Swal.fire({
       title: `¿Desea agregar productividad?`,
@@ -69,7 +79,7 @@ export class ProductividadComponent implements OnInit {
       cancelButtonText: 'Cancelar',
       confirmButtonText: 'Aceptar'
     }).then(resp => {
-      if(resp.value){
+      if (resp.value) {
 
         Swal.fire({
           title: 'Espere',
@@ -77,15 +87,14 @@ export class ProductividadComponent implements OnInit {
           allowOutsideClick: false
         });
         Swal.showLoading();
-    
+
         const ruta = `${this.productividadForm.value.usuario}/${this.productividadForm.value.anio}`
         var posicion = parseInt(this.productividadForm.value.mes);
         const found = this.selectOptions.find(element => element.id === this.productividadForm.value.usuario)
         this.productividad.usuario = found.nombre + ' ' + found.apellido
-        
+
         this.AuthService.getProID(ruta).subscribe((next: ProductividadModel) => {
-          console.log(next);
-    
+
           if (next != null) {
             this.productividad = next
             this.productividad.productividad.splice(posicion, 1, this.productividadForm.value.productividad)
@@ -98,19 +107,46 @@ export class ProductividadComponent implements OnInit {
           console.log(error);
         }, () => {
           this.AuthService.agregarProductividad(this.productividad, ruta).subscribe(next => {
-            console.log(next);
             Swal.fire({
               title: `Productividad agregada`,
               text: `Se le agrego a ${this.productividad.usuario} la productividad`,
               icon: 'success'
             })
           }, error => {
-            console.log(error);
+            this.guardarPorTokenVencido(error, this.productividad, ruta)
           })
         })
 
       }
     })
+  }
+
+  guardarPorTokenVencido(err: any, productividad: any, ruta: string): any {
+    const tokenVencido = err.error.error;
+
+    if (tokenVencido === "Auth token is expired") {
+      const refresh = sessionStorage.getItem('refresh_token');
+      this.AuthService.refrescarToken(refresh).subscribe(resp => {
+
+        sessionStorage.setItem('token', resp['id_token']);
+        sessionStorage.setItem('refresh_token', resp['refresh_token']);
+
+        this.AuthService.agregarProductividad(productividad, ruta).subscribe(next => {
+          Swal.fire({
+            title: `Productividad agregada`,
+            text: `Se le agrego a ${productividad.usuario} la productividad`,
+            icon: 'success'
+          })
+        }, (err) => {
+          Swal.fire({
+            title: 'Error',
+            text: 'Hubo un error al intentar agregar la productividad, intentelo nuevamente o inicie sesión de nuevo',
+            icon: 'error',
+          });
+        }
+        );//TERMINA REFRESACAR TOKEN
+      })//Termina if
+    }
   }
 
 }

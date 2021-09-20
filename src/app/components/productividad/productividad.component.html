@@ -18,23 +18,12 @@
 
         <form [formGroup]="productividadForm" (ngSubmit)="guardar()">
 
-            <!-- <div style="display: none;" class="form-group">
-                <label>ID</label>
-                <input style="width: 10% !important;" type="text" class="form-control" placeholder="ID" [(ngModel)]="productividad.id" name="id" disabled="disabled">
-                <small class="form-text text-muted">Este campo es autogenerado</small>
-            </div> -->
-
-            <!-- <p class="text-white">{{productividad.usuario}}</p> -->
             <div class="row">
                 <div class="col-md-3 pe-4 ps-4 mb-3">
                     <div class="form-group row" >
                         <label for="usuario" class="text-white mb-2">Usuario</label>
                         <select *ngIf="productividad.id === undefined" type="text" formControlName="usuario" name="usuario" id="usuario" class="form-select w-100">
                             <option [value]="item.id" *ngFor="let item of this.selectOptions">{{item.nombre}} {{item.apellido}}</option>
-                            <!-- <option value="Jesus">Jesus</option>
-                            <option value="Omar">Omar</option>
-                            <option value="Erick">Erick</option>
-                            <option value="Alan">Alan</option> -->
                         </select>
                         <input *ngIf="productividad.id !== undefined" type="text" name="usuario" id="usuario" class="form-control" formControlName="usuario">
                     </div>
@@ -62,14 +51,19 @@
                             <option value="10">Noviembre</option>
                             <option value="11">Diciembre</option>
                         </select>
-                        <!-- <input [(ngModel)]="productividad.mes" name="mes" id="mes" type="date" class="form-control"> -->
                     </div>
                 </div>
 
                 <div class="col-md-3 pe-4 ps-4 mb-3">
                     <div class="form-group row">
                         <label for="anio" class="text-white mb-2">Año</label>
-                        <input *ngIf="this.mesDefecto != 0" type="text" class="form-control" formControlName="anio" name="anio" id="anio">
+                        <select formControlName="anio" name="anio" id="anio" class="form-select w-100">
+                            <option>2021</option>
+                            <option>2022</option>
+                            <option>2023</option>
+                            <option>2024</option>
+                            <option>2025</option>
+                        </select>
                     </div>
                 </div>
 
