@@ -60,6 +60,7 @@
                 <th>Bono</th>
                 <th>Mes</th>
                 <th>Estatus</th>
+                <th>Comentarios</th>
                 <th>Opciones</th>
             </thead>
             <tbody>
@@ -71,6 +72,7 @@
                         <button *ngIf="bono.entregado === 'Si'" class="btn btn-success">Entregado</button>
                         <button *ngIf="bono.entregado === 'No'" class="btn btn-danger">No Entregado</button>
                     </td>
+                    <td>{{bono.comentario}}</td>
                     <td class="">
                         <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/status-bono', bono.id ]">
                             <i class="bi bi-pencil-square"></i>

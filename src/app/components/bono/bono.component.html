@@ -39,6 +39,8 @@
                     <select class="form-select form-select-md" id="porcentajeBono" name="porcentaje" #porcentaje="ngModel" [(ngModel)]="bono.porcentaje" aria-label=".form-select-md example" required>
                         <option [value]="item" *ngFor="let item of porcentajes">{{item}}</option>
                     </select>
+                    <!-- <input #porcentaje="ngModel" [(ngModel)]="bono.porcentaje" name="porcentajeBono" id="porcentajeBono" type="number" class="form-control" required>
+                    <span class="input-group-text" id="inputGroup-sizing-sm">%</span> -->
                 </div>
                 <span *ngIf="porcentaje.invalid && porcentaje.touched" class="text-danger form-text">Este campo es
                     requerido</span>

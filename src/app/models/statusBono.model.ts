@@ -5,4 +5,5 @@ export class StatusBonoModel{
     cantidad?: number;
     entregado: any;
     mes: string;
+    comentario?: string;
 }
