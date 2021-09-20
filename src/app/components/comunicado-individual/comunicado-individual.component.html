@@ -68,7 +68,7 @@
                 </div>
 
 
-                <div *ngIf="this.agregar == false && this.comunicado.imagenes.length > 0" class="col-md-12 mb-3">
+                <div *ngIf="this.agregar == false && this.comunicado.imagenes" class="col-md-12 mb-3">
                     <div class="overflow-auto d-flex d-inline-flex align-items-center w-100" style="height: 180px;">
                         <picture *ngFor="let img of this.comunicado.imagenes; let i = index"
                             class="col-2 me-2 mt-2 position-relative">

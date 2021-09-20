@@ -274,7 +274,8 @@ export class ComunicadoIndividualComponent implements OnInit {
           }
           longitudImgs = this.filesDropZone.length;
           console.log(longitudImgs);
-          this.comunicadoForm.value['imagenes'] = this.filesDropZone;
+          // this.comunicadoForm.value['imagenes'] = this.filesDropZone;
+          this.comunicadoForm.value['imagenes'] = []
         }
 
         console.log(this.comunicadoForm);
@@ -286,6 +287,7 @@ export class ComunicadoIndividualComponent implements OnInit {
 
           if (this.booleanFile || this.filesDropZone.length > 0) {
 
+
             forkJoin(arrayPeticion).subscribe(next => {
 
               for (const archivo of next) {
@@ -296,7 +298,8 @@ export class ComunicadoIndividualComponent implements OnInit {
                 let altMediaArchivo = archivoMaterial['downloadTokens'];
 
                 const urlFirebase = this.AuthS.urlStorage + '/o/' + url + '?alt=media&token=' + altMediaArchivo;
-
+                console.log(urlFirebase);
+                
                 //Si existe un archivo el ultimo 'archivo' será vinculado como File, los anteriores serán imgs
                 if (this.booleanFile) {
                   if (next[longitudImgs] == archivo) {
@@ -306,10 +309,18 @@ export class ComunicadoIndividualComponent implements OnInit {
                   } else {
                     console.log(urlFirebase.indexOf('?alt='));
 
-                    this.comunicado.imagenes.push(urlFirebase);
+                    if(this.comunicado.imagenes){
+                      this.comunicadoForm.value['imagenes'] = this.comunicado.imagenes
+                    }
+                    this.comunicadoForm.value['imagenes'].push(urlFirebase)
+                    // this.comunicado.imagenes.push(urlFirebase);
                   }
                 } else {
-                  this.comunicado.imagenes.push(urlFirebase);
+                  if(this.comunicado.imagenes){
+                    this.comunicadoForm.value['imagenes'] = this.comunicado.imagenes
+                  }
+                  this.comunicadoForm.value['imagenes'].push(urlFirebase)
+                  // this.comunicado.imagenes.push(urlFirebase);
                 }
               }
 
@@ -322,7 +333,7 @@ export class ComunicadoIndividualComponent implements OnInit {
               })
             }, () => {
 
-              this.comunicadoForm.value['imagenes'] = this.comunicado.imagenes
+              // this.comunicadoForm.value['imagenes'] = this.comunicado.imagenes
               this.comunicado = this.comunicadoForm.value;
               this.comunicado.ids = this.ids;
               console.log(this.comunicado);
