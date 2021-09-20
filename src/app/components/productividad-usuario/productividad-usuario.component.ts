@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -40,9 +40,11 @@ export class ProductividadUsuarioComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
 
     this.auth.getProID(id).subscribe(next => {
-      console.log(next[this.anioProductividad]);
+      // console.log(next[this.anioProductividad]);
       this.nombreUsuario = next[this.anioProductividad].usuario
       this.barChartData.push({ data: next[this.anioProductividad].productividad, label: next[this.anioProductividad].usuario })
+      // console.log(next[this.anioProductividad].productividad);
+      
       this.hayDatos = true;
     }, error => {
       console.log(error);
@@ -61,26 +63,26 @@ export class ProductividadUsuarioComponent implements OnInit {
   }
 
   // events
-  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
+  // public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  //   console.log(event, active);
+  // }
 
-  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-    console.log(event, active);
-  }
+  // public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+  //   console.log(event, active);
+  // }
 
-  public randomize(): void {
-    // Only Change 3 values
-    this.barChartData[3].data = [
-      Math.round(Math.random() * 100),
-      40,
-      80,
-      (Math.random() * 100),
-      60,
-      (Math.random() * 100),
-      50
-    ];
-  }
+  // public randomize(): void {
+  //   // Only Change 3 values
+  //   this.barChartData[3].data = [
+  //     Math.round(Math.random() * 100),
+  //     40,
+  //     80,
+  //     (Math.random() * 100),
+  //     60,
+  //     (Math.random() * 100),
+  //     50
+  //   ];
+  // }
 
 
 
