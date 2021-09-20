@@ -1,45 +1,22 @@
 <app-header></app-header>
 <div class="container mt-2">
 
-
-    <div id="headerta">
-        <table mat-table [dataSource]="dataSource" matSort>
-            <ng-container matColumnDef="comunicado">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
-                <td mat-cell *matCellDef="let element" id="comuniicado">
-                    <h5 class="tit">{{element.titulo}}</h5>
-                    <p class="asunt"><strong>Asunto:</strong> {{element.quien}}</p>
-
-                    <p style="width: 100; position: relative; z-index: 1000;" class="descp">{{element.descripcion}} </p>
-                    <div class="col-md-12 mb-3">
-                        <div class="overflow-auto d-flex d-inline-flex align-items-center w-100">
-                            <picture *ngFor="let img of element.imagenes; let i=i ndex " class="col-2 me-2 mt-2 position-relative ">
-
-                                <img [src]=img class="w-100 imagenes rounded border border-4 border-white " alt={{element.titulo}} style="max-height: 150px ">
-
-                            </picture>
-                        </div>
-                    </div>
-                    <p class="comun" *ngIf="element.archivo"><i class="bi bi-file-earmark-check-fill"></i><a class="arch" style="margin-left: 1%;" target="_blank" href="{{element.archivo}}">Ver archivo</a></p>
-
-
-                    <p class="date"><strong>Fecha de publicación:</strong> {{element.fecha}}</p>
-
-                    <button id="btncomun" class="btn btn-sm " [routerLink]="[ '/comunicado/view', element.ids ] ">
-                        Ver info...
-                    </button>
-                </td>
-            </ng-container>
-
-            <tr mat-header-row *matHeaderRowDef="displayedColumns "></tr>
-            <tr mat-row *matRowDef="let row; columns: displayedColumns; "></tr>
-            <tr class="mat-row " *matNoDataRow>
-                <td class="mat-cell " colspan="4 ">No hay datos de acuerdo a la búsqueda "{{input.value}} "</td>
-            </tr>
-        </table>
-        <mat-paginator style="font-size: 0px; color: #242424; background: transparent; color: #FCC42C ; " [pageSizeOptions]="[1] " showFirstLastButtons></mat-paginator>
-
+    <div class="w-50">
+        <h2 class="text-white mb-3">Comunicados</h2>
     </div>
-
+    <div class="w-50 overflow-auto mt-3" style="max-height: 350px;">
+        <div *ngFor="let comunicado of this.Comunicado " class="card w-100 mb-3 ">
+            <div class="card-body">
+                <h4 class="card-title "><strong> {{comunicado.titulo}} </strong></h4>
+                <p class="card-text fs-5"><strong>Asunto:</strong> {{comunicado.quien}} </p>
+                <p class="card-text fs-6">{{comunicado.descripcion | slice:0:135}} {{comunicado.descripcion.length > 135
+                    ? '&hellip;' : '' }}</p>
+                <p class="card-text d-flex justify-content-between align-items-center"><small
+                        class="text-muted"><strong>Publicado el</strong> {{comunicado.fecha}} </small> <a
+                        [routerLink]="[ '/comunicado/view', comunicado.ids ]" class="btn btn-warning">Ver info</a> </p>
+            </div>
+        </div>
+    </div>
 </div>
+
 <app-footer></app-footer>
