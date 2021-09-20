@@ -4,6 +4,14 @@
   data-longtitle="true" style="visibility: hidden"></p>
 <!-- <button class="btn btn-primary" (click)="queryReports()">Analytics</button> -->
 
+<div class="col-md-10 mt-4">
+  <div *ngIf="!this.loadingUsers" style="display: block" class="bg-white">
+      <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType">
+  </canvas>
+  </div>
+</div>
+
+<button  class="btn btn-primary" (click)="cambiar()">Ver datos</button>
 
 <!-- 
 <div></div>

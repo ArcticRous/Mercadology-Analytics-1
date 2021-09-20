@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 declare const gapi: any;
 
@@ -14,8 +16,19 @@ export class GeneradorReportesComponent implements OnInit {
   scriptViewSelector: any;
   scriptViewSeguro: any;
 
+  loadingUsers: boolean = true;
+
   // VIEW_ID = '230218277';
   VIEW_ID = '210355580';
+
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+  };
+
+  public barChartLabels: Label[] = [];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  public barChartData: ChartDataSets[] = [];
 
   constructor() {
     // const _self = this;
@@ -42,7 +55,7 @@ export class GeneradorReportesComponent implements OnInit {
   }
 
   onSignIn(googleUser) {
-
+    this.queryReports()
     // Useful data for your client-side scripts:
     var profile = googleUser.getBasicProfile();
     console.log("ID: " + profile.getId()); // Don't send this directly to your server!
@@ -55,7 +68,6 @@ export class GeneradorReportesComponent implements OnInit {
     // The ID token you need to pass to your backend:
     var id_token = googleUser.getAuthResponse().id_token;
     console.log("ID Token: " + id_token);
-    this.queryReports()
   }
 
   onFailure() {
@@ -150,7 +162,11 @@ export class GeneradorReportesComponent implements OnInit {
           }
         ]
       }
-    }).then(this.displayResults, console.error.bind(console))
+      // }).then(this.displayResultsUsers, console.error.bind(console))
+    }).then(resp => {
+      console.log(resp);
+      this.displayResultsUsers(resp)
+    })
       .catch(console.log("Erick")
       )
 
@@ -192,7 +208,6 @@ export class GeneradorReportesComponent implements OnInit {
       .catch(console.log("Erick")
       )
 
-
   }//Termina metodo de queryreports
 
   displayResults(response) {
@@ -202,6 +217,41 @@ export class GeneradorReportesComponent implements OnInit {
     // console.log(formattedJson);
   }
 
+  displayResultsUsers(response) {
+    let arrDimensions = []
+    let arrMetrics = []
+
+    var formattedJson = JSON.stringify(response.result, null, 2);
+    // console.log(response.result);
+    // console.log(response.result.reports[0].columnHeader.metricHeader.metricHeaderEntries[0]);
+    // console.log(response.result.reports[0].data.rows[0].dimensions[0]);
+    // console.log(response.result.reports[0].data.rows[0].metrics[0].values[0]);
+    response.result.reports[0].data.rows.map(({ dimensions, metrics }) => {
+      console.log(dimensions[0].substring(6, 8), metrics[0].values[0]);
+
+      arrDimensions.push(dimensions[0].substring(6, 8))
+      arrMetrics.push(parseInt(metrics[0].values[0]))
+
+    })
+
+    this.barChartLabels = arrDimensions
+    this.barChartData.push({ data: arrMetrics, label: 'Usuarios' })
+    console.log(this.barChartData);
+    console.log(this.barChartLabels);
+
+
+// this.cambiar()
+    this.loadingUsers = false
+    // console.log(formattedJson);
+  }
+
+
+  cambiar() {
+    console.log("eirkc");
+    this.loadingUsers = false
+
+    
+  }
 
 
 
