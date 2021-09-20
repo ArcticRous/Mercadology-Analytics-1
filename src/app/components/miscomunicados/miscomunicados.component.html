@@ -14,14 +14,14 @@
             </button>
         </div>
 
-        <div *ngIf="this.cargando" class="text-center">
+        <div *ngIf="this.cargando" class="text-center mb-3">
             <p class="text-white fs-4">Cargando...</p>
             <div class="spinner-border text-warning" role="status">
                 <span class="visually-hidden">Cargando...</span>
               </div>
         </div>
 
-        <div *ngIf="this.booleanHayDatos" class=" buscador mb-4 text-white col-lg-6">
+        <div *ngIf="!this.cargando" class=" buscador mb-4 text-white col-lg-6">
             <input class="form-control " matInput (keyup)="applyFilter($event)" placeholder="Buscar" #input>
         </div>
     </div>
@@ -30,7 +30,7 @@
         <h3 class="text-center text-white">No hay datos</h3>
     </div>
     
-    <div *ngIf="this.booleanHayDatos" class="mat-elevation-z8 table-responsive">
+    <div *ngIf="!this.cargando" class="mat-elevation-z8 table-responsive">
         <table mat-table [dataSource]="dataSource" matSort class="cont-table-mc">
 
             <!-- Position Column -->
