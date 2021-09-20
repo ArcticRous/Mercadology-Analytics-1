@@ -11,20 +11,45 @@
     </div>
 </div>
 
-<div   class=" animated fadeIn faster container contenedor">
-    <div class="col-12">
-<!-- *ngIf="this.spinner == true" -->
-        <div *ngIf="this.spinner == true"   class="container mt-3">
-            <h3 class="text-white text-center">Espere por favor...</h3>
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-primary" role="status">
-                    <span class="visually-hidden">Loading...</span>
+<div *ngIf="this.spinner == true"   class="container mt-3">
+    <h3 class="text-white text-center">Espere por favor...</h3>
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</div>
+
+
+<div class="animated fadeIn faster container contenedor">
+
+    <div class="w-100 mt-3">
+        <div  class="card text-white w-100 mb-3" style="background-color: #373737;">
+            <div class="card-body">
+                <h4 class="card-title "><strong> {{comunicado.titulo}} </strong></h4>
+                <p class="card-text fs-5"><strong>Asunto:</strong> {{comunicado.quien}} </p>
+                <p class="card-text fs-6">{{comunicado.descripcion}} </p>
+                <div *ngIf="this.comunicado.imagenes" class="col-md-12 mb-3">
+                    <div [ngClass] = "this.screenWidth >= 900 ? 'd-flex d-inline-flex' : 'd-block'" class="overflow-auto align-items-center w-100" [ngStyle]="{'height': this.screenWidth >= 900 ? 'auto' : '380px'}">
+                        <picture *ngFor="let img of this.comunicado.imagenes; let i = index"
+                                [ngClass] = "this.screenWidth >= 900 ? 'col-4 me-2' : 'col-12'" class="mt-2 position-relative">
+                            <img [src]=img [ngClass] = "this.screenWidth >= 900 ? 'me-2' : 'mb-2'"  class="w-100 imagenes rounded border border-4 border-white"
+                                alt={{this.comunicado.titulo}} style="max-height: 380px">
+                        </picture>
+                    </div>
                 </div>
+                <p class="card-text text-end"><small
+                    class="text-muted"><strong>Publicado el</strong> {{comunicado.fecha}} </small> 
+                </p>        
             </div>
         </div>
+    </div>
 
-        <!-- *ngIf="this.spinner == false"  -->
-        <form *ngIf="this.spinner == false" [formGroup]="comunicadoForm"  class="text-white">
+
+
+    <!--<div class="col-12">
+
+         <form *ngIf="this.spinner == false" [formGroup]="comunicadoForm"  class="text-white">
 
             <div class="row mb-3">
                 <div class="col-md-12 pe-4 ps-4 mb-3">
@@ -62,8 +87,8 @@
                     </div>
                 </div>
 
-<!--  -->
-                <div *ngIf="this.comunicado.imagenes.length > 0" class="col-md-12 mb-3">
+
+                <div *ngIf="this.comunicado.imagenes" class="col-md-12 mb-3">
                     <div [ngClass] = "this.screenWidth >= 900 ? 'd-flex d-inline-flex' : 'd-block'" class="overflow-auto align-items-center w-100" [ngStyle]="{'height': this.screenWidth >= 900 ? 'auto' : '380px'}">
                         <picture *ngFor="let img of this.comunicado.imagenes; let i = index"
                              [ngClass] = "this.screenWidth >= 900 ? 'col-4 me-2' : 'col-12'" class="mt-2 position-relative">
@@ -73,7 +98,7 @@
                     </div>
                 </div>
 
-                <!--  -->
+
                 <div *ngIf="booleanTieneFile == true" class="row mb-2">
                     <div class="col-10 pe-0">
                         <input type="text" class="form-control" name="archivoAuxiliar" id="formArchivoAuxiliar"
@@ -87,11 +112,10 @@
 
 
             </div>
-            <!-- <hr> -->
 
         </form>
 
+    </div> -->
 
-    </div>
 </div>
 <app-footer></app-footer>
