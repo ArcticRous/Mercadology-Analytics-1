@@ -3,7 +3,8 @@ import { AuthService } from '../../services/auth.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductividadModel } from '../../models/productividad.model';
 import Swal from 'sweetalert2';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { element } from 'protractor';
 
 @Component({
   selector: 'app-productividad',
@@ -16,12 +17,12 @@ export class ProductividadComponent implements OnInit {
 
   productividad: ProductividadModel = new ProductividadModel;
   productividadForm: FormGroup;
-
+  esEditar: boolean = false;
   date = new Date();
   anio = 0
 
   constructor(private AuthService: AuthService,
-    private route: ActivatedRoute, private fb: FormBuilder) {
+    private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
     // if (this.date.getMonth() == 0) {
     //   this.anioArray.push(this.date.getFullYear() - 1);
     //   this.anioArray.push(this.date.getFullYear());
@@ -31,6 +32,7 @@ export class ProductividadComponent implements OnInit {
 
   ngOnInit(): void {
     const queryParams = this.route.queryParams['_value'];
+    if(queryParams.id) this.esEditar = true;
 
     this.AuthService.getUsuarios().subscribe(next => {
       this.selectOptions = next
@@ -114,6 +116,8 @@ export class ProductividadComponent implements OnInit {
             })
           }, error => {
             this.guardarPorTokenVencido(error, this.productividad, ruta)
+          }, () => {
+            this.router.navigateByUrl('/productividades')
           })
         })
 
@@ -148,5 +152,77 @@ export class ProductividadComponent implements OnInit {
       })//Termina if
     }
   }
+
+
+  eliminarPro(id: string) {
+    let nombre = this.selectOptions.find(element => element.id == id)
+
+    Swal.fire({
+      title: `¿Esta seguro que desea borrar la productividad?`,
+      text: `Se eliminara todo el historial de productividad de ${nombre.nombre} ${nombre.apellido}`,
+      icon: 'question',
+      showConfirmButton: true,
+      showCancelButton: true,
+      confirmButtonText: "Aceptar",
+      cancelButtonText: "Cancelar"
+    }).then(resp => {
+
+      if (resp.value) {
+        Swal.fire({
+          allowOutsideClick: false,
+          icon: 'info',
+          text: 'Espere por favor...'
+        });
+        Swal.showLoading();
+
+        const token = sessionStorage.getItem('token');
+
+        this.AuthService.deletePro(id).subscribe(resp => {
+          // console.log(resp);
+          Swal.fire({
+            title: 'Eliminado',
+            text: 'Se eliminaron correctamente los datos de la productividad',
+            icon: 'success',
+          });
+        }, (err) => {
+          this.borrarPorTokenVencido(err, id, token);
+          Swal.close();
+        }, () => {
+          this.router.navigateByUrl('/productividades')
+        });
+
+      }
+    })
+  }//Temina eliminar usuarios
+
+  borrarPorTokenVencido(err: any, id: string, token: string): any {
+    const tokenVencido = err.error.error;
+
+    if (tokenVencido === "Auth token is expired") {
+      // console.log("Entro a la comparativa de permiso denegado");
+      const refresh = sessionStorage.getItem('refresh_token');
+      this.AuthService.refrescarToken(refresh).subscribe(resp => {
+        sessionStorage.setItem('token', resp['id_token']);
+        sessionStorage.setItem('refresh_token', resp['refresh_token']);
+
+        const token = sessionStorage.getItem('token')
+
+        this.AuthService.deletePro(id).subscribe(next => {
+          Swal.fire({
+            title: 'Eliminado',
+            text: 'Se eliminaron correctamente los datos de la productividad',
+            icon: 'success',
+          });
+        }, error => {
+          Swal.fire({
+            title: 'Error',
+            text: 'Hubo un error al intentar eliminar, intentelo nuevamente o inicie sesión de nuevo',
+            icon: 'error',
+          });
+        });
+      });//tERMINA REFRESACAR TOKEN
+    }//Termina if
+  }
+
 
 }
