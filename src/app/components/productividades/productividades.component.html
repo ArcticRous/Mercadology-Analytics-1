@@ -15,9 +15,7 @@
     </div>
     <div class="row mb-3">
         <div class="col-md-3">
-            <!-- <form action="" #f="ngForm"> -->
                 <label class="text-white mb-2" for="categoria">Filtrar por mes</label>
-                <!-- <div class="col d-flex justify-content-between"> -->
                     <select class="form-select" name="categoria" id="categoria" (change)="aplicarFiltroMes(this.productividadGeneral, this.anioProductividad, $event)">
                         <option disabled selected>Seleccione mes</option>
                         <option value="0">Enero</option>
@@ -33,8 +31,6 @@
                         <option value="10">Noviembre</option>
                         <option value="11">Diciembre</option>
                     </select>
-                <!-- </div> -->
-            <!-- </form> -->
         </div>
         <div class="col-3">
             <label for="anio" class="text-white mb-2">Filtrar por año</label>
@@ -89,9 +85,9 @@
                             <button class="btn btn-success mx-2" [routerLink]="['/productividad']" [queryParams] = " { id: element.id, productividad: element.productividad, mes: this.mesProductividad, anio: this.anioProductividad } ">
                                 <i class="bi bi-pencil-square"></i>
                             </button>
-                            <button class="btn btn-danger" (click)="eliminarPro( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
+                            <!-- <button class="btn btn-danger" (click)="eliminarPro( element, (i) + (paginator.pageIndex*paginator.pageSize) ) ">
                                 <i class="bi bi-trash-fill"></i>
-                            </button>
+                            </button> -->
                         </td>
                     </ng-container>
 

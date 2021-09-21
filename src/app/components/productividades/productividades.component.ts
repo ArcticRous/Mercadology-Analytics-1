@@ -37,8 +37,8 @@ export class ProductividadesComponent implements OnInit {
 
     this.AuthService.getPro()
       .subscribe(data => {
-        console.log(data);
-        console.log(this.productividad);
+        // console.log(data);
+        // console.log(this.productividad);
         this.productividadGeneral = data
 
         let productividad = []
@@ -157,75 +157,6 @@ export class ProductividadesComponent implements OnInit {
     }
   }
 
-  eliminarPro(productividad: ProductividadModel, i: number) {
-
-    Swal.fire({
-      title: `¿Esta seguro que desea borrar la productividad?`,
-      text: `Se eliminara la productividad y todos su historial de datos`,
-      icon: 'question',
-      showConfirmButton: true,
-      showCancelButton: true,
-      confirmButtonText: "Aceptar",
-      cancelButtonText: "Cancelar"
-    }).then(resp => {
-
-      if (resp.value) {
-        Swal.fire({
-          allowOutsideClick: false,
-          icon: 'info',
-          text: 'Espere por favor...'
-        });
-        Swal.showLoading();
-        this.dataSource.data.splice(this.dataSource.data.indexOf(productividad), 1);
-
-        this.dataSource = new MatTableDataSource(this.productividad);
-        this.dataSource.paginator = this.paginator;
-        this.dataSource.sort = this.sort;
-
-        const token = sessionStorage.getItem('token');
-
-        this.AuthService.deletePro(productividad.id).subscribe(resp => {
-          // console.log(resp);
-          Swal.fire({
-            title: 'Eliminado',
-            text: 'Se eliminaron correctamente los datos de la productividad',
-            icon: 'success',
-          });
-        }, (err) => {
-          this.borrarPorTokenVencido(err, productividad.id, token);
-          Swal.close();
-        });
-
-      }
-    })
-  }//Temina eliminar usuarios
-
-  borrarPorTokenVencido(err: any, minuta: string, token: string): any {
-    const tokenVencido = err.error.error;
-
-    if (tokenVencido === "Auth token is expired") {
-      // console.log("Entro a la comparativa de permiso denegado");
-      const refresh = sessionStorage.getItem('refresh_token');
-      this.AuthService.refrescarToken(refresh).subscribe(resp => {
-        sessionStorage.setItem('token', resp['id_token']);
-        sessionStorage.setItem('refresh_token', resp['refresh_token']);
-
-        this.AuthService.eliminarMinuta(minuta, token).subscribe(next => {
-          Swal.fire({
-            title: 'Eliminado',
-            text: 'Se eliminaron correctamente los datos de la productividad',
-            icon: 'success',
-          });
-        }, error => {
-          Swal.fire({
-            title: 'Error',
-            text: 'Hubo un error al intentar eliminar, intentelo nuevamente o inicie sesión de nuevo',
-            icon: 'error',
-          });
-        });
-      });//tERMINA REFRESACAR TOKEN
-    }//Termina if
-  }
-
+  
 
 }
