@@ -934,23 +934,23 @@ export class AuthService {
     return this.http.put(`${this.url}/productividad/${ruta}.json`, productividad)
   }
 
-  addPro(productividad: ProductividadModel) {
-    return this.http.post(`${this.url}/productividad.json`, productividad)
-      .pipe(
-        map((resp: any) => {
-          productividad.id = resp.name;
-          return productividad;
-        })
-      )
-  }
+  // addPro(productividad: ProductividadModel) {
+  //   return this.http.post(`${this.url}/productividad.json`, productividad)
+  //     .pipe(
+  //       map((resp: any) => {
+  //         productividad.id = resp.name;
+  //         return productividad;
+  //       })
+  //     )
+  // }
 
-  updatePro(productividad: ProductividadModel) {
-    const proTemp = {
-      ...productividad
-    };
-    delete proTemp.id;
-    return this.http.put(`${this.url}/productividad/${productividad.id}.json`, proTemp);
-  }
+  // updatePro(productividad: ProductividadModel) {
+  //   const proTemp = {
+  //     ...productividad
+  //   };
+  //   delete proTemp.id;
+  //   return this.http.put(`${this.url}/productividad/${productividad.id}.json`, proTemp);
+  // }
 
   getPro() {
     return this.http.get(`${this.url}/productividad.json`)
