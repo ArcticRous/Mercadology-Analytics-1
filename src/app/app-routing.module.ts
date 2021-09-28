@@ -47,7 +47,7 @@ const routes: Routes = [
   {path: 'calendario/:id' , component: CalendarioComponent,canActivate: [AuthGuard, CalendarGuard]},
   {path: 'solicitud' , component: SolicitudesComponent},
   {path: 'comunicado', component: ComunicadoIndividualComponent,canActivate: [AuthGuard]},
-  {path: 'comunicado/view/:id' , component: VistaComunicadoComponent,canActivate: [AuthGuard, ComunicadoGuard]},
+  {path: 'comunicado/view/:id' , component: VistaComunicadoComponent,canActivate: [AuthGuard]},
   {path: 'comunicado/:ids' , component: ComunicadoIndividualComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'MisComun' , component: MiscomunicadosComponent,canActivate: [AuthGuard, ComunicadoGuard]},
   {path: 'minuta' , component: MinutaComponent,canActivate: [AuthGuard]},
