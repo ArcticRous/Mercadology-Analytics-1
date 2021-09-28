@@ -14,6 +14,9 @@
 </div>
 
 <div *ngIf="!this.cargando" class=" animated fadeIn faster container contenedor">
+
+    <p *ngIf="this.esEditar" class="text-white">Para eliminar el historial de un usuario, seleccione en las opciones de usuario el que quiere eliminar y de click en el botón "Eliminar historial"</p>
+
     <div class="col-12">
 
         <form [formGroup]="productividadForm" (ngSubmit)="guardar()">
