@@ -1,0 +1,33 @@
+<app-header></app-header>
+
+<div class="container encabezado">
+    <div class="row mt-4">
+        <h1 class="col-12 text-white ">Distribución de equipos</h1>
+    </div>
+</div>
+
+<div class="container cont-general">
+    <div class="col d-flex cont-table mt-2" *ngFor="let items of equipo">
+        <div class="col col-equipo">
+            <h3 class="titulo-equipo">{{items.cuenta}}</h3>
+            <table>
+                <thead>
+                    <th>Estratega digital</th>
+                    <th>CM</th>
+                    <th *ngIf="this.puesto === 'Manager'">Opciones</th>
+                </thead>
+                <tbody>
+                    <td>{{items.account}}</td>
+                    <td>{{items.cm}}</td>
+                    <td *ngIf="this.puesto === 'Manager'" class="">
+                        <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/equipo', items.id ]">
+                            <i class="bi bi-pencil-square"></i>
+                        </button>
+                    </td>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<app-footer></app-footer>

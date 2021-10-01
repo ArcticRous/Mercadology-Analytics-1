@@ -12,6 +12,7 @@ import { CalendarioModel } from '../models/calendario.model';
 import { ProductividadModel } from '../models/productividad.model';
 import { BonoModel } from '../models/bono.model';
 import { StatusBonoModel } from '../models/statusBono.model';
+import { EquipoModel } from '../models/equipos.model';
 
 @Injectable({
   providedIn: 'root'
@@ -1078,5 +1079,57 @@ export class AuthService {
   deleteStatusBono(id: string) {
     return this.http.delete(`${this.url}/statusbono/${id}.json`);
   }
+
+  // DISTRIBUCIÓN DE EQUIPOS
+
+
+  addEquipo(equipo: EquipoModel) {
+    return this.http.post(`${this.url}/equipos.json`, equipo)
+      .pipe(
+        map((resp: any) => {
+          equipo.id = resp.name;
+          return equipo;
+        })
+      )
+  }
+
+  updateEquipo(equipo: EquipoModel) {
+    const equipoTemp = {
+      ...equipo
+    };
+    delete equipoTemp.id;
+    return this.http.put(`${this.url}/equipos/${equipo.id}.json`, equipoTemp);
+  }
+
+  getEquipoID(id: string) {
+    return this.http.get(`${this.url}/equipos/${id}.json`);
+  }
+  getEquipo() {
+    return this.http.get(`${this.url}/equipos.json`)
+      .pipe(
+        map(resp => this.arrEquipo(resp))
+      );
+  }
+
+  private arrEquipo(equipoObj: object) {
+    const equipos: EquipoModel[] = [];
+
+    console.log(equipoObj);
+    if (equipoObj === null) { return []; }
+
+    Object.keys(equipoObj).forEach(key => {
+      const equipo: EquipoModel = equipoObj[key];
+      equipo.id = key;
+
+      equipos.push(equipo);
+    });
+
+    return equipos;
+  }
+
+  deleteEquipo(id: string) {
+    return this.http.delete(`${this.url}/statusbono/${id}.json`);
+  }
+
 
 }/**Cierra el export data**/
