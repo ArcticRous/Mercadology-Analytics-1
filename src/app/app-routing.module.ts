@@ -35,6 +35,8 @@ import { CalendarGuard } from './guards/calendario.guard';
 import { ShowcalendarioComponent } from './components/calendario/showcalendario/showcalendario.component';
 import { VistaComunicadoComponent } from './components/vista-comunicado/vista-comunicado.component';
 import { ProductividadUsuarioComponent } from './components/productividad-usuario/productividad-usuario.component';
+import { EquiposComponent } from './components/equipos/equipos.component';
+import { EquipoComponent } from './components/equipo/equipo.component';
 
 const routes: Routes = [
   {path: 'login', component: LoginComponent},
@@ -70,6 +72,9 @@ const routes: Routes = [
   {path: 'status-bonos', component: StatusBonosComponent, canActivate: [AuthGuard]},
   {path: 'status-bono/:id', component: StatusBonoComponent, canActivate: [AuthGuard]},
   {path: 'status-bono', component: StatusBonoComponent, canActivate: [AuthGuard]},
+  {path: 'equipos', component: EquiposComponent, canActivate: [AuthGuard]},
+  {path: 'equipo/:id', component: EquipoComponent, canActivate: [AuthGuard]},
+  {path: 'equipo', component: EquipoComponent, canActivate: [AuthGuard]},
   {path: 'usuarios', component: UsuariosComponent, canActivate: [AuthGuard, RolGuard]}, 
   {path: 'registro', component: RegistroComponent, canActivate: [AuthGuard, RolGuard]},
   {path: 'modificar/:id', component: ModificarComponent, canActivate: [AuthGuard, RolGuard]},
