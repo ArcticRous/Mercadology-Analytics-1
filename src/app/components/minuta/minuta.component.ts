@@ -89,7 +89,7 @@ export class MinutaComponent implements OnInit {
     this.horaDefecto = date.toLocaleTimeString('it-IT').substring(0, 5)
 
     const proxReunionDefecto = `${this.fechaDefecto}T${this.horaDefecto}`
-    console.log(proxReunionDefecto);
+    // console.log(proxReunionDefecto);
 
     this.minutaForm = this.fb.group({
       fecha: [this.fechaDefecto, [Validators.required]],
@@ -109,14 +109,15 @@ export class MinutaComponent implements OnInit {
     this.nuevoPendienteForm = this.fb.group({
       hecho: [, [Validators.required, Validators.minLength(10)]],
       responsable: [, [Validators.required, Validators.minLength(3)]],
-      estimado: [, Validators.required]
+      estimado: [, Validators.required],
+      estado: ['Pendiente',[]]
     })
   }
 
 
 
   inicializarEditar(minuta: MinutaModel) {
-    console.log(minuta);
+    // console.log(minuta);
     this.minutaForm = this.fb.group({
       fecha: [minuta.fecha, [Validators.required]],
       hora: [minuta.hora, [Validators.required]],
@@ -137,12 +138,13 @@ export class MinutaComponent implements OnInit {
     this.nuevoPendienteForm = this.fb.group({
       hecho: [, [Validators.required, Validators.minLength(10)]],
       responsable: [, [Validators.required, Validators.minLength(3)]],
-      estimado: [, Validators.required]
+      estimado: [, Validators.required],
+      estado: ['Pendiente', []]
     })
   }
 
   inicializarVer(minuta: MinutaModel) {
-console.log(minuta);
+// console.log(minuta);
 
     this.minutaForm = this.fb.group({
       fecha: [{ value: minuta.fecha, disabled: true }, [Validators.required]],
@@ -164,7 +166,8 @@ console.log(minuta);
     this.nuevoPendienteForm = this.fb.group({
       hecho: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(10)]],
       responsable: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(3)]],
-      estimado: [{ value: '', disabled: true }, Validators.required, Validators.minLength(3)]
+      estimado: [{ value: '', disabled: true }, Validators.required, Validators.minLength(3)],
+      estado: [{value: minuta.pendientes['estado'], disabled: true}, []]
     })
   }
 
@@ -227,13 +230,19 @@ console.log(minuta);
 
     this.pendientesArr.push(this.fb.group(this.nuevoPendienteForm.value, [Validators.required]))
 
-    this.nuevoPendienteForm.reset()
+    this.nuevoPendienteForm.reset(({
+      estado: 'Pendiente'
+    }))
     this.booleanNPendiente = true;
   }
 
   mostrarPendiente(pendientes: any) {
 
     for (const pendiente of pendientes) {
+      // console.log(pendiente);
+      if(!pendiente['estado']){
+        pendiente['estado'] = 'Pendiente'
+      }
       this.pendientesArr.push(this.fb.group(pendiente, [Validators.required]))
     }
   }
@@ -249,12 +258,12 @@ console.log(minuta);
   guardar() {
 
     if (this.minutaForm.invalid) {
-      console.log(this.minutaForm.value);
+      // console.log(this.minutaForm.value);
       
       this.minutaForm.markAllAsTouched(); this.booleanNPendiente = false; return;
     }
     
-    console.log(this.minutaForm.value);
+    // console.log(this.minutaForm.value);
     
     Swal.fire({
       icon: 'question',
@@ -296,6 +305,9 @@ console.log(minuta);
             hora: this.horaDefecto,
             cuenta: 'Cinthya García',
             numReunion: this.numReunionDefecto + 1
+          }))
+          this.nuevoPendienteForm.reset(({
+            estado: 'Pendiente'
           }))
           this.asistentesArr.reset();
           this.pendientesArr.reset();
@@ -344,6 +356,9 @@ console.log(minuta);
             hora: this.horaDefecto,
             cuenta: 'Cinthya García',
             numReunion: this.numReunionDefecto + 1
+          }))
+          this.nuevoPendienteForm.reset(({
+            estado: 'Pendiente'
           }))
           this.asistentesArr.reset();
           this.pendientesArr.reset();

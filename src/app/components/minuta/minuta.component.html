@@ -131,6 +131,12 @@
                 <input type="text" class="form-control ms-2" name="estimado" id="formEstimado"
                     placeholder="Tiempo estimado" formControlName="estimado">
 
+                <select class="form-select form-select-md ms-2" id="formEstado" name="estado"
+                     formControlName="estado" aria-label=".form-select-md example">
+                   <option selected>Pendiente</option>
+                   <option>Completado</option>
+               </select>
+
                 <button class="btn btn-outline-primary ms-2" type="button" (click)="agregarPendiente()">
                     Agregar
                 </button>
@@ -156,6 +162,15 @@
 
                     <input type="text" class="form-control ms-2" name="estimado" placeholder="Tiempo estimado"
                         formControlName="estimado" [readonly]="this.booleanVer">
+
+                    <input *ngIf="this.booleanVer" type="text" class="form-control ms-2" name="estado" placeholder="Pendiente"
+                        formControlName="estado" [readonly]="this.booleanVer">
+
+                    <select *ngIf="this.booleanEditar" class="form-select form-select-md ms-2" id="formEstado" name="estado"
+                        formControlName="estado" aria-label=".form-select-md example">
+                      <option selected>Pendiente</option>
+                      <option>Completado</option>
+                    </select>
 
                     <button *ngIf="!this.booleanVer" class="btn btn-outline-danger ms-2" type="button"
                         (click)="borrarPendiente(i)">
