@@ -19,7 +19,7 @@ export class MinutasComponent implements OnInit {
 
   booleanHayDatos: boolean = true;
 
-  displayedColumns: string[] = ['#', 'elaboro', 'autorizo', 'fecha', 'id'];
+  displayedColumns: string[] = ['#', 'elaboro', 'autorizo', 'cuenta', 'fecha', 'id'];
   dataSource: MatTableDataSource<MinutaModel>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -92,7 +92,6 @@ export class MinutasComponent implements OnInit {
         const token = sessionStorage.getItem('token');
 
         this.auth.eliminarMinuta(minuta.id, token).subscribe(resp => {
-          // console.log(resp);
           Swal.close();
           Swal.fire({
             title: 'Eliminado',
@@ -113,7 +112,6 @@ export class MinutasComponent implements OnInit {
     const tokenVencido = err.error.error;
 
     if (tokenVencido === "Auth token is expired") {
-      // console.log("Entro a la comparativa de permiso denegado");
       const refresh = sessionStorage.getItem('refresh_token');
       this.auth.refrescarToken(refresh).subscribe(resp => {
         sessionStorage.setItem('token', resp['id_token']);
