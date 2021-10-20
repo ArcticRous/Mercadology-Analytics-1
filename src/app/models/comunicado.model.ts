@@ -6,5 +6,5 @@ export class ComunicadoModel{
     quien:string;
     imagenes?: any;
     archivo?:any;
-    
+    visto?: any;
 }
