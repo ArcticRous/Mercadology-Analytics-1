@@ -916,7 +916,12 @@ export class AuthService {
       minutas.push(minuta);
     })
 
-    return minutas;
+    let date = new Date();
+    let hoy = date.toLocaleDateString(undefined, { year: 'numeric' }) + '-' + date.toLocaleDateString(undefined, { month: '2-digit' }) + '-' + date.toLocaleDateString(undefined, { day: '2-digit' })
+
+    return minutas.filter((({ fecha }) => fecha.toString() <= hoy)).sort((a, b) => {
+      return new Date(b.fecha).getTime() - new Date(a.fecha).getTime();
+    });
   }
 
   obtenerMinuta(id: string) {
