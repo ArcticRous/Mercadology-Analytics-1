@@ -6,6 +6,8 @@ import { Cell, PdfMakeWrapper, Table, Txt } from 'pdfmake-wrapper';
 import * as pdfFonts from "pdfmake/build/vfs_fonts"; // fonts provided for pdfmake
 import { MinutaModel } from './../../models/minuta.model';
 import { AuthService } from './../../services/auth.service';
+import { ToastrService } from 'ngx-toastr';
+import { Observable } from 'rxjs';
 
 type TableRow = [string, string, string]
 type TableAsistentes = [string]
@@ -45,7 +47,12 @@ export class MinutaComponent implements OnInit {
   booleanGenerarPDF: boolean = false
   id: string;
 
-  constructor(private auth: AuthService, private fb: FormBuilder, private route: ActivatedRoute) {
+  //Cuando traiga o no un archvio en ver o modificar archivo
+  booleanTieneFile: boolean = false;
+  //Para cuando se agregue archivo o  minuta
+  booleanFile: boolean = false;
+
+  constructor(private auth: AuthService, private fb: FormBuilder, private route: ActivatedRoute, private toastr: ToastrService) {
 
     PdfMakeWrapper.setFonts(pdfFonts);
     this.id = this.route.snapshot.paramMap.get('id');
@@ -60,6 +67,8 @@ export class MinutaComponent implements OnInit {
       this.booleanAgregar = false;
       this.peticionAuthMinuta(this.id);
     } else if (this.id && view != 'view') {
+      console.log("entor editar");
+      
       this.booleanVer = false;
       this.booleanEditar = true;
       this.booleanAgregar = false;
@@ -101,7 +110,8 @@ export class MinutaComponent implements OnInit {
       pendientes: this.fb.array([], [Validators.required]),
       proxReunion: [proxReunionDefecto, [Validators.required]],
       elaboro: [, Validators.required],
-      autorizo: [, Validators.required]
+      autorizo: [, Validators.required],
+      archivo: [,]
     })
 
     this.nuevoAsistente = this.fb.control("", [Validators.required, Validators.minLength(3)]);
@@ -110,7 +120,7 @@ export class MinutaComponent implements OnInit {
       hecho: [, [Validators.required, Validators.minLength(10)]],
       responsable: [, [Validators.required, Validators.minLength(3)]],
       estimado: [, Validators.required],
-      estado: ['Pendiente',[]]
+      estado: ['Pendiente', []]
     })
   }
 
@@ -128,8 +138,15 @@ export class MinutaComponent implements OnInit {
       pendientes: this.fb.array([], [Validators.required]),
       proxReunion: [minuta.proxReunion, [Validators.required]],
       elaboro: [minuta.elaboro, Validators.required],
-      autorizo: [minuta.autorizo, Validators.required]
+      autorizo: [minuta.autorizo, Validators.required],
+      archivo: [,]
     })
+
+    if (minuta.archivo) {
+      this.booleanTieneFile = true
+      this.minutaForm.controls['archivo'].disable()
+      this.minutaForm.get('archivo').setValue(minuta.archivo)
+    }
 
     this.mostrarAsistente(minuta.asistentes);
     this.nuevoAsistente = this.fb.control("", [Validators.required, Validators.minLength(3)]);
@@ -143,8 +160,56 @@ export class MinutaComponent implements OnInit {
     })
   }
 
+  borrarArchivo() {
+    this.booleanTieneFile = false;
+    console.log(this.booleanTieneFile);
+    console.log(this.booleanEditar);
+    console.log(this.booleanVer);
+    console.log(this.booleanAgregar);
+    
+    
+    this.minutaForm.controls['archivo'].enable()
+    this.minutaForm.get('archivo').setValue("")
+    // this.comunicadoForm.get('archivoAuxiliar').setValue("")
+    console.log(this.minutaForm);
+  }
+
+  onfileArchivo(event) {
+    console.log(this.minutaForm);
+
+    const file = event.target.files[0];
+
+    if (file.type.includes('application/pdf') || file.type.includes('application/msword') || file.type.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+      if (file.size <= 3000000) {
+        this.minutaForm.value.archivo = file
+        this.booleanFile = true;
+        console.log(this.minutaForm.value.archivo);
+
+      } else {
+        this.resetCampoArchivo();
+        this.showToastWarning(`El archivo "${file.name}" es muy grande, cargue uno de menor peso, máximo 3MB`, "Archivo supera el límite")
+      }
+    } else {
+      this.resetCampoArchivo();
+      this.toastError(`Solo se aceptan formatos PDF y WORD, "${file.name}" no puede cargarse`, "Error de archivo")
+    }
+
+  }
+
+  resetCampoArchivo() {
+    this.minutaForm.get('archivo').setValue("")
+  }
+
+  toastError(mensaje: string, titulo: string) {
+    this.toastr.error(mensaje, titulo);
+  }
+
+  showToastWarning(mensaje: string, titulo: string) {
+    this.toastr.warning(mensaje, titulo);
+  }
+
   inicializarVer(minuta: MinutaModel) {
-// console.log(minuta);
+    // console.log(minuta);
 
     this.minutaForm = this.fb.group({
       fecha: [{ value: minuta.fecha, disabled: true }, [Validators.required]],
@@ -156,8 +221,15 @@ export class MinutaComponent implements OnInit {
       pendientes: this.fb.array([], [Validators.required]),
       proxReunion: [{ value: minuta.proxReunion, disabled: true }, [Validators.required]],
       elaboro: [{ value: minuta.elaboro, disabled: true }, Validators.required],
-      autorizo: [{ value: minuta.autorizo, disabled: true }, Validators.required]
+      autorizo: [{ value: minuta.autorizo, disabled: true }, Validators.required],
+      archivo: [,]
     })
+
+    if (minuta.archivo) {
+      this.booleanTieneFile = true
+      this.minutaForm.controls['archivo'].disable()
+      this.minutaForm.get('archivo').setValue(minuta.archivo)
+    }
 
     this.mostrarAsistente(minuta.asistentes);
     this.nuevoAsistente = this.fb.control({ value: "", disabled: true }, [Validators.required, Validators.minLength(3)]);
@@ -167,7 +239,7 @@ export class MinutaComponent implements OnInit {
       hecho: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(10)]],
       responsable: [{ value: '', disabled: true }, [Validators.required, Validators.minLength(3)]],
       estimado: [{ value: '', disabled: true }, Validators.required, Validators.minLength(3)],
-      estado: [{value: minuta.pendientes['estado'], disabled: true}, []]
+      estado: [{ value: minuta.pendientes['estado'], disabled: true }, []]
     })
   }
 
@@ -240,7 +312,7 @@ export class MinutaComponent implements OnInit {
 
     for (const pendiente of pendientes) {
       // console.log(pendiente);
-      if(!pendiente['estado']){
+      if (!pendiente['estado']) {
         pendiente['estado'] = 'Pendiente'
       }
       this.pendientesArr.push(this.fb.group(pendiente, [Validators.required]))
@@ -258,13 +330,9 @@ export class MinutaComponent implements OnInit {
   guardar() {
 
     if (this.minutaForm.invalid) {
-      // console.log(this.minutaForm.value);
-      
       this.minutaForm.markAllAsTouched(); this.booleanNPendiente = false; return;
     }
-    
-    // console.log(this.minutaForm.value);
-    
+
     Swal.fire({
       icon: 'question',
       title: "¿Los datos son correctos?",
@@ -283,38 +351,113 @@ export class MinutaComponent implements OnInit {
         });
         Swal.showLoading();
 
-        this.minutaModel = this.minutaForm.value;
-        this.auth.guardarMinuta(this.minutaModel).subscribe(resp => {
-          if (this.booleanGenerarPDF) {
-            this.crearPDF(this.minutaModel)
-            this.booleanGenerarPDF = false;
-          }
+        let fecha = new Date(this.minutaForm.controls['fecha'].value);
+        console.log("Fecha: ", fecha);
 
-          Swal.fire({
-            title: 'Guardado',
-            text: 'Se registraron correctamente los datos',
-            icon: 'success'
+        let dia = fecha.getDate();
+        let mes = fecha.getMonth() + 1;
+        let anio = fecha.getFullYear();
+        let arrayPeticion: Observable<any>;
+
+        let rutaFile = `minutas%2Farchivos%2F${anio}%2F${mes}%2F${dia}`;
+
+        console.log(rutaFile);
+        console.log(this.minutaForm);
+        if (this.booleanFile) {
+          arrayPeticion = this.auth.uploadFile(this.minutaForm.value.archivo, rutaFile);
+        }
+
+        console.log("Tiene file: ", this.booleanFile);
+        if (this.booleanFile) {
+          arrayPeticion.subscribe(resp => {
+            console.log(resp);
+            let archivoMaterial = resp;
+            let urlArchivo = archivoMaterial['name'];
+            const url = urlArchivo.replace(/ /g, "%20").replace(/\//g, "%2F")
+            let altMediaArchivo = archivoMaterial['downloadTokens'];
+
+            const urlFirebase = this.auth.urlStorage + '/o/' + url + '?alt=media&token=' + altMediaArchivo;
+            this.minutaForm.value['archivo'] = urlFirebase;
+          }, error => {
+            console.log(error);
+            Swal.fire({
+              title: 'Error en enviar la solicitud',
+              text: "Tiempo excedido, por favor intentelo de nuevo",
+              icon: "error"
+            })
+          }, () => {
+
+            console.log(this.minutaForm.value);
+            
+            this.minutaModel = this.minutaForm.value;
+            this.auth.guardarMinuta(this.minutaModel).subscribe(resp => {
+              if (this.booleanGenerarPDF) {
+                this.crearPDF(this.minutaModel)
+                this.booleanGenerarPDF = false;
+              }
+
+              Swal.fire({
+                title: 'Guardado',
+                text: 'Se registraron correctamente los datos',
+                icon: 'success'
+              })
+
+            }, error => {
+              console.log(error);
+              this.guardarPorTokenVencido(error, this.minutaModel)
+            }, () => {
+              this.minutaForm.reset(({
+                fecha: this.fechaDefecto,
+                hora: this.horaDefecto,
+                cuenta: 'Cinthya García',
+                numReunion: this.numReunionDefecto + 1
+              }))
+              this.nuevoPendienteForm.reset(({
+                estado: 'Pendiente'
+              }))
+              this.asistentesArr.reset();
+              this.pendientesArr.reset();
+              this.pendientesArr.clear()
+              this.asistentesArr.clear()
+            })
+
           })
 
-        }, error => {
-          console.log(error);
-          this.guardarPorTokenVencido(error, this.minutaModel)
-        }, () => {
-          this.minutaForm.reset(({
-            fecha: this.fechaDefecto,
-            hora: this.horaDefecto,
-            cuenta: 'Cinthya García',
-            numReunion: this.numReunionDefecto + 1
-          }))
-          this.nuevoPendienteForm.reset(({
-            estado: 'Pendiente'
-          }))
-          this.asistentesArr.reset();
-          this.pendientesArr.reset();
-          this.pendientesArr.clear()
-          this.asistentesArr.clear()
-        })
+        } else {
 
+          this.minutaModel = this.minutaForm.value;
+          this.auth.guardarMinuta(this.minutaModel).subscribe(resp => {
+            if (this.booleanGenerarPDF) {
+              this.crearPDF(this.minutaModel)
+              this.booleanGenerarPDF = false;
+            }
+
+            Swal.fire({
+              title: 'Guardado',
+              text: 'Se registraron correctamente los datos',
+              icon: 'success'
+            })
+
+          }, error => {
+            console.log(error);
+            this.guardarPorTokenVencido(error, this.minutaModel)
+          }, () => {
+            this.minutaForm.reset(({
+              fecha: this.fechaDefecto,
+              hora: this.horaDefecto,
+              cuenta: 'Cinthya García',
+              numReunion: this.numReunionDefecto + 1
+            }))
+            this.nuevoPendienteForm.reset(({
+              estado: 'Pendiente'
+            }))
+            this.asistentesArr.reset();
+            this.pendientesArr.reset();
+            this.pendientesArr.clear()
+            this.asistentesArr.clear()
+          })
+
+        }
       }
     })
 
@@ -400,29 +543,94 @@ export class MinutaComponent implements OnInit {
         });
         Swal.showLoading();
 
-        this.minutaModel = this.minutaForm.value;
-        this.minutaModel.id = this.id;
+        let fecha = new Date(this.minutaForm.controls['fecha'].value);
+        console.log("Fecha: ", fecha);
 
-        this.auth.editarMinuta(this.minutaModel).subscribe(resp => {
-          if (this.booleanGenerarPDF) {
-            this.crearPDF(this.minutaModel)
-            this.booleanGenerarPDF = false;
-          }
+        let dia = fecha.getDate();
+        let mes = fecha.getMonth() + 1;
+        let anio = fecha.getFullYear();
+        let arrayPeticion: Observable<any>;
 
-          Swal.fire({
-            title: 'Editado',
-            text: 'Se modificaron correctamente los datos',
-            icon: 'success'
+        let rutaFile = `minutas%2Farchivos%2F${anio}%2F${mes}%2F${dia}`;
+
+        console.log(rutaFile);
+        console.log(this.minutaForm);
+        if (this.booleanFile) {
+          arrayPeticion = this.auth.uploadFile(this.minutaForm.value.archivo, rutaFile);
+        }
+
+        console.log("Tiene file: ", this.booleanFile);
+        
+        if (this.booleanFile) {
+          arrayPeticion.subscribe(resp => {
+            console.log(resp);
+            let archivoMaterial = resp;
+            let urlArchivo = archivoMaterial['name'];
+            const url = urlArchivo.replace(/ /g, "%20").replace(/\//g, "%2F")
+            let altMediaArchivo = archivoMaterial['downloadTokens'];
+
+            const urlFirebase = this.auth.urlStorage + '/o/' + url + '?alt=media&token=' + altMediaArchivo;
+            this.minutaForm.value['archivo'] = urlFirebase;
+          }, error => {
+            console.log(error);
+            Swal.fire({
+              title: 'Error en enviar la solicitud',
+              text: "Tiempo excedido, por favor intentelo de nuevo",
+              icon: "error"
+            })
+          }, () => {
+
+            console.log(this.minutaForm.value);
+            this.minutaModel = this.minutaForm.value;
+            this.minutaModel.id = this.id;
+
+            this.auth.editarMinuta(this.minutaModel).subscribe(resp => {
+              if (this.booleanGenerarPDF) {
+                this.crearPDF(this.minutaModel)
+                this.booleanGenerarPDF = false;
+              }
+
+              Swal.fire({
+                title: 'Editado',
+                text: 'Se modificaron correctamente los datos',
+                icon: 'success'
+              })
+
+            }, error => {
+              console.log(error);
+              this.editarPorTokenVencido(error, this.minutaModel)
+            }, () => {
+
+            })
+
           })
 
-        }, error => {
-          console.log(error);
-          this.editarPorTokenVencido(error, this.minutaModel)
-        }, () => {
+        } else {
 
-        })
+          this.minutaModel = this.minutaForm.value;
+          this.minutaModel.id = this.id;
 
+          this.auth.editarMinuta(this.minutaModel).subscribe(resp => {
+            if (this.booleanGenerarPDF) {
+              this.crearPDF(this.minutaModel)
+              this.booleanGenerarPDF = false;
+            }
+
+            Swal.fire({
+              title: 'Editado',
+              text: 'Se modificaron correctamente los datos',
+              icon: 'success'
+            })
+
+          }, error => {
+            console.log(error);
+            this.editarPorTokenVencido(error, this.minutaModel)
+          }, () => {
+
+          })
+        }
       }
+
     })
   }
 
@@ -476,7 +684,7 @@ export class MinutaComponent implements OnInit {
     pdf.header(new Txt(`mercadology`).alignment('center').bold().fontSize(35).margin([0, 15, 0, 0]).color('#FCC42C').end);
     pdf.footer(new Txt(`mercadology`).alignment('center').bold().fontSize(35).margin([0, 15, 0, 0]).color('#FCC42C').end);
 
-    pdf.add(new Txt(`Cuenta: ${data.cuenta}`).bold().alignment('left').fontSize(20).margin([0,0,25,0]).end)
+    pdf.add(new Txt(`Cuenta: ${data.cuenta}`).bold().alignment('left').fontSize(20).margin([0, 0, 25, 0]).end)
 
     pdf.add(new Table([
       [

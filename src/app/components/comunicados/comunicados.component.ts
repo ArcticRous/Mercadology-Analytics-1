@@ -1,10 +1,7 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
 import { ComunicadoModel } from "../../models/comunicado.model";
-
-
 import Swal from 'sweetalert2';
-
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
@@ -27,7 +24,7 @@ export class ComunicadosComponent implements OnInit, AfterViewInit {
    durationInSeconds = 2;
    rol: string;
  
-   displayedColumns: string[] = ['titulo','descripcion','fecha','categoria', 'ids'];
+   displayedColumns: string[] = ['titulo','fecha','categoria', 'ids'];
    dataSource: MatTableDataSource<ComunicadoModel>;
  
    @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -91,23 +88,17 @@ export class ComunicadosComponent implements OnInit, AfterViewInit {
      }).then(resp => {
  
        if (resp.value) {
-         // this.Cliente.splice(i, 1);
          this.Auth.DeleteComun(comunicado.ids).subscribe(resp => {
            Swal.fire({
              title: 'Eliminado',
              text: 'Se eliminaron correctamente los datos de: ' + comunicado.titulo,
              icon: 'success',
            });
-         // console.log(resp);
          }, (err)=>{
             this.borrarPorTokenVencido(err, comunicado.ids);
          } ); //LO COMENTO EN PRUEBAS
  
-         // console.log(this.dataSource.data.indexOf(cliente));
- 
          this.dataSource.data.splice(this.dataSource.data.indexOf(comunicado, i), 1);
-         // console.log(this.dataSource);
- 
          this.dataSource = new MatTableDataSource(this.Comunicado);
          this.dataSource.paginator = this.paginator;
          this.dataSource.sort = this.sort;
@@ -121,15 +112,12 @@ export class ComunicadosComponent implements OnInit, AfterViewInit {
      const tokenVencido = err.error.error;
  
      if (tokenVencido === "Auth token is expired") {
-       // console.log("Entro a la comparativa de permiso denegado");
        const refresh = sessionStorage.getItem('refresh_token');
        this.Auth.refrescarToken(refresh).subscribe(resp => {
-         // console.log(resp);
          sessionStorage.setItem('token', resp['id_token']);
          sessionStorage.setItem('refresh_token', resp['refresh_token']);
  
          this.Auth.DeleteComun(usuario).subscribe( resp => {
-           // console.log(resp);
            Swal.fire({
              title: 'Eliminado', 
              text: 'Se eliminaron correctamente los datos de: ' + usuario.titulo,
@@ -137,10 +125,9 @@ export class ComunicadosComponent implements OnInit, AfterViewInit {
            });  
            
          } );
-       });//tERMINA REFRESACAR TOKEN
+       });//TERMINA REFRESACAR TOKEN
      }//Termina if
      
-     // console.log(err);
    }
  
  

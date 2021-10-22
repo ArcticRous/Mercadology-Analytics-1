@@ -7,7 +7,6 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 
-
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
@@ -17,6 +16,7 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
 import { MatSelectModule } from '@angular/material/select';
 import { ChartsModule } from 'ng2-charts';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ToastrModule } from 'ngx-toastr';
@@ -123,7 +123,8 @@ FullCalendarModule.registerPlugins([
     MatFormFieldModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatDatepickerModule, 
+    MatDatepickerModule,
+    MatTooltipModule,
     ChartsModule,
     // MatNativeDateModule,
     MatMomentDateModule,

@@ -213,6 +213,32 @@
             </div>
         </div>
 
+        <div class="row">
+            <div *ngIf="booleanTieneFile == true" class="row mb-2 ">
+                <div class="col-9 pe-0">
+                    <input type="text" class="form-control" name="archivoAuxiliar" id="formArchivoAuxiliar"
+                        formControlName="archivo">
+                </div>
+                <div class="col-2 d-flex">
+                    <a href={{minutaModel.archivo}} class="btn btn-primary" target="_blank"><i class="bi bi-link">
+                        </i></a>
+                    <button *ngIf="(this.booleanTieneFile && this.booleanEditar)" type="button" (click)="borrarArchivo()" class="btn btn-danger ms-2"><i
+                            class="bi bi-trash-fill"></i></button>
+                </div>
+            </div>
+
+            <div *ngIf="(!this.booleanTieneFile && this.booleanAgregar) || (!this.booleanTieneFile && this.booleanEditar)"
+                class="col-md-12 pe-4 ps-4 mb-3">
+                <div class="form-group row">
+                    <label for="formFile" class="form-label">Agregar archivo</label>
+                    <input class="form-control" type="file" id="formFile" (change)="onfileArchivo($event)"
+                        formControlName="archivo"
+                        accept=".pdf,.doc,.docx,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document">
+                    <p class="form-text text-white">Tamaño máximo 3MB</p>
+                </div>
+            </div>
+        </div>
+
         <div *ngIf="!this.booleanVer && !this.booleanEditar" class="mt-2 row justify-content-evenly">
             <button type="submit" class="btn btn-primary btn-lg col-4 mb-3"><i class="bi bi-save"></i>
                 Guardar</button>
@@ -231,6 +257,7 @@
             <button type="button" (click)="crearPDF(this.minutaModel)" class="btn btn-primary btn-lg col-4 mb-3"><i
                     class="bi bi-save"></i> Generar PDF</button>
         </div>
+
     </form>
 
 </main>

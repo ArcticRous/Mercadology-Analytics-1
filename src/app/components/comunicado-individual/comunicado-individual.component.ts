@@ -131,20 +131,19 @@ export class ComunicadoIndividualComponent implements OnInit {
 
     const file = event.target.files[0];
 
-    if (file.size <= 3000000) {
-      if (file.type.includes('pdf') || file.type.includes('doc') || file.type.includes('docx,application/msword') || file.type.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
-        console.log(file);
+    if (file.type.includes('application/pdf') ||  file.type.includes('application/msword') || file.type.includes('application/vnd.openxmlformats-officedocument.wordprocessingml.document')) {
+      if (file.size <= 3000000) {
         this.comunicadoForm.value.archivo = file
         this.booleanFile = true;
         console.log(this.comunicadoForm.value.archivo);
 
       } else {
         this.resetCampoArchivo();
-        this.toastError(`Solo se aceptan formatos PDF y WORD, "${file.name}" no puede cargarse`, "Error de archivo")
+        this.showToastWarning(`El archivo "${file.name}" es muy grande, cargue uno de menor peso, máximo 3MB`, "Archivo supera el límite")
       }
     } else {
       this.resetCampoArchivo();
-      this.showToastWarning(`El archivo "${file.name}" es muy grande, cargue uno de menor peso, máximo 3MB`, "Archivo supera el límite")
+      this.toastError(`Solo se aceptan formatos PDF y WORD, "${file.name}" no puede cargarse`, "Error de archivo")
     }
 
   }
