@@ -7,23 +7,38 @@
 </div>
 
 <div class="container cont-general">
-    <div class="col d-flex cont-table mt-2" *ngFor="let items of equipo">
+    <div class="col d-flex cont-table mt-2">
         <div class="col col-equipo">
-            <h3 class="titulo-equipo">{{items.cuenta}}</h3>
-            <table>
-                <thead>
+            <table class="table table-hover">
+                <thead class="table-dark">
+                    <th>Cuenta</th>
+                    <th>Clasificación</th>
+                    <th>Puntaje de carga laboral</th>
+                    <th>Manager</th>
+                    <th>Data analyst Manager</th>
                     <th>Estratega digital</th>
                     <th>CM</th>
                     <th *ngIf="this.puesto === 'Manager'">Opciones</th>
                 </thead>
-                <tbody>
-                    <td>{{items.account}}</td>
-                    <td>{{items.cm}}</td>
-                    <td *ngIf="this.puesto === 'Manager'" class="">
-                        <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/equipo', items.id ]">
-                            <i class="bi bi-pencil-square"></i>
-                        </button>
-                    </td>
+                <tbody class="table-light">
+                    <tr *ngFor="let item of equipo">
+                        <td>{{item.cuenta}}</td>
+                        <td>{{item.clasificacion}}</td>
+                        <td>{{item.puntaje}}</td>
+                        <td>{{item.manager}}</td>
+                        <td>{{item.data}}</td>
+                        <td>{{item.estratega}}</td>
+                        <td>{{item.estrategaD}} | {{item.cm}}</td>
+                        <td *ngIf="this.puesto === 'Manager'" class="">
+                            <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/equipo', item.id ]">
+                                <i class="bi bi-pencil-square"></i>
+                            </button>
+
+                            <button class="btn btn-danger ms-3 btn-sm" (click)="eliminarEquipo(item)">
+                                <i class="bi bi-trash-fill"></i>
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>

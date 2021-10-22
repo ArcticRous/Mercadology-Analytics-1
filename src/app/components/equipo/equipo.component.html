@@ -20,22 +20,73 @@
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Cuenta:</label>
                 <div class="form-group ">
+                    <select class="form-select form-select-md" id="cuenta" name="cuenta" #cuenta="ngModel" [(ngModel)]="equipo.cuenta" aria-label=".form-select-md example" required>
+                        <option [value]="item" *ngFor="let item of cuentas">{{item}}</option>
+                    </select>
                 </div>
-                <select class="form-select form-select-md" id="cuenta" [(ngModel)]="equipo.cuenta" name="cuenta" aria-label=".form-select-md example" required>
-                    <option [value]="item" *ngFor="let item of cuentas">{{item}}</option>
-                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Clasificación:</label>
+                <div class="form-group ">
+                    <select class="form-select form-select-md" id="clasificacion" [(ngModel)]="equipo.clasificacion" name="clasificacion" aria-label=".form-select-md example" required>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Puntaje:</label>
+                <div class="form-group ">
+                    <input type="number" class="form-control" [(ngModel)]="equipo.puntaje" name="puntaje" id="puntaje">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-12 d-flex justify-content-around">
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Manager:</label>
+                <div class="form-group ">
+                    <select class="form-select form-select-md" id="manager" [(ngModel)]="equipo.manager" name="manager" aria-label=".form-select-md example" required>
+                        <option [value]="item.nombre +' '+ item.apellido" *ngFor="let item of usuarios"> {{item.nombre}} {{item.apellido}} </option> 
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label for="" class="text-white mb-2">Data analyst Manager:</label>
+                <div class="form-group ">
+                    <select class="form-select form-select-md" id="data" [(ngModel)]="equipo.data" name="data" aria-label=".form-select-md example" required>
+                        <option value="Nicole Avila">Nicole Capilla</option>
+                    </select>
+                </div>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Estratega digital:</label>
                 <div class="form-group ">
+                    <select class="form-select form-select-md" id="estratega" [(ngModel)]="equipo.estratega" name="estratega" aria-label=".form-select-md example" required>
+                        <option [value]="item.nombre +' '+ item.apellido" *ngFor="let item of usuarios">{{item.nombre}} {{item.apellido}}</option>
+                    </select>
                 </div>
-                <input type="text" class="form-control" [(ngModel)]="equipo.account" name="account" id="account">
             </div>
-            <div class="col-md-3 mb-3">
+        </div>
+
+        <div class="col-md-12 d-flex justify-content-center">
+            <div class="col-md-3 mb-3 space-input">
                 <label for="" class="text-white mb-2">CM:</label>
                 <div class="form-group ">
+                    <select class="form-select form-select-md" id="estrategaD" [(ngModel)]="equipo.estrategaD" name="estrategaD" aria-label=".form-select-md example">
+                        <option [value]="item.nombre +' '+ item.apellido" *ngFor="let item of usuarios">{{item.nombre}} {{item.apellido}}</option> 
+                    </select>
                 </div>
-                <input type="text" class="form-control" [(ngModel)]="equipo.cm" name="cm" id="cm">
+            </div>
+            <div class="col-md-3 mb-3 space-input">
+                <label for="" class="text-white mb-2">CM:</label>
+                <div class="form-group ">
+                    <select class="form-select form-select-md" id="cm" [(ngModel)]="equipo.cm" name="cm" aria-label=".form-select-md example">
+                        <option [value]="item.nombre +' '+ item.apellido" *ngFor="let item of usuarios">{{item.nombre}} {{item.apellido}}</option>
+                    </select>
+                </div>
             </div>
         </div>
 

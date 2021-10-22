@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../../services/auth.service';
-import { map } from 'rxjs/operators';
+import { delay, map } from 'rxjs/operators';
 import { EquipoModel } from '../../models/equipos.model';
 import { UsuarioModel } from '../../models/usuario.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-equipos',
@@ -10,6 +11,25 @@ import { UsuarioModel } from '../../models/usuario.model';
   styleUrls: ['./equipos.component.css']
 })
 export class EquiposComponent implements OnInit {
+  cuentas = ['Cinthya García', 'Dos Arroyos',
+                  'Endocéntrica',
+                  'Empleos Qro',
+                  'Euroventyc',
+                  'Global Staffing',
+                  'KOM',
+                  'Namaco',
+                  'Nomenex',
+                  'Noticias Querétaro',
+                  'Marmo',
+                  'Odontología Proactiva',
+                  'Olivera Logistics',
+                  'Palconsulting',
+                  'Paola Soto',
+                  'PureWater',
+                  'Proactiva',
+                  'Rohe',
+                  'Viva Casas'];
+                  
   equipo: EquipoModel[] = [];
   usuario:any;
 
@@ -38,4 +58,31 @@ export class EquiposComponent implements OnInit {
     this.depto = sessionStorage.getItem('depto');
   }
 
+
+  eliminarEquipo(equipo:EquipoModel){
+    console.log(equipo);
+      
+      Swal.fire({
+        title: '¿Está seguro?',
+        text: `Está seguro que desea borrar a ${equipo.cuenta}`,
+        icon: 'question',
+        showConfirmButton: true,
+        showCancelButton: true
+      }).then(resp => {
+  
+        if (resp.value) {
+          this.auth.deleteEquipo(equipo.id).subscribe(next => {
+            console.log(next);
+            Swal.fire({
+              title: 'Se elimino bono',
+              text: `Se elimino correctamente el bono ${equipo.cuenta}`,
+              icon: 'success'
+            }),window.location.reload() , delay(5000);
+          }, error => {
+            console.log(error);
+          })
+        }
+      })
+  }
+  
 }

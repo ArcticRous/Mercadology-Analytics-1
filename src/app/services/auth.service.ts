@@ -1128,7 +1128,7 @@ export class AuthService {
   }
 
   deleteEquipo(id: string) {
-    return this.http.delete(`${this.url}/statusbono/${id}.json`);
+    return this.http.delete(`${this.url}/equipos/${id}.json`);
   }
 
 

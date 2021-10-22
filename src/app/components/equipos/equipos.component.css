@@ -2,35 +2,22 @@ h3 {
     color: white;
 }
 
-table {
-    color: #242424;
-    border: 1px solid #242424;
-    background-color: #fff;
+.table {
+    border: 1px solid #ccc;
 }
 
-table thead th {
-    padding: 10px;
-    border: 1px solid #242424;
+tbody {
+    cursor: pointer;
 }
 
-table tbody td {
-    padding: 10px;
-    border: 1px solid #242424;
+td {
+    font-size: 14px;
+    text-align: center;
 }
 
-.cont-table {
-    float: left;
-}
-
-.col-equipo {
-    margin-right: 40px;
-    margin-bottom: 20px;
-}
-
-.titulo-equipo {
-    font-size: 18px;
-}
-
-.cont-general {
-    overflow-y: scroll;
+th {
+    font-size: 16px;
+    font-weight: 400;
+    padding: 10px 0px;
+    text-align: center;
 }

@@ -5,6 +5,7 @@ import { EquipoModel } from '../../models/equipos.model';
 import { Observable } from 'rxjs';
 import Swal from 'sweetalert2';
 import { RouterLinkActive, ActivatedRoute } from '@angular/router';
+import { UsuarioModel } from '../../models/usuario.model';
 
 @Component({
   selector: 'app-equipo',
@@ -13,6 +14,7 @@ import { RouterLinkActive, ActivatedRoute } from '@angular/router';
 })
 export class EquipoComponent implements OnInit {
 equipo: EquipoModel = new EquipoModel();
+usuarios: any;
 cargando: boolean = true;
 cuentas = ['Cinthya García', 'Dos Arroyos',
                   'Endocéntrica',
@@ -24,6 +26,7 @@ cuentas = ['Cinthya García', 'Dos Arroyos',
                   'Nomenex',
                   'Noticias Querétaro',
                   'Marmo',
+                  'Mercadology',
                   'Odontología Proactiva',
                   'Olivera Logistics',
                   'Palconsulting',
@@ -50,6 +53,12 @@ cuentas = ['Cinthya García', 'Dos Arroyos',
           this.cargando = false;
         })
     }
+    
+    this.auth.getUsuarios().subscribe( resp =>{
+      console.log(resp);
+      this.usuarios = resp.filter(user => user.depto == 'Marketing' || user.depto == 'Dirección');
+      console.log(this.usuarios);
+    })
   }
 
   guardar(form: NgForm) {
