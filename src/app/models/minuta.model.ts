@@ -10,4 +10,5 @@ export class MinutaModel{
     proxReunion: string;
     elaboro: string;
     autorizo: string;
+    archivo: any;
 }
