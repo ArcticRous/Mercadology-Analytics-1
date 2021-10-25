@@ -64,7 +64,7 @@
             <div class="col-md-3 mb-3">
                 <label for="" class="text-white mb-2">Estratega digital:</label>
                 <div class="form-group ">
-                    <select class="form-select form-select-md" id="estratega" [(ngModel)]="equipo.estratega" name="estratega" aria-label=".form-select-md example" required>
+                    <select class="form-select form-select-md" id="estratega" [(ngModel)]="equipo.estratega" name="estratega" aria-label=".form-select-md example">
                         <option [value]="item.nombre +' '+ item.apellido" *ngFor="let item of usuarios">{{item.nombre}} {{item.apellido}}</option>
                     </select>
                 </div>
@@ -80,14 +80,14 @@
                     </select>
                 </div>
             </div>
-            <div class="col-md-3 mb-3 space-input">
+            <!-- <div class="col-md-3 mb-3 space-input">
                 <label for="" class="text-white mb-2">CM:</label>
                 <div class="form-group ">
                     <select class="form-select form-select-md" id="cm" [(ngModel)]="equipo.cm" name="cm" aria-label=".form-select-md example">
                         <option [value]="item.nombre +' '+ item.apellido" *ngFor="let item of usuarios">{{item.nombre}} {{item.apellido}}</option>
                     </select>
                 </div>
-            </div>
+            </div> -->
         </div>
 
 

@@ -31,7 +31,7 @@ cuentas = ['Cinthya García', 'Dos Arroyos',
                   'Olivera Logistics',
                   'Palconsulting',
                   'Paola Soto',
-                  'PureWater',
+                  'Agua Óptima',
                   'Proactiva',
                   'Rohe',
                   'Viva Casas'];
