@@ -18,7 +18,7 @@
                     <th>Data analyst Manager</th>
                     <th>Estratega digital</th>
                     <th>CM</th>
-                    <th *ngIf="this.puesto === 'Manager'">Opciones</th>
+                    <th *ngIf="this.puesto === 'Manager' && this.id === 'PBqTuRRVZFPgLMJHkk44yVlnugk2'">Opciones</th>
                 </thead>
                 <tbody class="table-light">
                     <tr *ngFor="let item of equipo">
@@ -29,7 +29,7 @@
                         <td>{{item.data}}</td>
                         <td>{{item.estratega}}</td>
                         <td>{{item.estrategaD}}</td>
-                        <td *ngIf="this.puesto === 'Manager'" class="">
+                        <td *ngIf="this.puesto === 'Manager' && this.id === 'PBqTuRRVZFPgLMJHkk44yVlnugk2'" class="">
                             <button class="btn btn-secondary ms-3 btn-sm" [routerLink]="['/equipo', item.id ]">
                                 <i class="bi bi-pencil-square"></i>
                             </button>
